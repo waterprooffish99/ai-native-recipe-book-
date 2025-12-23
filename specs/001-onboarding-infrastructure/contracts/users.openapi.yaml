@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Global Plate Users API
+  description: User profile management endpoints
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000
+  - url: https://api.globalplate.com
+
+tags:
+  - name: Users
+    description: User profile operations
+
+paths:
+  /users/me:
+    get:
+      summary: Get current user profile
+      description: Retrieves the authenticated user's profile data
+      operationId: getCurrentUser
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          description: Unauthorized (invalid or expired token)
+
+    patch:
+      summary: Update current user profile
+      description: Updates user preferences (voice, language, dietary restrictions)
+      operationId: updateCurrentUser
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Bad request (invalid field values)
+        '401':
+          description: Unauthorized
+
+  /voices:
+    get:
+      summary: List all voice personalities
+      description: Retrieves all 7 available AI voice personalities with metadata
+      operationId: listVoicePersonalities
+      tags:
+        - Users
+      responses:
+        '200':
+          description: Voice personalities retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VoicePersonality'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    UserProfile:
+      type: object
+      required:
+        - id
+        - email
+        - name
+        - cooking_level
+        - preferred_language
+        - onboarding_completed
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        software_background:
+          type: string
+          nullable: true
+          enum: ["Developer", "Mechanic", "Student", "Teacher", "Healthcare", "Hospitality", "Other", "None"]
+        cooking_level:
+          type: string
+          enum: ["Absolute Beginner", "Beginner", "Beginner+"]
+        dietary_restrictions:
+          type: string
+          nullable: true
+        preferred_voice:
+          type: string
+          nullable: true
+          enum: ["arlow", "silas", "hugo", "omar", "felix", "elara", "maya"]
+        preferred_language:
+          type: string
+          enum: ["en", "ur", "ar", "es", "fr", "fa"]
+        recipes_mastered:
+          type: integer
+          minimum: 0
+        onboarding_completed:
+          type: boolean
+
+    UserUpdateRequest:
+      type: object
+      properties:
+        preferred_voice:
+          type: string
+          enum: ["arlow", "silas", "hugo", "omar", "felix", "elara", "maya"]
+          description: "Update selected voice personality"
+        preferred_language:
+          type: string
+          enum: ["en", "ur", "ar", "es", "fr", "fa"]
+          description: "Update language preference"
+        dietary_restrictions:
+          type: string
+          description: "Update dietary restrictions (free text)"
+
+    VoicePersonality:
+      type: object
+      required:
+        - id
+        - name
+        - gender
+        - personality_description
+        - audio_sample_url
+      properties:
+        id:
+          type: string
+          enum: ["arlow", "silas", "hugo", "omar", "felix", "elara", "maya"]
+        name:
+          type: string
+          example: "Elara"
+        gender:
+          type: string
+          enum: ["Male", "Female"]
+        personality_description:
+          type: string
+          example: "Gentle and supportive, builds your confidence"
+        audio_sample_url:
+          type: string
+          format: uri
+          example: "https://cdn.globalplate.com/voices/elara.mp3"
+        cultural_appropriateness:
+          type: string
+          nullable: true
+          example: "Neutral accent, globally appropriate"

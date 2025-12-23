@@ -1,0 +1,303 @@
+openapi: 3.0.3
+info:
+  title: Global Plate Authentication API
+  description: Authentication endpoints for email/password and Google OAuth signup/login
+  version: 1.0.0
+  contact:
+    name: Global Plate Team
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://api.globalplate.com
+    description: Production API server
+
+tags:
+  - name: Authentication
+    description: User authentication operations
+
+paths:
+  /auth/signup:
+    post:
+      summary: Sign up with email and password
+      description: Creates a new user account with email/password credentials
+      operationId: signupWithEmail
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '201':
+          description: User account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Bad request (invalid email format, weak password, or missing fields)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidEmail:
+                  value:
+                    error: "Invalid email format"
+                    code: "INVALID_EMAIL"
+                weakPassword:
+                  value:
+                    error: "Password must be at least 8 characters with one number or special character"
+                    code: "WEAK_PASSWORD"
+        '409':
+          description: Conflict (email already registered)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Email already registered. Please login instead."
+                code: "EMAIL_EXISTS"
+
+  /auth/login:
+    post:
+      summary: Log in with email and password
+      description: Authenticates a user with email/password credentials
+      operationId: loginWithEmail
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Unauthorized (invalid credentials)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Invalid email or password"
+                code: "INVALID_CREDENTIALS"
+
+  /auth/google:
+    get:
+      summary: Initiate Google OAuth flow
+      description: Redirects user to Google OAuth consent screen
+      operationId: initiateGoogleOAuth
+      tags:
+        - Authentication
+      responses:
+        '302':
+          description: Redirect to Google OAuth consent screen
+          headers:
+            Location:
+              description: Google OAuth authorization URL
+              schema:
+                type: string
+                example: "https://accounts.google.com/o/oauth2/v2/auth?..."
+
+  /auth/google/callback:
+    get:
+      summary: Google OAuth callback handler
+      description: Handles OAuth callback from Google and creates/logs in user
+      operationId: handleGoogleOAuthCallback
+      tags:
+        - Authentication
+      parameters:
+        - name: code
+          in: query
+          required: true
+          description: Authorization code from Google
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: true
+          description: CSRF protection state parameter
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OAuth authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Bad request (missing code/state or invalid state)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized (OAuth token exchange failed)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/logout:
+    post:
+      summary: Log out current user
+      description: Invalidates the current user session
+      operationId: logout
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      responses:
+        '204':
+          description: Logout successful (session invalidated)
+        '401':
+          description: Unauthorized (invalid or expired token)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from signup/login
+
+  schemas:
+    SignupRequest:
+      type: object
+      required:
+        - email
+        - password
+        - name
+      properties:
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: "SecurePass123"
+          description: "Must be at least 8 characters with one number or special character"
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: "John Doe"
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+        password:
+          type: string
+          format: password
+          example: "SecurePass123"
+
+    AuthResponse:
+      type: object
+      required:
+        - token
+        - user
+      properties:
+        token:
+          type: string
+          description: "JWT token for authenticated requests (valid for 7 days)"
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        user:
+          $ref: '#/components/schemas/UserProfile'
+
+    UserProfile:
+      type: object
+      required:
+        - id
+        - email
+        - name
+        - cooking_level
+        - preferred_language
+        - onboarding_completed
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+        name:
+          type: string
+          example: "John Doe"
+        software_background:
+          type: string
+          nullable: true
+          enum: ["Developer", "Mechanic", "Student", "Teacher", "Healthcare", "Hospitality", "Other", "None"]
+          example: "Developer"
+        hardware_background:
+          type: string
+          nullable: true
+          example: "Electronics technician"
+        cooking_level:
+          type: string
+          enum: ["Absolute Beginner", "Beginner", "Beginner+"]
+          example: "Absolute Beginner"
+        dietary_restrictions:
+          type: string
+          nullable: true
+          example: "vegetarian, gluten-free"
+        preferred_voice:
+          type: string
+          nullable: true
+          enum: ["arlow", "silas", "hugo", "omar", "felix", "elara", "maya"]
+          example: "elara"
+        preferred_language:
+          type: string
+          enum: ["en", "ur", "ar", "es", "fr", "fa"]
+          example: "en"
+        recipes_mastered:
+          type: integer
+          minimum: 0
+          example: 0
+        onboarding_completed:
+          type: boolean
+          example: false
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - code
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: "Invalid email format"
+        code:
+          type: string
+          description: Machine-readable error code
+          example: "INVALID_EMAIL"
+        details:
+          type: object
+          description: Optional additional error details
+          additionalProperties: true

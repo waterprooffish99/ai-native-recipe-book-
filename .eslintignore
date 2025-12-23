@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+.next/
+.docusaurus/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# Minified files
+*.min.js
+*.min.css
+
+# Generated files
+*.tsbuildinfo
+.cache/
+
+# IDEs
+.vscode/
+.idea/

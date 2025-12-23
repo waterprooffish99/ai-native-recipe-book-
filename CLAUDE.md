@@ -208,3 +208,10 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- TypeScript 5.x (frontend), Python 3.11+ (backend) + Docusaurus 3.x, React 18+, Better-Auth 2.x, FastAPI 0.100+, Neon Postgres, i18next (internationalization) (001-onboarding-infrastructure)
+- Neon Serverless Postgres (user profiles, sessions, survey responses) (001-onboarding-infrastructure)
+
+## Recent Changes
+- 001-onboarding-infrastructure: Added TypeScript 5.x (frontend), Python 3.11+ (backend) + Docusaurus 3.x, React 18+, Better-Auth 2.x, FastAPI 0.100+, Neon Postgres, i18next (internationalization)

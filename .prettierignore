@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+.next/
+.docusaurus/
+
+# Testing
+coverage/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+*.log
+
+# Generated files
+.cache/
+*.tsbuildinfo
+
+# IDEs
+.vscode/
+.idea/

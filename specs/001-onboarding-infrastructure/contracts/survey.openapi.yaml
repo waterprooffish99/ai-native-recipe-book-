@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: Global Plate Survey API
+  description: Kitchen Intelligence Survey endpoints for onboarding
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000
+  - url: https://api.globalplate.com
+
+tags:
+  - name: Survey
+    description: Onboarding survey operations
+
+paths:
+  /survey:
+    post:
+      summary: Submit Kitchen Intelligence Survey
+      description: Submits the onboarding survey and marks user as onboarding_completed
+      operationId: submitSurvey
+      tags:
+        - Survey
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveySubmitRequest'
+      responses:
+        '201':
+          description: Survey submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyResponse'
+        '400':
+          description: Bad request (missing required fields or invalid values)
+        '401':
+          description: Unauthorized
+        '409':
+          description: Conflict (survey already submitted for this user)
+
+  /survey/me:
+    get:
+      summary: Retrieve user's survey response
+      description: Retrieves the authenticated user's survey data
+      operationId: getSurveyResponse
+      tags:
+        - Survey
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Survey data retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyResponse'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not found (user has not completed survey yet)
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    SurveySubmitRequest:
+      type: object
+      required:
+        - software_background
+        - cooking_level
+        - preferred_voice
+        - preferred_language
+      properties:
+        software_background:
+          type: string
+          enum: ["Developer", "Mechanic", "Student", "Teacher", "Healthcare", "Hospitality", "Other", "None"]
+          example: "Developer"
+          description: "User's professional/technical background for personalization"
+        hardware_background:
+          type: string
+          nullable: true
+          example: "Electronics technician"
+          description: "Optional additional hardware background detail"
+        cooking_level:
+          type: string
+          enum: ["Absolute Beginner", "Beginner", "Beginner+"]
+          example: "Absolute Beginner"
+          description: "User's self-assessed cooking skill level"
+        dietary_restrictions:
+          type: string
+          nullable: true
+          example: "vegetarian, gluten-free"
+          description: "Optional free-text dietary restrictions or preferences"
+        preferred_voice:
+          type: string
+          enum: ["arlow", "silas", "hugo", "omar", "felix", "elara", "maya"]
+          example: "elara"
+          description: "Selected AI voice companion personality"
+        preferred_language:
+          type: string
+          enum: ["en", "ur", "ar", "es", "fr", "fa"]
+          example: "en"
+          description: "User's preferred UI language (ISO 639-1 code)"
+
+    SurveyResponse:
+      type: object
+      required:
+        - id
+        - user_id
+        - software_background
+        - cooking_level
+        - preferred_voice
+        - preferred_language
+        - submitted_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: "Unique survey response identifier"
+        user_id:
+          type: string
+          format: uuid
+          description: "User who submitted the survey"
+        software_background:
+          type: string
+          enum: ["Developer", "Mechanic", "Student", "Teacher", "Healthcare", "Hospitality", "Other", "None"]
+        hardware_background:
+          type: string
+          nullable: true
+        cooking_level:
+          type: string
+          enum: ["Absolute Beginner", "Beginner", "Beginner+"]
+        dietary_restrictions:
+          type: string
+          nullable: true
+        preferred_voice:
+          type: string
+          enum: ["arlow", "silas", "hugo", "omar", "felix", "elara", "maya"]
+        preferred_language:
+          type: string
+          enum: ["en", "ur", "ar", "es", "fr", "fa"]
+        submitted_at:
+          type: string
+          format: date-time
+          description: "ISO 8601 timestamp of survey submission"
+          example: "2025-12-22T10:30:00Z"
