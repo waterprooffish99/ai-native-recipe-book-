@@ -64,29 +64,29 @@
 
 ### Backend Implementation for User Story 1
 
-- [ ] T021 [P] [US1] Create User model in backend/src/models/user.py with fields from data-model.md
-- [ ] T022 [P] [US1] Create Session model in backend/src/models/session.py with JWT token management
-- [ ] T023 [US1] Implement AuthService in backend/src/services/auth_service.py with email/password signup logic (passlib bcrypt hashing, 12 rounds)
-- [ ] T024 [US1] Add login method to AuthService in backend/src/services/auth_service.py with password verification and JWT generation
-- [ ] T025 [US1] Add Google OAuth initiation method to AuthService in backend/src/services/auth_service.py using authlib
-- [ ] T026 [US1] Add Google OAuth callback handler to AuthService in backend/src/services/auth_service.py (exchange code for tokens, create/login user)
-- [ ] T027 [US1] Add logout method to AuthService in backend/src/services/auth_service.py (invalidate session, delete from database)
-- [ ] T028 [US1] Implement POST /auth/signup endpoint in backend/src/api/auth.py per auth.openapi.yaml contract (email validation, duplicate check, password strength)
-- [ ] T029 [US1] Implement POST /auth/login endpoint in backend/src/api/auth.py per auth.openapi.yaml contract
-- [ ] T030 [US1] Implement GET /auth/google endpoint in backend/src/api/auth.py (redirect to Google OAuth consent screen)
-- [ ] T031 [US1] Implement GET /auth/google/callback endpoint in backend/src/api/auth.py (handle OAuth callback, return JWT token)
-- [ ] T032 [US1] Implement POST /auth/logout endpoint in backend/src/api/auth.py (require Bearer token, invalidate session)
+- [X] T021 [P] [US1] Create User model in backend/src/models/user.py with fields from data-model.md
+- [X] T022 [P] [US1] Create Session model in backend/src/models/session.py with JWT token management
+- [X] T023 [US1] Implement AuthService in backend/src/services/auth_service.py with email/password signup logic (passlib bcrypt hashing, 12 rounds)
+- [X] T024 [US1] Add login method to AuthService in backend/src/services/auth_service.py with password verification and JWT generation
+- [X] T025 [US1] Add Google OAuth initiation method to AuthService in backend/src/services/auth_service.py using authlib
+- [X] T026 [US1] Add Google OAuth callback handler to AuthService in backend/src/services/auth_service.py (exchange code for tokens, create/login user)
+- [X] T027 [US1] Add logout method to AuthService in backend/src/services/auth_service.py (invalidate session, delete from database)
+- [X] T028 [US1] Implement POST /auth/signup endpoint in backend/src/api/auth.py per auth.openapi.yaml contract (email validation, duplicate check, password strength)
+- [X] T029 [US1] Implement POST /auth/login endpoint in backend/src/api/auth.py per auth.openapi.yaml contract
+- [X] T030 [US1] Implement GET /auth/google endpoint in backend/src/api/auth.py (redirect to Google OAuth consent screen)
+- [X] T031 [US1] Implement GET /auth/google/callback endpoint in backend/src/api/auth.py (handle OAuth callback, return JWT token)
+- [X] T032 [US1] Implement POST /auth/logout endpoint in backend/src/api/auth.py (require Bearer token, invalidate session)
 
 ### Frontend Implementation for User Story 1
 
-- [ ] T033 [P] [US1] Create SignupForm component in frontend/src/components/auth/SignupForm.tsx with email, password, name fields and inline validation
-- [ ] T034 [P] [US1] Create GoogleOAuthButton component in frontend/src/components/auth/GoogleOAuthButton.tsx that redirects to /auth/google
-- [ ] T035 [P] [US1] Create LoginForm component in frontend/src/components/auth/LoginForm.tsx with email and password fields
-- [ ] T036 [US1] Create authService API client in frontend/src/services/authService.ts with methods for signup, login, logout (fetch wrapper)
-- [ ] T037 [US1] Create signup page in frontend/src/pages/signup.tsx using SignupForm and GoogleOAuthButton components
-- [ ] T038 [US1] Create login page in frontend/src/pages/login.tsx using LoginForm and GoogleOAuthButton components
-- [ ] T039 [US1] Add JWT token storage to localStorage in authService.ts after successful signup/login
-- [ ] T040 [US1] Add authentication redirect logic (after signup/login → redirect to /onboarding if onboarding_completed=false, else /dashboard)
+- [X] T033 [P] [US1] Create SignupForm component in frontend/src/components/auth/SignupForm.tsx with email, password, name fields and inline validation
+- [X] T034 [P] [US1] Create GoogleOAuthButton component in frontend/src/components/auth/GoogleOAuthButton.tsx that redirects to /auth/google
+- [X] T035 [P] [US1] Create LoginForm component in frontend/src/components/auth/LoginForm.tsx with email and password fields
+- [X] T036 [US1] Create authService API client in frontend/src/services/authService.ts with methods for signup, login, logout (fetch wrapper)
+- [X] T037 [US1] Create signup page in frontend/src/pages/signup.tsx using SignupForm and GoogleOAuthButton components
+- [X] T038 [US1] Create login page in frontend/src/pages/login.tsx using LoginForm and GoogleOAuthButton components
+- [X] T039 [US1] Add JWT token storage to localStorage in authService.ts after successful signup/login
+- [X] T040 [US1] Add authentication redirect logic (after signup/login → redirect to /onboarding if onboarding_completed=false, else /dashboard)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently (signup, login, OAuth, logout all work)
 
