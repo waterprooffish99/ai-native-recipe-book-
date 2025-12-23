@@ -37,20 +37,20 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Initialize Alembic migrations in backend/src/db/migrations/
-- [ ] T008 Create database connection module in backend/src/db/connection.py (using databases library with asyncpg)
-- [ ] T009 Create User table migration (001_create_users_table.sql) with all columns from data-model.md
-- [ ] T010 Create Session table migration (002_create_sessions_table.sql) with JWT token storage
-- [ ] T011 Create Survey Response table migration (003_create_survey_responses_table.sql) with one-to-one user relationship
-- [ ] T012 Create Voice Personality table migration (004_create_voice_personalities_table.sql) and seed 7 voice records
-- [ ] T013 Add foreign key constraints migration (005_add_foreign_keys.sql)
+- [X] T007 Initialize Alembic migrations in backend/src/db/migrations/
+- [X] T008 Create database connection module in backend/src/db/connection.py (using databases library with asyncpg)
+- [X] T009 Create User table migration (001_create_users_table.sql) with all columns from data-model.md
+- [X] T010 Create Session table migration (002_create_sessions_table.sql) with JWT token storage
+- [X] T011 Create Survey Response table migration (003_create_survey_responses_table.sql) with one-to-one user relationship
+- [X] T012 Create Voice Personality table migration (004_create_voice_personalities_table.sql) and seed 7 voice records
+- [X] T013 Add foreign key constraints migration (005_add_foreign_keys.sql)
 - [ ] T014 Run Alembic migrations to create schema in Neon Postgres (alembic upgrade head)
-- [ ] T015 [P] Configure i18next in frontend/src/utils/i18nConfig.ts with 6 languages (en, ur, ar, es, fr, fa) and RTL support
-- [ ] T016 [P] Create translation files in frontend/src/locales/ for all 6 languages (en.json, ur.json, ar.json, es.json, fr.json, fa.json) with onboarding flow text
-- [ ] T017 [P] Create FastAPI main application entrypoint in backend/src/main.py with CORS middleware and database connection lifecycle
-- [ ] T018 [P] Create shared AudioPlayer component in frontend/src/components/shared/AudioPlayer.tsx wrapping HTML5 audio element
-- [ ] T019 [P] Create TranslateButton floating button component in frontend/src/components/shared/TranslateButton.tsx with language picker modal
-- [ ] T020 Add 7 voice sample audio files to frontend/src/assets/voices/ (arlow.mp3, silas.mp3, hugo.mp3, omar.mp3, felix.mp3, elara.mp3, maya.mp3)
+- [X] T015 [P] Configure i18next in frontend/src/utils/i18nConfig.ts with 6 languages (en, ur, ar, es, fr, fa) and RTL support
+- [X] T016 [P] Create translation files in frontend/src/locales/ for all 6 languages (en.json, ur.json, ar.json, es.json, fr.json, fa.json) with onboarding flow text
+- [X] T017 [P] Create FastAPI main application entrypoint in backend/src/main.py with CORS middleware and database connection lifecycle
+- [X] T018 [P] Create shared AudioPlayer component in frontend/src/components/shared/AudioPlayer.tsx wrapping HTML5 audio element
+- [X] T019 [P] Create TranslateButton floating button component in frontend/src/components/shared/TranslateButton.tsx with language picker modal
+- [X] T020 Add 7 voice sample audio files to frontend/src/assets/voices/ (arlow.mp3, silas.mp3, hugo.mp3, omar.mp3, felix.mp3, elara.mp3, maya.mp3)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 

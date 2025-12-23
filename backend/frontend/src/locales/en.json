@@ -1,0 +1,29 @@
+{
+  "auth": {
+    "signup": "Sign Up",
+    "login": "Log In",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "signupWithEmail": "Sign up with Email",
+    "signupWithGoogle": "Sign up with Google"
+  },
+  "survey": {
+    "title": "Kitchen Intelligence Survey",
+    "subtitle": "Help us personalize your cooking experience",
+    "continue": "Continue"
+  },
+  "voices": {
+    "title": "Choose Your Kitchen Partner",
+    "playSample": "Play Sample",
+    "selectVoice": "Choose This Voice"
+  },
+  "language": {
+    "title": "Choose Your Language",
+    "translateNow": "Translate Now"
+  },
+  "dashboard": {
+    "welcome": "Welcome!",
+    "browseRecipes": "Browse Recipes"
+  }
+}

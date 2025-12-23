@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "signup": "Registrarse",
+    "login": "Iniciar sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña"
+  },
+  "survey": {
+    "title": "Encuesta de Inteligencia Culinaria",
+    "continue": "Continuar"
+  }
+}
