@@ -44,7 +44,7 @@
 - [X] T011 Create Survey Response table migration (003_create_survey_responses_table.sql) with one-to-one user relationship
 - [X] T012 Create Voice Personality table migration (004_create_voice_personalities_table.sql) and seed 7 voice records
 - [X] T013 Add foreign key constraints migration (005_add_foreign_keys.sql)
-- [ ] T014 Run Alembic migrations to create schema in Neon Postgres (alembic upgrade head)
+- [X] T014 Run Alembic migrations to create schema in Neon Postgres (alembic upgrade head)
 - [X] T015 [P] Configure i18next in frontend/src/utils/i18nConfig.ts with 6 languages (en, ur, ar, es, fr, fa) and RTL support
 - [X] T016 [P] Create translation files in frontend/src/locales/ for all 6 languages (en.json, ur.json, ar.json, es.json, fr.json, fa.json) with onboarding flow text
 - [X] T017 [P] Create FastAPI main application entrypoint in backend/src/main.py with CORS middleware and database connection lifecycle
