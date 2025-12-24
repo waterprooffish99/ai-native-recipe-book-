@@ -5,11 +5,16 @@ This module implements the survey endpoints as defined in the OpenAPI specificat
 """
 from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from jose import jwt, JWTError
 import os
 
 from ..models.survey import SurveyResponseCreate
 from ..services.survey_service import SurveyService
+
+# Initialize rate limiter for this router
+limiter = Limiter(key_func=get_remote_address)
 
 router = APIRouter()
 security = HTTPBearer()
@@ -34,7 +39,9 @@ def get_current_user_id(credentials: HTTPAuthorizationCredentials = Depends(secu
 
 
 @router.post("/survey", status_code=201)
+@limiter.limit("5/hour")  # Limit survey submissions to 5 per hour per authenticated user
 async def submit_survey(
+    request: Request,  # Need to include request for rate limiting
     survey_data: SurveyResponseCreate,
     user_id: str = Depends(get_current_user_id),
     survey_service: SurveyService = Depends(get_survey_service)
@@ -80,7 +87,9 @@ async def submit_survey(
 
 
 @router.get("/survey/me")
+@limiter.limit("30/minute")  # Limit survey retrieval to 30 per minute per authenticated user
 async def get_user_survey(
+    request: Request,  # Need to include request for rate limiting
     user_id: str = Depends(get_current_user_id),
     survey_service: SurveyService = Depends(get_survey_service)
 ):

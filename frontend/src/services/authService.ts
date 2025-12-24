@@ -5,6 +5,8 @@
  * by making API calls to the backend authentication endpoints.
  */
 
+import logger from '../utils/logger';
+
 interface User {
   id: string;
   email: string;
@@ -83,6 +85,15 @@ class AuthService {
 
   private async request(url: string, options: RequestInit): Promise<any> {
     try {
+      // Check if token is expired before making the request
+      if (this.token && this.isTokenExpired(this.token)) {
+        // Token is expired, remove it and redirect to login
+        this.token = null;
+        this.removeTokenFromStorage();
+        window.location.href = '/login';
+        throw new Error('Session expired. Please log in again.');
+      }
+
       const response = await fetch(`${this.baseUrl}${url}`, {
         ...options,
         headers: {
@@ -91,6 +102,18 @@ class AuthService {
         },
       });
 
+      // Check if the response indicates an expired token
+      if (response.status === 401) {
+        const errorData = await response.json().catch(() => ({}));
+        if (errorData.error && (errorData.error.includes('expired') || errorData.error.includes('invalid') || errorData.code === 'INVALID_TOKEN')) {
+          // Token is expired or invalid, remove it and redirect to login
+          this.token = null;
+          this.removeTokenFromStorage();
+          window.location.href = '/login';
+          throw new Error('Session expired. Please log in again.');
+        }
+      }
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
@@ -98,22 +121,77 @@ class AuthService {
 
       return await response.json();
     } catch (error) {
-      console.error('API request error:', error);
+      // Check if it's a network error or a session expiration issue
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        // Network error
+        logger.error('Network error during API request:', {
+          context: 'AuthService.request',
+          error,
+          data: { url, options }
+        });
+      } else if (error.message.includes('Session expired')) {
+        // Session expired error - already handled by redirecting
+        logger.warn('Session expired, redirected to login', {
+          context: 'AuthService.request',
+          data: { url, options }
+        });
+      } else {
+        logger.error('API request error:', {
+          context: 'AuthService.request',
+          error,
+          data: { url, options }
+        });
+      }
       throw error;
     }
   }
 
+  private isTokenExpired(token: string): boolean {
+    try {
+      // Split the token to get the payload
+      const tokenParts = token.split('.');
+      if (tokenParts.length !== 3) {
+        return true; // Invalid token format
+      }
+
+      // Decode the payload
+      const payload = JSON.parse(atob(tokenParts[1]));
+
+      // Check if the token has an expiration time
+      if (!payload.exp) {
+        return false; // No expiration time set, assume it's valid
+      }
+
+      // Compare with current time (in seconds)
+      const currentTime = Math.floor(Date.now() / 1000);
+      return payload.exp < currentTime;
+    } catch (error) {
+      logger.error('Error decoding token:', {
+        context: 'AuthService.isTokenExpired',
+        error
+      });
+      return true; // If we can't decode the token, assume it's expired
+    }
+  }
+
   async signup(userData: SignupData): Promise<AuthResponse> {
-    const response = await this.request('/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-    });
+    try {
+      const response = await this.request('/auth/signup', {
+        method: 'POST',
+        body: JSON.stringify(userData),
+      });
 
-    // Save the token to localStorage
-    this.token = response.token;
-    this.saveTokenToStorage(response.token);
+      // Save the token to localStorage
+      this.token = response.token;
+      this.saveTokenToStorage(response.token);
 
-    return response;
+      // In a real app, we would use the toast context here
+      // For now, we'll just return the response
+      return response;
+    } catch (error) {
+      // In a real app, we would show a toast notification here
+      throw error;
+    }
   }
 
   async login(userData: LoginData): Promise<AuthResponse> {
@@ -190,7 +268,10 @@ class AuthService {
         updated_at: payload.updated_at || new Date().toISOString(),
       };
     } catch (error) {
-      console.error('Error decoding token:', error);
+      logger.error('Error decoding token:', {
+        context: 'AuthService.getCurrentUser',
+        error
+      });
       return null;
     }
   }

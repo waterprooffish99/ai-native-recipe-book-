@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AudioPlayer } from '../shared/AudioPlayer';
+import LoadingSpinner from '../shared/LoadingSpinner';
+import { useToast } from '../shared/ToastProvider';
 import userService from '../../services/userService';
+import logger from '../../utils/logger';
 import styles from './VoiceSelector.module.css';
 
 interface VoicePersonality {
@@ -25,6 +28,7 @@ export const VoiceSelector: React.FC<VoiceSelectorProps> = ({
   className = '',
 }) => {
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [voices, setVoices] = useState<VoicePersonality[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,9 +36,27 @@ export const VoiceSelector: React.FC<VoiceSelectorProps> = ({
   const [selectedVoiceId, setSelectedVoiceId] = useState<string | undefined>(selectedVoice);
   const [saving, setSaving] = useState<boolean>(false);
 
+  // Function to preload audio files
+  const preloadAudioFiles = (voiceUrls: string[]) => {
+    voiceUrls.forEach(url => {
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.src = url;
+      // Don't actually play it, just load it into the cache
+    });
+  };
+
   useEffect(() => {
     fetchVoices();
   }, []);
+
+  // Preload voice audio files when voices are loaded
+  useEffect(() => {
+    if (voices.length > 0) {
+      const audioUrls = voices.map(voice => voice.audio_sample_url);
+      preloadAudioFiles(audioUrls);
+    }
+  }, [voices]);
 
   const fetchVoices = async () => {
     try {
@@ -45,8 +67,13 @@ export const VoiceSelector: React.FC<VoiceSelectorProps> = ({
       const data = await userService.getVoices();
       setVoices(data);
     } catch (err) {
-      console.error('Error fetching voices:', err);
-      setError(t('voices.fetchError') || 'Failed to load voices');
+      logger.error('Error fetching voices:', {
+        context: 'VoiceSelector.fetchVoices',
+        error: err
+      });
+      const errorMessage = t('voices.fetchError') || 'Failed to load voices';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
     } finally {
       setLoading(false);
     }
@@ -60,11 +87,20 @@ export const VoiceSelector: React.FC<VoiceSelectorProps> = ({
       // Save voice preference to backend
       await userService.updateVoicePreference(voiceId);
 
+      // Show success notification
+      showToast(t('voices.voiceSelected', 'Voice preference saved successfully'), 'success');
+
       // Call parent callback if provided
       onVoiceSelect?.(voiceId);
     } catch (err) {
-      console.error('Error saving voice preference:', err);
-      setError(t('voices.saveError') || 'Failed to save voice preference');
+      logger.error('Error saving voice preference:', {
+        context: 'VoiceSelector.handleVoiceSelect',
+        error: err,
+        data: { voiceId }
+      });
+      const errorMessage = t('voices.saveError') || 'Failed to save voice preference';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
       // Revert selection on error
       setSelectedVoiceId(selectedVoice);
     } finally {
@@ -82,10 +118,10 @@ export const VoiceSelector: React.FC<VoiceSelectorProps> = ({
 
   if (loading) {
     return (
-      <div className={`${styles.voiceSelectorContainer} ${className}`}>
+      <div className={`${styles.voiceSelectorContainer} ${className}`} role="status" aria-live="polite">
         <div className={styles.loadingSpinner}>
-          <div className={styles.spinner}></div>
-          <p>{t('voices.loading') || 'Loading voice personalities...'}</p>
+          <LoadingSpinner size="lg" label={t('voices.loading') || 'Loading voice personalities...'} />
+          <p className="sr-only">{t('voices.loading') || 'Loading voice personalities...'}</p>
         </div>
       </div>
     );

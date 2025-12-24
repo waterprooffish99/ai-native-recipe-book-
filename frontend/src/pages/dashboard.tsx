@@ -11,8 +11,10 @@ import { useNavigate } from 'react-router-dom';
 import Dashboard from '../components/dashboard/Dashboard';
 import { ProgressRing } from '../components/dashboard/ProgressRing';
 import { QuickAccessCard } from '../components/dashboard/QuickAccessCard';
+import LoadingSpinner from '../components/shared/LoadingSpinner';
 import { authService } from '../services/authService';
 import userService from '../services/userService';
+import logger from '../utils/logger';
 
 const DashboardPage: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -36,7 +38,10 @@ const DashboardPage: React.FC = () => {
       } catch (err) {
         setError('Failed to load dashboard data');
         setLoading(false);
-        console.error('Error loading dashboard:', err);
+        logger.error('Error loading dashboard:', {
+          context: 'DashboardPage.fetchUserProfile',
+          error: err
+        });
       }
     };
 
@@ -46,9 +51,10 @@ const DashboardPage: React.FC = () => {
   // Handle loading state
   if (loading) {
     return (
-      <div className="dashboard-page" dir="auto">
+      <div className="dashboard-page" dir="auto" role="status" aria-live="polite">
         <div className="loading-container">
-          <p>Loading your kitchen...</p>
+          <LoadingSpinner size="lg" label="Loading your kitchen..." />
+          <p className="sr-only">Loading your kitchen...</p>
         </div>
       </div>
     );

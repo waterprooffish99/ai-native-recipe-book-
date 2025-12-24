@@ -3,10 +3,123 @@
     "signup": "سائن اپ",
     "login": "لاگ ان",
     "email": "ای میل",
-    "password": "پاس ورڈ"
+    "password": "پاس ورڈ",
+    "name": "مکمل نام",
+    "signupWithEmail": "ای میل کے ساتھ سائن اپ کریں",
+    "signupWithGoogle": "گوگل کے ساتھ سائن اپ کریں",
+    "forgotPassword": "پاس ورڈ بھول گئے؟",
+    "errors": {
+      "emailRequired": "ای میل درکار ہے",
+      "emailInvalid": "ای میل درست نہیں ہے",
+      "passwordRequired": "پاس ورڈ درکار ہے",
+      "passwordTooShort": "پاس ورڈ کم از کم 8 حروف کا ہونا چاہیے",
+      "passwordRequirements": "پاس ورڈ میں کم از کم ایک نمبر یا خصوصی حرف ہونا چاہیے",
+      "nameRequired": "نام درکار ہے",
+      "invalidCredentials": "غلط ای میل یا پاس ورڈ"
+    }
   },
   "survey": {
     "title": "کچن انٹیلی جنس سروے",
-    "continue": "جاری رکھیں"
+    "subtitle": "ہمیں آپ کے کوکنگ کا تجربہ حسب ضرورت بنانے میں مدد کریں",
+    "continue": "جاری رکھیں",
+    "softwareBackground": {
+      "label": "آپ کا پیشہ کیا ہے؟",
+      "selectOption": "ایک آپشن منتخب کریں",
+      "developer": "ڈیولپر",
+      "mechanic": "مکینک",
+      "student": "طلبہ",
+      "teacher": "استاد",
+      "healthcare": "ہیلتھ کیئر پیشہ ور",
+      "hospitality": "میزبانی کا کام",
+      "other": "دیگر",
+      "none": "کچھ نہیں"
+    },
+    "hardwareBackground": {
+      "label": "کیا آپ کے پاس ہارڈ ویئر/الیکٹرانکس کا تجربہ ہے؟",
+      "placeholder": "جیسے، الیکٹرانکس ٹیکنیشن، برق کار، وغیرہ"
+    },
+    "cookingLevel": {
+      "label": "آپ کے کوکنگ کا کیا درجہ ہے؟",
+      "absoluteBeginner": "مکمل نوآموز - ابھی تک کبھی نہیں پکایا",
+      "beginner": "نوآموز - سادہ کھانے تیار کر سکتا ہوں",
+      "beginnerPlus": "نوآموز+ - بنیادی ریسیپیوں کے ساتھ آرام دہ"
+    },
+    "dietaryRestrictions": {
+      "label": "کیا آپ کے کھانے کی کوئی پابندیاں یا ترجیحات ہیں؟",
+      "placeholder": "جیسے، سبزی خور، گلوٹین فری، نٹس فری، وغیرہ"
+    },
+    "language": {
+      "english": "انگریزی",
+      "urdu": "اردو (Urdu)",
+      "arabic": "عربی (Arabic)",
+      "spanish": "ہسپانوی (Spanish)",
+      "french": "فرانسیسی (French)",
+      "persian": "فارسی (Persian)"
+    },
+    "errors": {
+      "softwareBackgroundRequired": "سافٹ ویئر کا پس منظر درکار ہے",
+      "cookingLevelRequired": "کوکنگ کا درجہ درکار ہے"
+    }
+  },
+  "voices": {
+    "title": "اپنا پسندیدہ آواز منتخب کریں",
+    "playSample": "نمونہ چلائیں",
+    "selectVoice": "یہ آواز منتخب کریں",
+    "arlow": "ارلو - گرم اور حوصلہ افزاء",
+    "silas": "سیلس - مطمئن اور صبور",
+    "hugo": "ہیوگو - تیز اور حوصلہ افزاء",
+    "omar": "عمر - دوستانہ اور گفتگو کرنے والا",
+    "felix": "فیلکس - صاف اور درست",
+    "elara": "الارا - مہربان اور حمایتی",
+    "maya": "مایا - خوش اور جوشیلا",
+    "loading": "لوڈ ہو رہا ہے...",
+    "playing": "چل رہا ہے...",
+    "retry": "دوبارہ کوشش کریں",
+    "fetchError": "آوازیں لوڈ کرنے میں ناکامی",
+    "saveError": "صوتی ترجیح محفوظ کرنے میں ناکامی",
+    "selectTitle": "اپنا کچن پارٹنر منتخب کریں",
+    "selectSubtitle": "ایک ای آئی آواز منتخب کریں جو آپ کو ترکیبیں سکھائے گی",
+    "loadingAudio": "آڈیو لوڈ ہو رہی ہے...",
+    "selected": "✓ منتخب",
+    "chooseThisVoice": "یہ آواز منتخب کریں",
+    "saving": "محفوظ ہو رہا ہے...",
+    "voiceSelected": "صوتی ترجیح کامیابی سے محفوظ ہو گئی"
+  },
+  "language": {
+    "title": "اپنی زبان چنیں",
+    "translateNow": "ابھی ترجمہ کریں",
+    "languageChanged": "زبان کی ترجیح کامیابی سے محفوظ ہو گئی",
+    "saving": "محفوظ ہو رہا ہے...",
+    "selectTitle": "اپنی زبان چنیں",
+    "selectSubtitle": "اپنے کوکنگ تجربے کے لیے اپنی ترجیحی زبان منتخب کریں",
+    "select": "منتخب کریں"
+  },
+  "dashboard": {
+    "welcome": "خوش آمدید!",
+    "welcomeUser": "خوش آمدید، {{name}}!",
+    "browseRecipes": "ریسیپیاں دیکھیں",
+    "kitchenPartnerReady": "آپ کا {{voice}} کوکنگ کے لیے تیار ہے!",
+    "todaysTip": "آج کی ٹپ:",
+    "kitchenJourney": "آپ کا کچن سفر"
+  },
+  "common": {
+    "errors": {
+      "required": "یہ فیلڈ درکار ہے",
+      "genericError": "ایک خرابی پیش آ گئی. براہ کرم دوبارہ کوشش کریں.",
+      "networkError": "نیٹ ورک کی خرابی. براہ کرم اپنے کنکشن کی جانچ کریں."
+    },
+    "loading": {
+      "loading": "لوڈ ہو رہا ہے...",
+      "creatingAccount": "اکاؤنٹ بنایا جا رہا ہے...",
+      "signingIn": "سائن ان ہو رہا ہے...",
+      "submitting": "جمع کرایا جا رہا ہے..."
+    },
+    "aria": {
+      "closeToast": "اطلاع بند کریں"
+    },
+    "buttons": {
+      "submit": "جمع کرائیں",
+      "continue": "جاری رکھیں"
+    }
   }
 }

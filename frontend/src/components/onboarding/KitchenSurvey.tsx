@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 interface SurveyFormData {
   software_background: string;
@@ -15,6 +17,7 @@ interface KitchenSurveyProps {
 }
 
 const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<SurveyFormData>({
     software_background: '',
     hardware_background: '',
@@ -26,39 +29,39 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const softwareBackgroundOptions = [
-    { value: 'Developer', label: 'Developer' },
-    { value: 'Mechanic', label: 'Mechanic' },
-    { value: 'Student', label: 'Student' },
-    { value: 'Teacher', label: 'Teacher' },
-    { value: 'Healthcare', label: 'Healthcare Professional' },
-    { value: 'Hospitality', label: 'Hospitality Worker' },
-    { value: 'Other', label: 'Other' },
-    { value: 'None', label: 'None' }
+    { value: 'Developer', label: t('survey.softwareBackground.developer', 'Developer') },
+    { value: 'Mechanic', label: t('survey.softwareBackground.mechanic', 'Mechanic') },
+    { value: 'Student', label: t('survey.softwareBackground.student', 'Student') },
+    { value: 'Teacher', label: t('survey.softwareBackground.teacher', 'Teacher') },
+    { value: 'Healthcare', label: t('survey.softwareBackground.healthcare', 'Healthcare Professional') },
+    { value: 'Hospitality', label: t('survey.softwareBackground.hospitality', 'Hospitality Worker') },
+    { value: 'Other', label: t('survey.softwareBackground.other', 'Other') },
+    { value: 'None', label: t('survey.softwareBackground.none', 'None') }
   ];
 
   const cookingLevelOptions = [
-    { value: 'Absolute Beginner', label: 'Absolute Beginner - Never cooked before' },
-    { value: 'Beginner', label: 'Beginner - Can make simple meals' },
-    { value: 'Beginner+', label: 'Beginner+ - Comfortable with basic recipes' }
+    { value: 'Absolute Beginner', label: t('survey.cookingLevel.absoluteBeginner', 'Absolute Beginner - Never cooked before') },
+    { value: 'Beginner', label: t('survey.cookingLevel.beginner', 'Beginner - Can make simple meals') },
+    { value: 'Beginner+', label: t('survey.cookingLevel.beginnerPlus', 'Beginner+ - Comfortable with basic recipes') }
   ];
 
   const voiceOptions = [
-    { value: 'arlow', label: 'Arlow - Warm and encouraging' },
-    { value: 'silas', label: 'Silas - Calm and patient' },
-    { value: 'hugo', label: 'Hugo - Energetic and motivating' },
-    { value: 'omar', label: 'Omar - Friendly and conversational' },
-    { value: 'felix', label: 'Felix - Clear and precise' },
-    { value: 'elara', label: 'Elara - Gentle and supportive' },
-    { value: 'maya', label: 'Maya - Cheerful and upbeat' }
+    { value: 'arlow', label: t('voices.arlow', 'Arlow - Warm and encouraging') },
+    { value: 'silas', label: t('voices.silas', 'Silas - Calm and patient') },
+    { value: 'hugo', label: t('voices.hugo', 'Hugo - Energetic and motivating') },
+    { value: 'omar', label: t('voices.omar', 'Omar - Friendly and conversational') },
+    { value: 'felix', label: t('voices.felix', 'Felix - Clear and precise') },
+    { value: 'elara', label: t('voices.elara', 'Elara - Gentle and supportive') },
+    { value: 'maya', label: t('voices.maya', 'Maya - Cheerful and upbeat') }
   ];
 
   const languageOptions = [
-    { value: 'en', label: 'English' },
-    { value: 'ur', label: 'اردو (Urdu)' },
-    { value: 'ar', label: 'العربية (Arabic)' },
-    { value: 'es', label: 'Español (Spanish)' },
-    { value: 'fr', label: 'Français (French)' },
-    { value: 'fa', label: 'فارسی (Persian)' }
+    { value: 'en', label: t('survey.language.english', 'English') },
+    { value: 'ur', label: t('survey.language.urdu', 'اردو (Urdu)') },
+    { value: 'ar', label: t('survey.language.arabic', 'العربية (Arabic)') },
+    { value: 'es', label: t('survey.language.spanish', 'Español (Spanish)') },
+    { value: 'fr', label: t('survey.language.french', 'Français (French)') },
+    { value: 'fa', label: t('survey.language.persian', 'فارسی (Persian)') }
   ];
 
   const validateForm = (): boolean => {
@@ -66,11 +69,11 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
 
     // Validate required fields
     if (!formData.software_background) {
-      newErrors.software_background = 'Software background is required';
+      newErrors.software_background = t('survey.errors.softwareBackgroundRequired');
     }
 
     if (!formData.cooking_level) {
-      newErrors.cooking_level = 'Cooking level is required';
+      newErrors.cooking_level = t('survey.errors.cookingLevelRequired');
     }
 
     setErrors(newErrors);
@@ -104,14 +107,14 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
   return (
     <div className="bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <h3 className="text-lg leading-6 font-medium text-gray-900">Kitchen Intelligence Survey</h3>
-        <p className="mt-1 text-sm text-gray-500">Help us personalize your cooking experience</p>
+        <h3 className="text-lg leading-6 font-medium text-gray-900">{t('survey.title')}</h3>
+        <p className="mt-1 text-sm text-gray-500">{t('survey.subtitle')}</p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-6">
           <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
             <div className="sm:col-span-6">
               <label htmlFor="software_background" className="block text-sm font-medium text-gray-700">
-                What's your professional background?
+                {t('survey.softwareBackground.label', "What's your professional background?")}
               </label>
               <select
                 id="software_background"
@@ -122,7 +125,7 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
                   errors.software_background ? 'border-red-500' : 'border-gray-300'
                 } focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md`}
               >
-                <option value="">Select an option</option>
+                <option value="">{t('survey.softwareBackground.selectOption', 'Select an option')}</option>
                 {softwareBackgroundOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -136,7 +139,7 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
 
             <div className="sm:col-span-6">
               <label htmlFor="hardware_background" className="block text-sm font-medium text-gray-700">
-                Any hardware/electronics background?
+                {t('survey.hardwareBackground.label', 'Any hardware/electronics background?')}
               </label>
               <input
                 type="text"
@@ -145,12 +148,12 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
                 value={formData.hardware_background}
                 onChange={handleChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="e.g., Electronics technician, Electrical engineer, etc."
+                placeholder={t('survey.hardwareBackground.placeholder', 'e.g., Electronics technician, Electrical engineer, etc.')}
               />
             </div>
 
             <div className="sm:col-span-6">
-              <label className="block text-sm font-medium text-gray-700">What's your cooking skill level?</label>
+              <label className="block text-sm font-medium text-gray-700">{t('survey.cookingLevel.label', "What's your cooking skill level?")}</label>
               <div className="mt-2 space-y-4">
                 {cookingLevelOptions.map((option) => (
                   <div key={option.value} className="flex items-center">
@@ -176,7 +179,7 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
 
             <div className="sm:col-span-6">
               <label htmlFor="dietary_restrictions" className="block text-sm font-medium text-gray-700">
-                Any dietary restrictions or preferences?
+                {t('survey.dietaryRestrictions.label', 'Any dietary restrictions or preferences?')}
               </label>
               <textarea
                 id="dietary_restrictions"
@@ -185,12 +188,12 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
                 value={formData.dietary_restrictions}
                 onChange={handleChange}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="e.g., vegetarian, gluten-free, no nuts, etc."
+                placeholder={t('survey.dietaryRestrictions.placeholder', 'e.g., vegetarian, gluten-free, no nuts, etc.')}
               />
             </div>
 
             <div className="sm:col-span-6">
-              <label className="block text-sm font-medium text-gray-700">Select your preferred voice</label>
+              <label className="block text-sm font-medium text-gray-700">{t('voices.title', 'Select your preferred voice')}</label>
               <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 {voiceOptions.map((option) => (
                   <div
@@ -229,7 +232,7 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
             </div>
 
             <div className="sm:col-span-6">
-              <label className="block text-sm font-medium text-gray-700">Select your preferred language</label>
+              <label className="block text-sm font-medium text-gray-700">{t('language.title', 'Select your preferred language')}</label>
               <div className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 {languageOptions.map((option) => (
                   <div
@@ -271,7 +274,14 @@ const KitchenSurvey: React.FC<KitchenSurveyProps> = ({ onSubmit, loading = false
               disabled={loading}
               className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
             >
-              {loading ? 'Submitting...' : 'Continue'}
+              {loading ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  <span className="sr-only">{t('common.loading.submitting')}</span>
+                </>
+              ) : (
+                t('survey.continue')
+              )}
             </button>
           </div>
         </form>

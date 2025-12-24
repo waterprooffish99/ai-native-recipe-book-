@@ -6,24 +6,120 @@
     "password": "Password",
     "name": "Full Name",
     "signupWithEmail": "Sign up with Email",
-    "signupWithGoogle": "Sign up with Google"
+    "signupWithGoogle": "Sign up with Google",
+    "forgotPassword": "Forgot your password?",
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordRequirements": "Password must contain at least one number or special character",
+      "nameRequired": "Name is required",
+      "invalidCredentials": "Invalid email or password"
+    }
   },
   "survey": {
     "title": "Kitchen Intelligence Survey",
     "subtitle": "Help us personalize your cooking experience",
-    "continue": "Continue"
+    "continue": "Continue",
+    "softwareBackground": {
+      "label": "What's your professional background?",
+      "selectOption": "Select an option",
+      "developer": "Developer",
+      "mechanic": "Mechanic",
+      "student": "Student",
+      "teacher": "Teacher",
+      "healthcare": "Healthcare Professional",
+      "hospitality": "Hospitality Worker",
+      "other": "Other",
+      "none": "None"
+    },
+    "hardwareBackground": {
+      "label": "Any hardware/electronics background?",
+      "placeholder": "e.g., Electronics technician, Electrical engineer, etc."
+    },
+    "cookingLevel": {
+      "label": "What's your cooking skill level?",
+      "absoluteBeginner": "Absolute Beginner - Never cooked before",
+      "beginner": "Beginner - Can make simple meals",
+      "beginnerPlus": "Beginner+ - Comfortable with basic recipes"
+    },
+    "dietaryRestrictions": {
+      "label": "Any dietary restrictions or preferences?",
+      "placeholder": "e.g., vegetarian, gluten-free, no nuts, etc."
+    },
+    "language": {
+      "english": "English",
+      "urdu": "اردو (Urdu)",
+      "arabic": "العربية (Arabic)",
+      "spanish": "Español (Spanish)",
+      "french": "Français (French)",
+      "persian": "فارسی (Persian)"
+    },
+    "errors": {
+      "softwareBackgroundRequired": "Software background is required",
+      "cookingLevelRequired": "Cooking level is required"
+    }
   },
   "voices": {
-    "title": "Choose Your Kitchen Partner",
+    "title": "Select your preferred voice",
     "playSample": "Play Sample",
-    "selectVoice": "Choose This Voice"
-  },
-  "language": {
-    "title": "Choose Your Language",
-    "translateNow": "Translate Now"
+    "selectVoice": "Choose This Voice",
+    "arlow": "Arlow - Warm and encouraging",
+    "silas": "Silas - Calm and patient",
+    "hugo": "Hugo - Energetic and motivating",
+    "omar": "Omar - Friendly and conversational",
+    "felix": "Felix - Clear and precise",
+    "elara": "Elara - Gentle and supportive",
+    "maya": "Maya - Cheerful and upbeat",
+    "loading": "Loading...",
+    "playing": "Playing...",
+    "retry": "Retry",
+    "fetchError": "Failed to load voices",
+    "saveError": "Failed to save voice preference",
+    "selectTitle": "Choose Your Kitchen Partner",
+    "selectSubtitle": "Select an AI voice that will guide you through recipes",
+    "loadingAudio": "Loading audio...",
+    "selected": "✓ Selected",
+    "chooseThisVoice": "Choose This Voice",
+    "saving": "Saving...",
+    "voiceSelected": "Voice preference saved successfully"
   },
   "dashboard": {
     "welcome": "Welcome!",
-    "browseRecipes": "Browse Recipes"
+    "welcomeUser": "Welcome, {{name}}!",
+    "browseRecipes": "Browse Recipes",
+    "kitchenPartnerReady": "Your {{voice}} is ready to cook!",
+    "todaysTip": "Today's Tip:",
+    "kitchenJourney": "Your Kitchen Journey"
+  },
+  "language": {
+    "title": "Choose Your Language",
+    "translateNow": "Translate Now",
+    "languageChanged": "Language preference saved successfully",
+    "saving": "Saving...",
+    "selectTitle": "Choose Your Language",
+    "selectSubtitle": "Select your preferred language for the cooking experience",
+    "select": "Select"
+  },
+  "common": {
+    "errors": {
+      "required": "This field is required",
+      "genericError": "An error occurred. Please try again.",
+      "networkError": "Network error. Please check your connection."
+    },
+    "loading": {
+      "loading": "Loading...",
+      "creatingAccount": "Creating Account...",
+      "signingIn": "Signing In...",
+      "submitting": "Submitting..."
+    },
+    "aria": {
+      "closeToast": "Close notification"
+    },
+    "buttons": {
+      "submit": "Submit",
+      "continue": "Continue"
+    }
   }
 }

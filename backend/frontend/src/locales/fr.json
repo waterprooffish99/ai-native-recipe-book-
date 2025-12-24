@@ -3,10 +3,123 @@
     "signup": "S'inscrire",
     "login": "Se connecter",
     "email": "Email",
-    "password": "Mot de passe"
+    "password": "Mot de passe",
+    "name": "Nom complet",
+    "signupWithEmail": "S'inscrire avec Email",
+    "signupWithGoogle": "S'inscrire avec Google",
+    "forgotPassword": "Mot de passe oublié?",
+    "errors": {
+      "emailRequired": "L'email est requis",
+      "emailInvalid": "L'email n'est pas valide",
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordRequirements": "Le mot de passe doit contenir au moins un chiffre ou un caractère spécial",
+      "nameRequired": "Le nom est requis",
+      "invalidCredentials": "Email ou mot de passe incorrect"
+    }
   },
   "survey": {
     "title": "Enquête Intelligence Culinaire",
-    "continue": "Continuer"
+    "subtitle": "Aidez-nous à personnaliser votre expérience culinaire",
+    "continue": "Continuer",
+    "softwareBackground": {
+      "label": "Quelle est votre formation professionnelle ?",
+      "selectOption": "Sélectionnez une option",
+      "developer": "Développeur",
+      "mechanic": "Mécanicien",
+      "student": "Étudiant",
+      "teacher": "Enseignant",
+      "healthcare": "Professionnel de santé",
+      "hospitality": "Travailleur en hôtellerie",
+      "other": "Autre",
+      "none": "Aucun"
+    },
+    "hardwareBackground": {
+      "label": "Avez-vous une expérience en matériel/électronique ?",
+      "placeholder": "par exemple, technicien électronique, ingénieur électricien, etc."
+    },
+    "cookingLevel": {
+      "label": "Quel est votre niveau de cuisine ?",
+      "absoluteBeginner": "Débutant absolu - Jamais cuisiné auparavant",
+      "beginner": "Débutant - Je peux préparer des repas simples",
+      "beginnerPlus": "Débutant+ - Je suis à l'aise avec les recettes de base"
+    },
+    "dietaryRestrictions": {
+      "label": "Avez-vous des restrictions ou préférences alimentaires ?",
+      "placeholder": "par exemple, végétarien, sans gluten, sans noix, etc."
+    },
+    "language": {
+      "english": "Anglais",
+      "urdu": "Ourdou (Urdu)",
+      "arabic": "Arabe (Arabic)",
+      "spanish": "Espagnol (Spanish)",
+      "french": "Français (French)",
+      "persian": "Persan (Persian)"
+    },
+    "errors": {
+      "softwareBackgroundRequired": "L'expérience logicielle est requise",
+      "cookingLevelRequired": "Le niveau de cuisine est requis"
+    }
+  },
+  "voices": {
+    "title": "Sélectionnez votre voix préférée",
+    "playSample": "Lire l'échantillon",
+    "selectVoice": "Choisir cette voix",
+    "arlow": "Arlow - Chaleureux et encourageant",
+    "silas": "Silas - Calme et patient",
+    "hugo": "Hugo - Énergique et motivant",
+    "omar": "Omar - Convivial et conversationnel",
+    "felix": "Felix - Clair et précis",
+    "elara": "Elara - Gentil et soutenant",
+    "maya": "Maya - Enjoué et dynamique",
+    "loading": "Chargement...",
+    "playing": "Lecture en cours...",
+    "retry": "Réessayer",
+    "fetchError": "Échec du chargement des voix",
+    "saveError": "Échec de l'enregistrement de la préférence vocale",
+    "selectTitle": "Choisissez votre partenaire culinaire",
+    "selectSubtitle": "Sélectionnez une voix IA qui vous guidera à travers les recettes",
+    "loadingAudio": "Chargement de l'audio...",
+    "selected": "✓ Sélectionné",
+    "chooseThisVoice": "Choisir cette voix",
+    "saving": "Enregistrement...",
+    "voiceSelected": "Préférence vocale enregistrée avec succès"
+  },
+  "language": {
+    "title": "Choisissez votre langue",
+    "translateNow": "Traduire maintenant",
+    "languageChanged": "Préférence linguistique enregistrée avec succès",
+    "saving": "Enregistrement...",
+    "selectTitle": "Choisissez votre langue",
+    "selectSubtitle": "Sélectionnez votre langue préférée pour l'expérience culinaire",
+    "select": "Sélectionner"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue!",
+    "welcomeUser": "Bienvenue, {{name}}!",
+    "browseRecipes": "Parcourir les recettes",
+    "kitchenPartnerReady": "Votre {{voice}} est prêt à cuisiner!",
+    "todaysTip": "Conseil du jour:",
+    "kitchenJourney": "Votre parcours en cuisine"
+  },
+  "common": {
+    "errors": {
+      "required": "Ce champ est requis",
+      "genericError": "Une erreur s'est produite. Veuillez réessayer.",
+      "networkError": "Erreur de réseau. Veuillez vérifier votre connexion."
+    },
+    "loading": {
+      "loading": "Chargement...",
+      "creatingAccount": "Création du compte...",
+      "signingIn": "Connexion...",
+      "submitting": "Envoi..."
+    },
+    "aria": {
+      "closeToast": "Fermer la notification"
+    },
+    "buttons": {
+      "submit": "Soumettre",
+      "continue": "Continuer"
+    }
   }
 }

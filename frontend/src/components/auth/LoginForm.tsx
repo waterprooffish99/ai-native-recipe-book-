@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import LoadingSpinner from '../shared/LoadingSpinner';
 
 interface LoginFormData {
   email: string;
@@ -11,6 +13,7 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading = false }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: ''
@@ -22,14 +25,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading = false }) => {
 
     // Validate email
     if (!formData.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('auth.errors.emailRequired');
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = t('auth.errors.emailInvalid');
     }
 
     // Validate password
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = t('auth.errors.passwordRequired');
     }
 
     setErrors(newErrors);
@@ -64,7 +67,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading = false }) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
+          {t('auth.email')}
         </label>
         <input
           type="email"
@@ -82,7 +85,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading = false }) => {
 
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-          Password
+          {t('auth.password')}
         </label>
         <input
           type="password"
@@ -101,7 +104,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading = false }) => {
       <div className="flex items-center justify-between">
         <div className="text-sm">
           <a href="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
-            Forgot your password?
+            {t('auth.forgotPassword', 'Forgot your password?')}
           </a>
         </div>
       </div>
@@ -112,7 +115,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading = false }) => {
           disabled={loading}
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
         >
-          {loading ? 'Signing In...' : 'Sign In'}
+          {loading ? (
+            <>
+              <LoadingSpinner size="sm" />
+              <span className="sr-only">{t('common.loading.signingIn')}</span>
+            </>
+          ) : (
+            t('auth.login')
+          )}
         </button>
       </div>
     </form>

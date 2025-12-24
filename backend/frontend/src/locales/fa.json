@@ -3,10 +3,123 @@
     "signup": "ثبت نام",
     "login": "ورود",
     "email": "ایمیل",
-    "password": "رمز عبور"
+    "password": "رمز عبور",
+    "name": "نام کامل",
+    "signupWithEmail": "ثبت نام با ایمیل",
+    "signupWithGoogle": "ثبت نام با گوگل",
+    "forgotPassword": "رمز عبور خود را فراموش کرده‌اید؟",
+    "errors": {
+      "emailRequired": "ایمیل الزامی است",
+      "emailInvalid": "ایمیل معتبر نیست",
+      "passwordRequired": "رمز عبور الزامی است",
+      "passwordTooShort": "رمز عبور باید حداقل 8 کاراکتر باشد",
+      "passwordRequirements": "رمز عبور باید حداقل شامل یک عدد یا کاراکتر خاص باشد",
+      "nameRequired": "نام الزامی است",
+      "invalidCredentials": "ایمیل یا رمز عبور نادرست است"
+    }
   },
   "survey": {
     "title": "نظرسنجی هوش آشپزخانه",
-    "continue": "ادامه"
+    "subtitle": "به ما کمک کنید تجربه آشپزی شما را شخصی‌سازی کنیم",
+    "continue": "ادامه",
+    "softwareBackground": {
+      "label": "زمینه حرفه‌ای شما چیست؟",
+      "selectOption": "یک گزینه را انتخاب کنید",
+      "developer": "توسعه‌دهنده",
+      "mechanic": "مکانیک",
+      "student": "دانشجو",
+      "teacher": "معلم",
+      "healthcare": "کارمند بهداشت",
+      "hospitality": "کارمند مهمان‌نوازی",
+      "other": "دیگر",
+      "none": "هیچ"
+    },
+    "hardwareBackground": {
+      "label": "آیا تجربه‌ای در زمینه سخت‌افزار/الکترونیک دارید؟",
+      "placeholder": "مثلاً، تکنسین الکترونیک، مهندس برق، و غیره."
+    },
+    "cookingLevel": {
+      "label": "سطح مهارت آشپزی شما چقدر است؟",
+      "absoluteBeginner": "مبتدی کامل - هرگز پخته نشده",
+      "beginner": "مبتدی - می‌توانم غذاهای ساده درست کنم",
+      "beginnerPlus": "مبتدی+ - با دستورالعمل‌های پایه احساس راحتی می‌کنم"
+    },
+    "dietaryRestrictions": {
+      "label": "آیا محدودیت یا ترجیح غذایی خاصی دارید؟",
+      "placeholder": "مثلاً، گیاه‌خوار، بدون گلوتن، بدون آجیل، و غیره."
+    },
+    "language": {
+      "english": "انگلیسی",
+      "urdu": "اردو (Urdu)",
+      "arabic": "عربی (Arabic)",
+      "spanish": "اسپانیایی (Spanish)",
+      "french": "فرانسوی (French)",
+      "persian": "فارسی (Persian)"
+    },
+    "errors": {
+      "softwareBackgroundRequired": "زمینه نرم‌افزاری الزامی است",
+      "cookingLevelRequired": "سطح آشپزی الزامی است"
+    }
+  },
+  "voices": {
+    "title": "صداي مورد علاقه خود را انتخاب کنید",
+    "playSample": "پخش نمونه",
+    "selectVoice": "انتخاب این صدا",
+    "arlow": "آرلو - گرم و تشویق‌کننده",
+    "silas": "سیلاس - آرام و صبور",
+    "hugo": "هیوگو - پرانرژی و محرک",
+    "omar": "عمر - دوستانه و گفتگویی",
+    "felix": "فیلیکس - روشن و دقیق",
+    "elara": "الارا - مهربان و حمایت‌گر",
+    "maya": "مایا - شاد و پرانرژی",
+    "loading": "در حال بارگذاری...",
+    "playing": "در حال پخش...",
+    "retry": "تلاش مجدد",
+    "fetchError": "بارگذاری صداها ناموفق بود",
+    "saveError": "ذخیره ترجیح صوتی ناموفق بود",
+    "selectTitle": "همکار آشپزخانه خود را انتخاب کنید",
+    "selectSubtitle": "یک صدای هوش مصنوعی را انتخاب کنید که شما را از طریق دستورالعمل‌ها راهنمایی کند",
+    "loadingAudio": "در حال بارگذاری صوت...",
+    "selected": "✓ انتخاب شده",
+    "chooseThisVoice": "انتخاب این صدا",
+    "saving": "در حال ذخیره...",
+    "voiceSelected": "ترجیح صوتی با موفقیت ذخیره شد"
+  },
+  "language": {
+    "title": "زبان خود را انتخاب کنید",
+    "translateNow": "همین حالا ترجمه کنید",
+    "languageChanged": "ترجیح زبان با موفقیت ذخیره شد",
+    "saving": "در حال ذخیره...",
+    "selectTitle": "زبان خود را انتخاب کنید",
+    "selectSubtitle": "زبان ترجیحی خود را برای تجربه آشپزی انتخاب کنید",
+    "select": "انتخاب"
+  },
+  "dashboard": {
+    "welcome": "خوش آمدید!",
+    "welcomeUser": "خوش آمدید، {{name}}!",
+    "browseRecipes": "مرور دستورالعمل‌ها",
+    "kitchenPartnerReady": "{{voice}} شما آماده است تا بپزد!",
+    "todaysTip": "نکته امروز:",
+    "kitchenJourney": "سفر آشپزی شما"
+  },
+  "common": {
+    "errors": {
+      "required": "این فیلد الزامی است",
+      "genericError": "خطایی رخ داد. لطفاً دوباره امتحان کنید.",
+      "networkError": "خطای شبکه. لطفاً اتصال خود را بررسی کنید."
+    },
+    "loading": {
+      "loading": "در حال بارگذاری...",
+      "creatingAccount": "در حال ایجاد حساب...",
+      "signingIn": "در حال ورود...",
+      "submitting": "در حال ارسال..."
+    },
+    "aria": {
+      "closeToast": "بستن اعلان"
+    },
+    "buttons": {
+      "submit": "ارسال",
+      "continue": "ادامه"
+    }
   }
 }

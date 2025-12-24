@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import LoadingSpinner from '../shared/LoadingSpinner';
+import { useToast } from '../shared/ToastProvider';
 import userService from '../../services/userService';
+import logger from '../../utils/logger';
 import styles from './LanguagePicker.module.css';
 
 interface Language {
@@ -31,6 +34,7 @@ export const LanguagePicker: React.FC<LanguagePickerProps> = ({
   className = '',
 }) => {
   const { t, i18n } = useTranslation();
+  const { showToast } = useToast();
   const [selectedLang, setSelectedLang] = useState<string>(
     selectedLanguage || i18n.language || 'en'
   );
@@ -56,11 +60,20 @@ export const LanguagePicker: React.FC<LanguagePickerProps> = ({
       // Save language preference to backend
       await userService.updateLanguagePreference(languageCode);
 
+      // Show success notification
+      showToast(t('language.languageChanged', 'Language preference saved successfully'), 'success');
+
       // Call parent callback if provided
       onLanguageSelect?.(languageCode);
     } catch (err) {
-      console.error('Error saving language preference:', err);
-      setError(t('language.saveError') || 'Failed to save language preference');
+      logger.error('Error saving language preference:', {
+        context: 'LanguagePicker.handleLanguageSelect',
+        error: err,
+        data: { languageCode }
+      });
+      const errorMessage = t('language.saveError') || 'Failed to save language preference';
+      setError(errorMessage);
+      showToast(errorMessage, 'error');
       // Revert selection on error
       setSelectedLang(selectedLanguage || i18n.language);
     } finally {
@@ -107,9 +120,9 @@ export const LanguagePicker: React.FC<LanguagePickerProps> = ({
       </div>
 
       {saving && (
-        <div className={styles.savingIndicator}>
-          <div className={styles.spinner}></div>
-          <span>{t('language.saving') || 'Saving...'}</span>
+        <div className={styles.savingIndicator} role="status" aria-live="polite">
+          <LoadingSpinner size="sm" label={t('language.saving') || 'Saving...'} />
+          <span className="sr-only">{t('language.saving') || 'Saving...'}</span>
         </div>
       )}
     </div>

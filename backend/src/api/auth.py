@@ -5,6 +5,8 @@ This module implements the authentication endpoints as defined in the OpenAPI sp
 """
 from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 import uuid
 from datetime import datetime
 from typing import Optional
@@ -16,6 +18,9 @@ from ..models.session import SessionInDB
 router = APIRouter()
 security = HTTPBearer()
 
+# Initialize rate limiter for this router
+limiter = Limiter(key_func=get_remote_address)
+
 
 def get_auth_service(request: Request) -> AuthService:
     """Dependency to get auth service instance from app state."""
@@ -23,7 +28,9 @@ def get_auth_service(request: Request) -> AuthService:
 
 
 @router.post("/signup", response_model=dict, status_code=201)
+@limiter.limit("5/minute")  # Limit signup attempts to 5 per minute per IP
 async def signup(
+    request: Request,  # Need to include request for rate limiting
     user_data: UserCreate,
     auth_service: AuthService = Depends(get_auth_service)
 ):
@@ -79,7 +86,9 @@ async def signup(
 
 
 @router.post("/login", response_model=dict)
+@limiter.limit("10/minute")  # Limit login attempts to 10 per minute per IP
 async def login(
+    request: Request,  # Need to include request for rate limiting
     user_data: UserLogin,
     auth_service: AuthService = Depends(get_auth_service)
 ):
@@ -124,7 +133,9 @@ async def login(
 
 
 @router.get("/google")
+@limiter.limit("10/minute")  # Limit OAuth init requests to 10 per minute per IP
 async def google_oauth_init(
+    request: Request,  # Need to include request for rate limiting
     auth_service: AuthService = Depends(get_auth_service)
 ):
     """
@@ -142,7 +153,9 @@ async def google_oauth_init(
 
 
 @router.get("/google/callback")
+@limiter.limit("10/minute")  # Limit OAuth callback requests to 10 per minute per IP
 async def google_oauth_callback(
+    request: Request,  # Need to include request for rate limiting
     code: str,
     state: str,
     auth_service: AuthService = Depends(get_auth_service)
@@ -194,7 +207,9 @@ async def google_oauth_callback(
 
 
 @router.post("/logout", status_code=204)
+@limiter.limit("20/minute")  # Limit logout requests to 20 per minute per IP
 async def logout(
+    request: Request,  # Need to include request for rate limiting
     credentials: HTTPAuthorizationCredentials = Depends(security),
     auth_service: AuthService = Depends(get_auth_service)
 ):

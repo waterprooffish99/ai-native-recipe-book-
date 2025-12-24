@@ -81,9 +81,6 @@ python-dotenv==1.0.0
 ```bash
 # Still in backend directory with venv activated
 
-# Initialize Alembic (if not already initialized)
-alembic init alembic
-
 # Run migrations to create schema
 alembic upgrade head
 

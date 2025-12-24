@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import userService from '../../services/userService';
+import logger from '../../utils/logger';
 import styles from './TranslateButton.module.css';
 
 const SUPPORTED_LANGUAGES = [
@@ -36,7 +37,10 @@ export const TranslateButton: React.FC = () => {
 
       setIsOpen(false);
     } catch (error) {
-      console.error('Failed to change language:', error);
+      logger.error('Failed to change language:', {
+        context: 'TranslateButton.handleLanguageChange',
+        error
+      });
     } finally {
       setSaving(false);
     }

@@ -1,3 +1,5 @@
+import logger from '../utils/logger';
+
 /**
  * User service API client
  *
@@ -67,6 +69,16 @@ class UserService {
 
   private async request(url: string, options: RequestInit): Promise<any> {
     try {
+      const token = this.getTokenFromStorage();
+
+      // Check if token is expired before making the request
+      if (token && this.isTokenExpired(token)) {
+        // Token is expired, remove it and redirect to login
+        this.removeTokenFromStorage();
+        window.location.href = '/login';
+        throw new Error('Session expired. Please log in again.');
+      }
+
       const response = await fetch(`${this.baseUrl}${url}`, {
         ...options,
         headers: {
@@ -75,6 +87,17 @@ class UserService {
         },
       });
 
+      // Check if the response indicates an expired token
+      if (response.status === 401) {
+        const errorData = await response.json().catch(() => ({}));
+        if (errorData.error && (errorData.error.includes('expired') || errorData.error.includes('invalid') || errorData.code === 'INVALID_TOKEN')) {
+          // Token is expired or invalid, remove it and redirect to login
+          this.removeTokenFromStorage();
+          window.location.href = '/login';
+          throw new Error('Session expired. Please log in again.');
+        }
+      }
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.detail?.error || errorData.error || `HTTP error! status: ${response.status}`);
@@ -82,8 +105,63 @@ class UserService {
 
       return await response.json();
     } catch (error) {
-      console.error('API request error:', error);
+      // Check if it's a network error or a session expiration issue
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        // Network error
+        logger.error('Network error during API request:', {
+          context: 'UserService.request',
+          error,
+          data: { url, options }
+        });
+      } else if (error.message.includes('Session expired')) {
+        // Session expired error - already handled by redirecting
+        logger.warn('Session expired, redirected to login', {
+          context: 'UserService.request',
+          data: { url, options }
+        });
+      } else {
+        logger.error('API request error:', {
+          context: 'UserService.request',
+          error,
+          data: { url, options }
+        });
+      }
       throw error;
+    }
+  }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+      // Split the token to get the payload
+      const tokenParts = token.split('.');
+      if (tokenParts.length !== 3) {
+        return true; // Invalid token format
+      }
+
+      // Decode the payload
+      const payload = JSON.parse(atob(tokenParts[1]));
+
+      // Check if the token has an expiration time
+      if (!payload.exp) {
+        return false; // No expiration time set, assume it's valid
+      }
+
+      // Compare with current time (in seconds)
+      const currentTime = Math.floor(Date.now() / 1000);
+      return payload.exp < currentTime;
+    } catch (error) {
+      logger.error('Error decoding token:', {
+        context: 'UserService.isTokenExpired',
+        error
+      });
+      return true; // If we can't decode the token, assume it's expired
+    }
+  }
+
+  private removeTokenFromStorage(): void {
+    // Remove token from localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('auth_token');
     }
   }
 

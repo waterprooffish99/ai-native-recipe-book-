@@ -3,10 +3,127 @@
     "signup": "تسجيل",
     "login": "تسجيل الدخول",
     "email": "البريد الإلكتروني",
-    "password": "كلمة المرور"
+    "password": "كلمة المرور",
+    "name": "الاسم الكامل",
+    "signupWithEmail": "التسجيل بالبريد الإلكتروني",
+    "signupWithGoogle": "التسجيل عبر جوجل",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "errors": {
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "البريد الإلكتروني غير صحيح",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordTooShort": "يجب أن تكون كلمة المرور مكونة من 8 أحرف على الأقل",
+      "passwordRequirements": "يجب أن تحتوي كلمة المرور على رقم أو حرف خاص على الأقل",
+      "nameRequired": "الاسم مطلوب",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+    }
   },
   "survey": {
     "title": "استبيان ذكاء المطبخ",
-    "continue": "متابعة"
+    "subtitle": "ساعدنا في تخصيص تجربة الطهي الخاصة بك",
+    "continue": "متابعة",
+    "softwareBackground": {
+      "label": "ما هي خلفيتك المهنية؟",
+      "selectOption": "حدد خياراً",
+      "developer": "مطور",
+      "mechanic": "ميكانيكي",
+      "student": "طالب",
+      "teacher": "معلم",
+      "healthcare": "عامل في مجال الرعاية الصحية",
+      "hospitality": "عامل في مجال الضيافة",
+      "other": "أخرى",
+      "none": "لا شيء"
+    },
+    "hardwareBackground": {
+      "label": "هل لديك خلفية في الأجهزة/الإلكترونيات؟",
+      "placeholder": "مثلاً، فني إلكترونيات، مهندس كهرباء، إلخ."
+    },
+    "cookingLevel": {
+      "label": "ما هو مستوى مهارتك في الطهي؟",
+      "absoluteBeginner": "مبتديء تام - لم تطبخ من قبل",
+      "beginner": "مبتديء - يمكنني تحضير وجبات بسيطة",
+      "beginnerPlus": "مبتديء+ - مرتاح مع الوصفات الأساسية"
+    },
+    "dietaryRestrictions": {
+      "label": "هل لديك أي قيود أو تفضيلات غذائية؟",
+      "placeholder": "مثلاً، نباتي، خالي من الغلوتين، بدون مكسرات، إلخ."
+    },
+    "language": {
+      "english": "الإنجليزية",
+      "urdu": "اردو (Urdu)",
+      "arabic": "العربية (Arabic)",
+      "spanish": "الإسبانية (Spanish)",
+      "french": "الفرنسية (French)",
+      "persian": "الفارسية (Persian)"
+    },
+    "errors": {
+      "softwareBackgroundRequired": "الخلفية البرمجية مطلوبة",
+      "cookingLevelRequired": "مستوى الطهي مطلوب"
+    }
+  },
+  "voices": {
+    "title": "حدد صوتك المفضل",
+    "playSample": "تشغيل العينة",
+    "selectVoice": "اختر هذا الصوت",
+    "arlow": "أرلو - دافئ ومشجع",
+    "silas": "سилас - هادئ وصبور",
+    "hugo": "هوجو - حيوي ومحفز",
+    "omar": "عمر - ودود ومحادث",
+    "felix": "فيليكس - واضح ودقيق",
+    "elara": "إيلارا - لطيف وداعم",
+    "maya": "مايا - مرح ومحفز",
+    "loading": "جاري التحميل...",
+    "playing": "جاري التشغيل...",
+    "retry": "إعادة المحاولة",
+    "fetchError": "فشل تحميل الأصوات",
+    "saveError": "فشل حفظ تفضيل الصوت",
+    "selectTitle": "اختر شريكك في المطبخ",
+    "selectSubtitle": "حدد صوت الذكاء الاصطناعي الذي سيرشدك خلال الوصفات",
+    "loadingAudio": "جاري تحميل الصوت...",
+    "selected": "✓ محدد",
+    "chooseThisVoice": "اختر هذا الصوت",
+    "saving": "جاري الحفظ...",
+    "voiceSelected": "تم حفظ تفضيل الصوت بنجاح"
+  },
+  "language": {
+    "title": "اختر لغتك",
+    "translateNow": "ترجم الآن"
+  },
+  "dashboard": {
+    "welcome": "مرحباً!",
+    "welcomeUser": "مرحباً، {{name}}!",
+    "browseRecipes": "تصفح الوصفات",
+    "kitchenPartnerReady": "{{voice}} جاهز للطبخ!",
+    "todaysTip": "نصيحة اليوم:",
+    "kitchenJourney": "رحلة مطبخك"
+  },
+  "language": {
+    "title": "اختر لغتك",
+    "translateNow": "ترجم الآن",
+    "languageChanged": "تم حفظ تفضيل اللغة بنجاح",
+    "saving": "جاري الحفظ...",
+    "selectTitle": "اختر لغتك",
+    "selectSubtitle": "حدد لغتك المفضلة لتجربة الطهي",
+    "select": "تحديد"
+  },
+  "common": {
+    "errors": {
+      "required": "هذا الحقل مطلوب",
+      "genericError": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "networkError": "خطأ في الشبكة. يرجى التحقق من اتصالك."
+    },
+    "loading": {
+      "loading": "جاري التحميل...",
+      "creatingAccount": "جارٍ إنشاء الحساب...",
+      "signingIn": "جارٍ تسجيل الدخول...",
+      "submitting": "جاري التقديم..."
+    },
+    "aria": {
+      "closeToast": "إغلاق الإشعار"
+    },
+    "buttons": {
+      "submit": "إرسال",
+      "continue": "متابعة"
+    }
   }
 }

@@ -5,6 +5,8 @@ This module implements the user profile and voice personality endpoints.
 """
 from fastapi import APIRouter, HTTPException, Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from typing import List
 
 from ..models.user import User, UserUpdate
@@ -12,6 +14,9 @@ from ..models.voice import VoicePersonality
 from ..services.user_service import UserService
 from ..services.auth_service import AuthService
 from ..services.recipe_service import RecipeService
+
+# Initialize rate limiter for this router
+limiter = Limiter(key_func=get_remote_address)
 
 router = APIRouter()
 security = HTTPBearer()
@@ -80,7 +85,9 @@ async def get_current_user(
 
 
 @router.get("/voices", response_model=List[VoicePersonality])
+@limiter.limit("30/minute")  # Limit voice requests to 30 per minute per IP (public endpoint)
 async def get_voices(
+    request: Request,  # Need to include request for rate limiting
     user_service: UserService = Depends(get_user_service)
 ):
     """
@@ -103,7 +110,9 @@ async def get_voices(
 
 
 @router.get("/me", response_model=dict)
+@limiter.limit("60/minute")  # Limit profile requests to 60 per minute per IP (authenticated)
 async def get_current_user_profile(
+    request: Request,  # Need to include request for rate limiting
     current_user: User = Depends(get_current_user),
     recipe_service: RecipeService = Depends(get_recipe_service)
 ):
@@ -138,7 +147,9 @@ async def get_current_user_profile(
 
 
 @router.patch("/me", response_model=dict)
+@limiter.limit("20/minute")  # Limit profile updates to 20 per minute per IP (authenticated)
 async def update_current_user_profile(
+    request: Request,  # Need to include request for rate limiting
     updates: UserUpdate,
     current_user: User = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service)

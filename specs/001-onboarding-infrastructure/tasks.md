@@ -201,28 +201,28 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T082 [P] Add error handling to all API endpoints (try/except blocks with appropriate HTTP status codes and error messages)
-- [ ] T083 [P] Add request logging middleware to FastAPI app in backend/src/main.py (log all requests with timestamps, user_id if authenticated)
-- [ ] T084 [P] Add form validation error messages to all frontend forms (SignupForm, LoginForm, KitchenSurvey) with i18next translations
-- [ ] T085 [P] Add loading states to all frontend components (spinner during API calls, disable buttons during submission)
-- [ ] T086 [P] Add toast notifications for success/error feedback (e.g., "Account created successfully", "Survey submitted", "Language changed")
-- [ ] T087 [P] Verify WCAG 2.1 AA accessibility compliance for all frontend components (keyboard navigation, ARIA labels, color contrast)
-- [ ] T088 [P] Add CSS styles for RTL languages in frontend/src/styles/ (logical properties: margin-inline-start instead of margin-left)
-- [ ] T089 [P] Test voice sample playback error handling (network failures, browser autoplay blocking) and add retry button
-- [ ] T090 [P] Add session expiration handling (check JWT expiration before API calls, redirect to login if expired)
-- [ ] T091 [P] Code cleanup and refactoring (remove console.logs, add JSDoc comments to utility functions)
-- [ ] T092 Validate quickstart.md by following all 11 steps and verifying each command works
-- [ ] T093 Performance optimization (lazy-load i18next translation files per language, preload voice audio files on VoiceSelector mount)
-- [ ] T094 Security hardening (rate limiting on auth endpoints, CSRF protection for Google OAuth, SQL injection prevention in database queries)
+- [X] T082 [P] Add error handling to all API endpoints (try/except blocks with appropriate HTTP status codes and error messages)
+- [X] T083 [P] Add request logging middleware to FastAPI app in backend/src/main.py (log all requests with timestamps, user_id if authenticated)
+- [X] T084 [P] Add form validation error messages to all frontend forms (SignupForm, LoginForm, KitchenSurvey) with i18next translations
+- [X] T085 [P] Add loading states to all frontend components (spinner during API calls, disable buttons during submission)
+- [X] T086 [P] Add toast notifications for success/error feedback (e.g., "Account created successfully", "Survey submitted", "Language changed")
+- [X] T087 [P] Verify WCAG 2.1 AA accessibility compliance for all frontend components (keyboard navigation, ARIA labels, color contrast)
+- [X] T088 [P] Add CSS styles for RTL languages in frontend/src/styles/ (logical properties: margin-inline-start instead of margin-left)
+- [X] T089 [P] Test voice sample playback error handling (network failures, browser autoplay blocking) and add retry button
+- [X] T090 [P] Add session expiration handling (check JWT expiration before API calls, redirect to login if expired)
+- [X] T091 [P] Code cleanup and refactoring (remove console.logs, add JSDoc comments to utility functions)
+- [X] T092 Validate quickstart.md by following all 11 steps and verifying each command works
+- [X] T093 Performance optimization (lazy-load i18next translation files per language, preload voice audio files on VoiceSelector mount)
+- [X] T094 Security hardening (rate limiting on auth endpoints, CSRF protection for Google OAuth, SQL injection prevention in database queries)
 
 ### Global Plate Specific Testing (not requested in spec, but best practice)
 
-- [ ] T095 [P] Manual test: Voice playback with kitchen background noise samples (verify audio quality)
-- [ ] T096 [P] Manual test: Verify translations for all 6 languages in onboarding flow (EN, UR, AR, ES, FR, FA)
-- [ ] T097 [P] Manual test: Verify RTL layout for Arabic, Urdu, Persian (buttons, navigation, text alignment)
-- [ ] T098 Manual test: Verify voice response time <2s p95 for all 7 voice samples
-- [ ] T099 Manual test: Verify language switching <500ms (measure time from click to UI update)
-- [ ] T100 Manual test: Verify all recipes follow max 5 steps, one action per step (placeholder check for future feature, ensure database schema supports this constraint)
+- [X] T095 [P] Manual test: Voice playback with kitchen background noise samples (verify audio quality)
+- [X] T096 [P] Manual test: Verify translations for all 6 languages in onboarding flow (EN, UR, AR, ES, FR, FA)
+- [X] T097 [P] Manual test: Verify RTL layout for Arabic, Urdu, Persian (buttons, navigation, text alignment)
+- [X] T098 Manual test: Verify voice response time <2s p95 for all 7 voice samples
+- [X] T099 Manual test: Verify language switching <500ms (measure time from click to UI update)
+- [X] T100 Manual test: Verify all recipes follow max 5 steps, one action per step (placeholder check for future feature, ensure database schema supports this constraint)
 
 ---
 
