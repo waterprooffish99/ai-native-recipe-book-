@@ -1,0 +1,190 @@
+/* QuickAccessCard - Colorful Action Cards */
+/* Uses CSS Logical Properties for RTL Support */
+
+.quickAccessCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  /* Use logical properties */
+  padding-block: 1.5rem;
+  padding-inline: 1.25rem;
+
+  /* Minimum tap target */
+  min-block-size: 100px;
+
+  /* Styling */
+  background-color: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  /* Typography */
+  text-align: start;
+
+  /* Interaction */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+
+  /* Remove default button styles */
+  width: 100%;
+  border-style: solid;
+  font-family: inherit;
+}
+
+.quickAccessCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-color: currentColor;
+}
+
+.quickAccessCard:active {
+  transform: translateY(0);
+}
+
+.quickAccessCard:focus {
+  outline: 3px solid #90cdf4;
+  outline-offset: 2px;
+}
+
+/* Icon container */
+.iconContainer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 60px;
+  block-size: 60px;
+  border-radius: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.icon {
+  font-size: 2rem;
+}
+
+/* Content */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #718096;
+  line-height: 1.4;
+}
+
+/* Arrow indicator */
+.arrow {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  color: #cbd5e0;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.quickAccessCard:hover .arrow {
+  transform: translateX(0.25rem);
+  color: currentColor;
+}
+
+/* RTL: Arrow flips direction automatically with transform */
+[dir="rtl"] .quickAccessCard:hover .arrow {
+  transform: translateX(-0.25rem);
+}
+
+/* Color variants */
+.cardBlue {
+  color: #3182ce;
+}
+
+.cardBlue:hover {
+  background-color: #ebf8ff;
+}
+
+.cardBlue .iconContainer {
+  background-color: #ebf8ff;
+  color: #3182ce;
+}
+
+.cardGreen {
+  color: #38a169;
+}
+
+.cardGreen:hover {
+  background-color: #f0fff4;
+}
+
+.cardGreen .iconContainer {
+  background-color: #f0fff4;
+  color: #38a169;
+}
+
+.cardPurple {
+  color: #805ad5;
+}
+
+.cardPurple:hover {
+  background-color: #faf5ff;
+}
+
+.cardPurple .iconContainer {
+  background-color: #faf5ff;
+  color: #805ad5;
+}
+
+.cardOrange {
+  color: #dd6b20;
+}
+
+.cardOrange:hover {
+  background-color: #fffaf0;
+}
+
+.cardOrange .iconContainer {
+  background-color: #fffaf0;
+  color: #dd6b20;
+}
+
+/* Mobile adjustments */
+@media (max-width: 639px) {
+  .quickAccessCard {
+    padding-block: 1.25rem;
+    padding-inline: 1rem;
+  }
+
+  .iconContainer {
+    inline-size: 50px;
+    block-size: 50px;
+  }
+
+  .icon {
+    font-size: 1.75rem;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.8125rem;
+  }
+}
+
+/*
+  RTL Notes:
+  - text-align: start for RTL support
+  - Arrow direction handled with transform (flips in RTL)
+  - All spacing uses logical properties
+*/

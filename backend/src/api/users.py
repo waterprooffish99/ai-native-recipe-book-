@@ -11,6 +11,7 @@ from ..models.user import User, UserUpdate
 from ..models.voice import VoicePersonality
 from ..services.user_service import UserService
 from ..services.auth_service import AuthService
+from ..services.recipe_service import RecipeService
 
 router = APIRouter()
 security = HTTPBearer()
@@ -24,6 +25,11 @@ def get_user_service(request: Request) -> UserService:
 def get_auth_service(request: Request) -> AuthService:
     """Dependency to get auth service instance from app state."""
     return AuthService(request.app.state.db)
+
+
+def get_recipe_service(request: Request) -> RecipeService:
+    """Dependency to get recipe service instance from app state."""
+    return RecipeService(request.app.state.db)
 
 
 async def get_current_user(
@@ -98,7 +104,8 @@ async def get_voices(
 
 @router.get("/me", response_model=dict)
 async def get_current_user_profile(
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    recipe_service: RecipeService = Depends(get_recipe_service)
 ):
     """
     Get current user profile.
@@ -107,8 +114,10 @@ async def get_current_user_profile(
     Requires Bearer token authentication.
 
     Returns:
-        User profile object
+        User profile object with recipe statistics
     """
+    total_beginner_recipes = await recipe_service.get_total_beginner_recipes()
+
     return {
         "id": current_user.id,
         "email": current_user.email,
@@ -120,6 +129,7 @@ async def get_current_user_profile(
         "preferred_voice": current_user.preferred_voice,
         "preferred_language": current_user.preferred_language,
         "recipes_mastered": current_user.recipes_mastered,
+        "total_beginner_recipes": total_beginner_recipes,
         "onboarding_completed": current_user.onboarding_completed,
         "created_at": current_user.created_at,
         "last_login": current_user.last_login,

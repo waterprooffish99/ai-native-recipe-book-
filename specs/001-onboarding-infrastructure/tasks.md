@@ -179,19 +179,19 @@
 
 ### Backend Implementation for User Story 5
 
-- [ ] T072 [US5] Implement GET /users/me endpoint in backend/src/api/users.py per users.openapi.yaml contract (return full user profile including recipes_mastered)
-- [ ] T073 [US5] Add get_total_beginner_recipes method to a new RecipeService in backend/src/services/recipe_service.py (returns count of total available beginner recipes - placeholder for future feature)
+- [X] T072 [US5] Implement GET /users/me endpoint in backend/src/api/users.py per users.openapi.yaml contract (return full user profile including recipes_mastered)
+- [X] T073 [US5] Add get_total_beginner_recipes method to a new RecipeService in backend/src/services/recipe_service.py (returns count of total available beginner recipes - placeholder for future feature)
 
 ### Frontend Implementation for User Story 5
 
-- [ ] T074 [P] [US5] Create Dashboard component in frontend/src/components/dashboard/Dashboard.tsx with personalized welcome message layout
-- [ ] T075 [P] [US5] Create ProgressRing component in frontend/src/components/dashboard/ProgressRing.tsx showing recipes_mastered / total_recipes visualization (SVG circle progress indicator)
-- [ ] T076 [P] [US5] Create QuickAccessCard component in frontend/src/components/dashboard/QuickAccessCard.tsx with icon, title, description, click handler
-- [ ] T077 [US5] Create dashboard page in frontend/src/pages/dashboard.tsx using Dashboard, ProgressRing, and QuickAccessCard components
-- [ ] T078 [US5] Fetch current user profile from GET /users/me and display name + preferred_voice in welcome message
-- [ ] T079 [US5] Render 3 QuickAccessCard instances for "Browse Recipes", "Continue Last Recipe", "Favorites" (link to placeholder pages for future features)
-- [ ] T080 [US5] Display ProgressRing with user's recipes_mastered count (numerator) and placeholder total (e.g., 50 for MVP)
-- [ ] T081 [US5] Add route protection to dashboard page (redirect to /login if no JWT token, redirect to /onboarding if onboarding_completed=false)
+- [X] T074 [P] [US5] Create Dashboard component in frontend/src/components/dashboard/Dashboard.tsx with personalized welcome message layout
+- [X] T075 [P] [US5] Create ProgressRing component in frontend/src/components/dashboard/ProgressRing.tsx showing recipes_mastered / total_recipes visualization (SVG circle progress indicator)
+- [X] T076 [P] [US5] Create QuickAccessCard component in frontend/src/components/dashboard/QuickAccessCard.tsx with icon, title, description, click handler
+- [X] T077 [US5] Create dashboard page in frontend/src/pages/dashboard.tsx using Dashboard, ProgressRing, and QuickAccessCard components
+- [X] T078 [US5] Fetch current user profile from GET /users/me and display name + preferred_voice in welcome message
+- [X] T079 [US5] Render 3 QuickAccessCard instances for "Browse Recipes", "Continue Last Recipe", "Favorites" (link to placeholder pages for future features)
+- [X] T080 [US5] Display ProgressRing with user's recipes_mastered count (numerator) and placeholder total (e.g., 50 for MVP)
+- [X] T081 [US5] Add route protection to dashboard page (redirect to /login if no JWT token, redirect to /onboarding if onboarding_completed=false)
 
 **Checkpoint**: All user stories should now be independently functional. Full onboarding flow → dashboard works end-to-end.
 
