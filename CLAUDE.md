@@ -212,6 +212,8 @@ See `.specify/memory/constitution.md` for code quality, testing, performance, se
 ## Active Technologies
 - TypeScript 5.x (frontend), Python 3.11+ (backend) + Docusaurus 3.x, React 18+, Better-Auth 2.x, FastAPI 0.100+, Neon Postgres, i18next (internationalization) (001-onboarding-infrastructure)
 - Neon Serverless Postgres (user profiles, sessions, survey responses) (001-onboarding-infrastructure)
+- Python 3.11 (backend), TypeScript 5.x (frontend) + FastAPI, Qdrant Cloud, Neon Postgres, i18next, OpenAI API (001-recipe-content-schema)
+- Neon Serverless Postgres for recipe data, Qdrant Cloud for vector embeddings (001-recipe-content-schema)
 
 ## Recent Changes
 - 001-onboarding-infrastructure: Added TypeScript 5.x (frontend), Python 3.11+ (backend) + Docusaurus 3.x, React 18+, Better-Auth 2.x, FastAPI 0.100+, Neon Postgres, i18next (internationalization)

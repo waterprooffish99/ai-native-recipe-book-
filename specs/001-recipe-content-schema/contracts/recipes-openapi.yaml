@@ -1,0 +1,349 @@
+openapi: 3.0.0
+info:
+  title: Global Plate Recipe API
+  description: API for recipe management and RAG (Retrieval-Augmented Generation) functionality
+  version: 1.0.0
+
+paths:
+  /recipes:
+    get:
+      summary: List all recipes
+      description: Retrieve a list of all available recipes with basic information
+      parameters:
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [EN, UR, AR, ES, FR, FA]
+          description: Language code for localized content
+        - name: difficulty
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [Absolute Beginner, Beginner, Beginner+]
+          description: Filter recipes by difficulty level
+      responses:
+        '200':
+          description: List of recipes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipeSummary'
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /recipes/{recipeId}:
+    get:
+      summary: Get recipe details
+      description: Retrieve detailed information for a specific recipe
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Recipe ID
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [EN, UR, AR, ES, FR, FA]
+          description: Language code for localized content
+      responses:
+        '200':
+          description: Recipe details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeDetail'
+        '404':
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /recipes/search:
+    post:
+      summary: Search recipes using RAG
+      description: Search recipes using natural language query with RAG functionality
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+            properties:
+              query:
+                type: string
+                description: Natural language search query (e.g., "How do I make pasta?")
+              language:
+                type: string
+                enum: [EN, UR, AR, ES, FR, FA]
+                description: Language code for search and results
+              max_results:
+                type: integer
+                default: 5
+                description: Maximum number of results to return
+      responses:
+        '200':
+          description: Search results with relevant recipe information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                    description: Original search query
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RecipeSearchResult'
+                  context:
+                    type: string
+                    description: Context used for RAG generation
+        '400':
+          description: Invalid search parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /recipes/{recipeId}/translate:
+    get:
+      summary: Get recipe in specific language
+      description: Retrieve recipe content translated to the specified language
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Recipe ID
+        - name: language
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [EN, UR, AR, ES, FR, FA]
+          description: Target language code
+      responses:
+        '200':
+          description: Translated recipe content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipeDetail'
+        '404':
+          description: Recipe or translation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /metaphors/welcome:
+    get:
+      summary: Get personalized welcome message
+      description: Retrieve a personalized welcome message based on user background
+      parameters:
+        - name: background_type
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [software, hardware, cooking, other]
+          description: User's background type
+        - name: background_level
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [beginner, intermediate, expert]
+          description: User's experience level in their background
+        - name: language
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [EN, UR, AR, ES, FR, FA]
+          description: Language for welcome message
+      responses:
+        '200':
+          description: Personalized welcome message
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Personalized welcome message with metaphors
+                  metaphor_context:
+                    type: string
+                    description: Context used for metaphor selection
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    RecipeSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Recipe name in requested language or default
+        origin_country:
+          type: string
+        difficulty:
+          type: string
+          enum: [Absolute Beginner, Beginner, Beginner+]
+        prep_time:
+          type: integer
+          description: Preparation time in minutes
+        cook_time:
+          type: integer
+          description: Cooking time in minutes
+        total_time:
+          type: integer
+          description: Total time in minutes
+        servings:
+          type: integer
+        language:
+          type: string
+          enum: [EN, UR, AR, ES, FR, FA]
+          description: Language of returned content
+      required:
+        - id
+        - name
+        - origin_country
+        - difficulty
+
+    RecipeDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Recipe name in requested language
+        origin_country:
+          type: string
+        difficulty:
+          type: string
+          enum: [Absolute Beginner, Beginner, Beginner+]
+        prep_time:
+          type: integer
+          description: Preparation time in minutes
+        cook_time:
+          type: integer
+          description: Cooking time in minutes
+        total_time:
+          type: integer
+          description: Total time in minutes
+        servings:
+          type: integer
+        kitchen_guard:
+          type: string
+          description: Safety tips section
+        ingredients:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              quantity:
+                type: string
+              notes:
+                type: string
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeStep'
+        tips:
+          type: string
+          description: Additional cooking tips
+        language:
+          type: string
+          enum: [EN, UR, AR, ES, FR, FA]
+          description: Language of returned content
+      required:
+        - id
+        - name
+        - origin_country
+        - difficulty
+        - kitchen_guard
+        - ingredients
+        - steps
+
+    RecipeStep:
+      type: object
+      properties:
+        step_number:
+          type: integer
+          description: Step number (1-5)
+        instruction:
+          type: string
+          description: Single action instruction
+        audio_clip_url:
+          type: string
+          format: uri
+          description: Optional audio clip URL for instruction
+        image_url:
+          type: string
+          format: uri
+          description: Optional image URL for instruction
+      required:
+        - step_number
+        - instruction
+
+    RecipeSearchResult:
+      type: object
+      properties:
+        recipe:
+          $ref: '#/components/schemas/RecipeDetail'
+        relevance_score:
+          type: number
+          description: Relevance score from vector search (0.0 to 1.0)
+        matched_content:
+          type: string
+          description: Excerpt from recipe that matched the query
+      required:
+        - recipe
+        - relevance_score
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Error code
+        details:
+          type: object
+          description: Additional error details
+      required:
+        - error
+        - code
