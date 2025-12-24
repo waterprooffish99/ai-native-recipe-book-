@@ -1,0 +1,196 @@
+/* LanguagePicker Component Styles - Using CSS Logical Properties for RTL Support */
+
+.languagePickerContainer {
+  width: 100%;
+  max-width: 800px;
+  margin-block: 0;
+  margin-inline: auto;
+  padding-block: 1.5rem;
+  padding-inline: 1.5rem;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2d3748;
+  text-align: center;
+  margin-block-end: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #718096;
+  text-align: center;
+  margin-block-end: 2rem;
+}
+
+/* Error Message */
+.error {
+  background-color: #fed7d7;
+  border: 1px solid #fc8181;
+  color: #c53030;
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+  border-radius: 0.5rem;
+  margin-block-end: 1rem;
+  text-align: center;
+}
+
+.error p {
+  margin: 0;
+}
+
+/* Language Grid - Mobile-First, RTL-Safe */
+.languageGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+  .languageGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: 3 columns */
+@media (min-width: 1024px) {
+  .languageGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Language Button - Large Mobile-Friendly Tap Targets */
+.languageButton {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  /* Use logical properties for padding */
+  padding-block: 1.5rem;
+  padding-inline: 1rem;
+
+  /* Minimum tap target size */
+  min-block-size: 80px;
+
+  /* Borders and styling */
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background-color: white;
+
+  /* Typography */
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+
+  /* Interaction */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+.languageButton:hover:not(:disabled) {
+  border-color: #cbd5e0;
+  background-color: #f7fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.languageButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.languageButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Selected State */
+.languageButton.selected {
+  border-color: #3182ce;
+  background-color: #ebf8ff;
+  box-shadow: 0 4px 12px rgba(49, 130, 206, 0.2);
+}
+
+/* Native Language Name (Large, Primary) */
+.nativeName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+/* English Name (Small, Secondary) */
+.englishName {
+  font-size: 0.875rem;
+  color: #718096;
+}
+
+/* Checkmark for Selected Language */
+.checkmark {
+  position: absolute;
+  inset-block-start: 0.5rem;
+  inset-inline-end: 0.5rem;
+  font-size: 1.25rem;
+  color: #3182ce;
+  font-weight: 700;
+}
+
+/* Saving Indicator */
+.savingIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-block-start: 1.5rem;
+  padding-block: 0.75rem;
+  color: #4a5568;
+  font-size: 0.875rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e2e8f0;
+  border-block-start-color: #3182ce;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile: Larger buttons for better touch targets */
+@media (max-width: 639px) {
+  .languageButton {
+    padding-block: 1.75rem;
+    padding-inline: 1.25rem;
+    min-block-size: 90px;
+  }
+
+  .nativeName {
+    font-size: 1.75rem;
+  }
+}
+
+/* Focus States for Accessibility */
+.languageButton:focus {
+  outline: 3px solid #90cdf4;
+  outline-offset: 2px;
+}
+
+/*
+  RTL Notes:
+  - All spacing uses logical properties (inline/block instead of left/right/top/bottom)
+  - margin-inline-start/end instead of margin-left/right
+  - padding-inline-start/end instead of padding-left/right
+  - inset-inline-start/end instead of left/right
+  - inset-block-start/end instead of top/bottom
+  - This ensures perfect mirroring for RTL languages (Urdu, Arabic, Persian)
+*/

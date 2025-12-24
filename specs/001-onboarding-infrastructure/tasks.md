@@ -154,18 +154,18 @@
 
 ### Backend Implementation for User Story 4
 
-- [ ] T063 [US4] Add update_language_preference method to UserService in backend/src/services/user_service.py (update users.preferred_language)
-- [ ] T064 [US4] Update PATCH /users/me endpoint in backend/src/api/users.py to allow updating preferred_language field
+- [X] T063 [US4] Add update_language_preference method to UserService in backend/src/services/user_service.py (update users.preferred_language)
+- [X] T064 [US4] Update PATCH /users/me endpoint in backend/src/api/users.py to allow updating preferred_language field
 
 ### Frontend Implementation for User Story 4
 
-- [ ] T065 [P] [US4] Create LanguagePicker component in frontend/src/components/onboarding/LanguagePicker.tsx with 6 language options (buttons with native script labels: English, اردو, العربية, Español, Français, فارسی)
-- [ ] T066 [US4] Add i18next language switching logic to LanguagePicker (call i18n.changeLanguage() on selection)
-- [ ] T067 [US4] Add RTL detection and <html dir="rtl"> attribute update in i18nConfig.ts for Arabic, Urdu, Persian
-- [ ] T068 [US4] Update PATCH /users/me call in LanguagePicker to save preferred_language to backend
-- [ ] T069 [US4] Integrate LanguagePicker into onboarding page as step 3 (after voice selection, before dashboard redirect)
-- [ ] T070 [US4] Add redirect logic after language selection (complete onboarding, redirect to /dashboard)
-- [ ] T071 [US4] Integrate TranslateButton component into main app layout (floating button accessible from all pages)
+- [X] T065 [P] [US4] Create LanguagePicker component in frontend/src/components/onboarding/LanguagePicker.tsx with 6 language options (buttons with native script labels: English, اردو, العربية, Español, Français, فارسی)
+- [X] T066 [US4] Add i18next language switching logic to LanguagePicker (call i18n.changeLanguage() on selection)
+- [X] T067 [US4] Add RTL detection and <html dir="rtl"> attribute update in i18nConfig.ts for Arabic, Urdu, Persian
+- [X] T068 [US4] Update PATCH /users/me call in LanguagePicker to save preferred_language to backend
+- [X] T069 [US4] Integrate LanguagePicker into onboarding page as step 3 (after voice selection, before dashboard redirect)
+- [X] T070 [US4] Add redirect logic after language selection (complete onboarding, redirect to /dashboard)
+- [X] T071 [US4] Integrate TranslateButton component into main app layout (floating button accessible from all pages)
 
 **Checkpoint**: At this point, User Stories 1, 2, 3, AND 4 should all work independently. Onboarding flow is complete.
 

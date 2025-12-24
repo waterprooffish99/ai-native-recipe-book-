@@ -5,6 +5,7 @@ import surveyService from '../services/surveyService';
 import KitchenSurvey from '../components/onboarding/KitchenSurvey';
 import OnboardingProgress from '../components/onboarding/OnboardingProgress';
 import { VoiceSelector } from '../components/onboarding/VoiceSelector';
+import { LanguagePicker } from '../components/onboarding/LanguagePicker';
 
 const OnboardingPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1); // 1: Survey, 2: Voice Selection, 3: Language Selection, 4: Complete
@@ -84,6 +85,15 @@ const OnboardingPage: React.FC = () => {
     // Voice preference is saved by VoiceSelector component
     // Automatically proceed to language selection after voice is selected
     setCurrentStep(3);
+  };
+
+  const handleLanguageSelect = (languageCode: string) => {
+    // Language preference is saved by LanguagePicker component
+    // Complete onboarding and redirect to dashboard
+    setCurrentStep(4);
+    setTimeout(() => {
+      navigate('/dashboard');
+    }, 1500);
   };
 
   const handleNavigationAttempt = () => {
@@ -188,24 +198,7 @@ const OnboardingPage: React.FC = () => {
               {currentStep === 3 && (
                 <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                   <div className="px-4 py-5 sm:p-6">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                      Language Preference Selection
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500 mb-6">
-                      Choose your preferred language for the cooking experience.
-                    </p>
-                    <button
-                      onClick={() => {
-                        setCurrentStep(4);
-                        // Redirect to dashboard after completing onboarding
-                        setTimeout(() => {
-                          navigate('/dashboard');
-                        }, 1000);
-                      }}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Complete Onboarding
-                    </button>
+                    <LanguagePicker onLanguageSelect={handleLanguageSelect} />
                   </div>
                 </div>
               )}

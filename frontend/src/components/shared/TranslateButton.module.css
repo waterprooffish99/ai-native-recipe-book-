@@ -1,0 +1,270 @@
+/* TranslateButton - Floating Button Accessible on All Screen Sizes */
+/* Uses CSS Logical Properties for RTL Support */
+
+.translateButtonContainer {
+  position: relative;
+}
+
+/* Floating Button - Fixed Position, Accessible on All Screens */
+.translateButtonFloating {
+  position: fixed;
+  inset-block-end: 1.5rem;
+  inset-inline-end: 1.5rem;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  /* Mobile-friendly tap target */
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+  min-block-size: 48px;
+  min-inline-size: 48px;
+
+  /* Styling */
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* Typography */
+  font-size: 1rem;
+  font-weight: 600;
+
+  /* Interaction */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+.translateButtonFloating:hover {
+  background-color: #2c5282;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.translateButtonFloating:active {
+  transform: scale(0.98);
+}
+
+.translateButtonFloating:focus {
+  outline: 3px solid #90cdf4;
+  outline-offset: 2px;
+}
+
+.icon {
+  font-size: 1.25rem;
+}
+
+.label {
+  display: inline;
+}
+
+/* Mobile: Hide label text, show only icon */
+@media (max-width: 639px) {
+  .translateButtonFloating {
+    padding-block: 0.75rem;
+    padding-inline: 0.75rem;
+    min-inline-size: 56px;
+    min-block-size: 56px;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* Small Mobile: Position adjustment to avoid overlapping with navigation */
+@media (max-width: 360px) {
+  .translateButtonFloating {
+    inset-block-end: 1rem;
+    inset-inline-end: 1rem;
+  }
+}
+
+/* Language Picker Modal */
+.languagePickerModal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.languagePickerOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.languagePickerContent {
+  position: relative;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Use logical properties */
+  margin-inline: 1rem;
+  padding-block: 1.5rem;
+  padding-inline: 1.5rem;
+
+  /* Size constraints */
+  max-inline-size: 500px;
+  max-block-size: 80vh;
+  inline-size: 100%;
+  overflow-y: auto;
+}
+
+/* Modal Header */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block-end: 1.5rem;
+  padding-block-end: 1rem;
+  border-block-end: 1px solid #e2e8f0;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.closeButton {
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #718096;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  inline-size: 40px;
+  block-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background-color: #f7fafc;
+  color: #2d3748;
+}
+
+/* Language Options */
+.languageOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.languageOption {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  /* Use logical properties */
+  padding-block: 1rem;
+  padding-inline: 1rem;
+
+  /* Minimum tap target */
+  min-block-size: 56px;
+
+  /* Styling */
+  background-color: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.5rem;
+
+  /* Typography */
+  font-size: 1rem;
+  text-align: start;
+
+  /* Interaction */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+.languageOption:hover:not(:disabled) {
+  border-color: #cbd5e0;
+  background-color: #f7fafc;
+}
+
+.languageOption:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.languageOption.active {
+  border-color: #3182ce;
+  background-color: #ebf8ff;
+}
+
+.nativeLabel {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.englishLabel {
+  font-size: 0.875rem;
+  color: #718096;
+}
+
+.checkmark {
+  margin-inline-start: auto;
+  font-size: 1.25rem;
+  color: #3182ce;
+  font-weight: 700;
+}
+
+/* Saving Indicator */
+.savingIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-block-start: 1rem;
+  padding-block: 0.75rem;
+  color: #4a5568;
+  font-size: 0.875rem;
+}
+
+.spinner {
+  inline-size: 20px;
+  block-size: 20px;
+  border: 2px solid #e2e8f0;
+  border-block-start-color: #3182ce;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Accessibility: Focus states */
+.languageOption:focus {
+  outline: 3px solid #90cdf4;
+  outline-offset: 2px;
+}
+
+/*
+  RTL Notes:
+  - All positioning uses logical properties (inset-inline/block)
+  - All spacing uses logical properties (margin/padding-inline/block)
+  - Button remains accessible on all screen sizes (min 48px desktop, 56px mobile)
+  - Text alignment uses 'start' instead of 'left' for RTL support
+*/
