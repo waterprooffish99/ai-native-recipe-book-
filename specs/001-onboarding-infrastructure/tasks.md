@@ -100,21 +100,21 @@
 
 ### Backend Implementation for User Story 2
 
-- [ ] T041 [P] [US2] Create SurveyResponse model in backend/src/models/survey.py with fields from data-model.md
-- [ ] T042 [US2] Implement SurveyService in backend/src/services/survey_service.py with submit method (create survey response, update user.onboarding_completed=true, copy data to users table)
-- [ ] T043 [US2] Add get_survey_response method to SurveyService in backend/src/services/survey_service.py (retrieve by user_id)
-- [ ] T044 [US2] Implement POST /survey endpoint in backend/src/api/survey.py per survey.openapi.yaml contract (require Bearer token, validate fields, prevent duplicate submissions)
-- [ ] T045 [US2] Implement GET /survey/me endpoint in backend/src/api/survey.py (require Bearer token, return survey response or 404 if not submitted)
+- [X] T041 [P] [US2] Create SurveyResponse model in backend/src/models/survey.py with fields from data-model.md
+- [X] T042 [US2] Implement SurveyService in backend/src/services/survey_service.py with submit method (create survey response, update user.onboarding_completed=true, copy data to users table)
+- [X] T043 [US2] Add get_survey_response method to SurveyService in backend/src/services/survey_service.py (retrieve by user_id)
+- [X] T044 [US2] Implement POST /survey endpoint in backend/src/api/survey.py per survey.openapi.yaml contract (require Bearer token, validate fields, prevent duplicate submissions)
+- [X] T045 [US2] Implement GET /survey/me endpoint in backend/src/api/survey.py (require Bearer token, return survey response or 404 if not submitted)
 
 ### Frontend Implementation for User Story 2
 
-- [ ] T046 [P] [US2] Create KitchenSurvey component in frontend/src/components/onboarding/KitchenSurvey.tsx with form fields (software_background dropdown, cooking_level radio buttons, dietary_restrictions textarea)
-- [ ] T047 [P] [US2] Create OnboardingProgress component in frontend/src/components/onboarding/OnboardingProgress.tsx showing "Step X of 4" progress indicator
-- [ ] T048 [US2] Create surveyService API client in frontend/src/services/surveyService.ts with submitSurvey and getSurvey methods
-- [ ] T049 [US2] Create onboarding page in frontend/src/pages/onboarding.tsx orchestrating survey → voice selection → language selection flow
-- [ ] T050 [US2] Integrate KitchenSurvey component into onboarding page with form validation and submit handler
-- [ ] T051 [US2] Add "Cannot skip" logic to onboarding page (show message explaining personalization benefits if user tries to navigate away)
-- [ ] T052 [US2] Add redirect logic after survey submission (proceed to voice selection step in onboarding flow)
+- [X] T046 [P] [US2] Create KitchenSurvey component in frontend/src/components/onboarding/KitchenSurvey.tsx with form fields (software_background dropdown, cooking_level radio buttons, dietary_restrictions textarea)
+- [X] T047 [P] [US2] Create OnboardingProgress component in frontend/src/components/onboarding/OnboardingProgress.tsx showing "Step X of 4" progress indicator
+- [X] T048 [US2] Create surveyService API client in frontend/src/services/surveyService.ts with submitSurvey and getSurvey methods
+- [X] T049 [US2] Create onboarding page in frontend/src/pages/onboarding.tsx orchestrating survey → voice selection → language selection flow
+- [X] T050 [US2] Integrate KitchenSurvey component into onboarding page with form validation and submit handler
+- [X] T051 [US2] Add "Cannot skip" logic to onboarding page (show message explaining personalization benefits if user tries to navigate away)
+- [X] T052 [US2] Add redirect logic after survey submission (proceed to voice selection step in onboarding flow)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently (signup → survey → data saved)
 
