@@ -128,19 +128,19 @@
 
 ### Backend Implementation for User Story 3
 
-- [ ] T053 [US3] Implement GET /voices endpoint in backend/src/api/users.py to list all 7 voice personalities from voice_personalities table
-- [ ] T054 [US3] Add update_voice_preference method to UserService in backend/src/services/user_service.py (update users.preferred_voice)
-- [ ] T055 [US3] Implement PATCH /users/me endpoint in backend/src/api/users.py per users.openapi.yaml contract (allow updating preferred_voice field only)
+- [X] T053 [US3] Implement GET /voices endpoint in backend/src/api/users.py to list all 7 voice personalities from voice_personalities table
+- [X] T054 [US3] Add update_voice_preference method to UserService in backend/src/services/user_service.py (update users.preferred_voice)
+- [X] T055 [US3] Implement PATCH /users/me endpoint in backend/src/api/users.py per users.openapi.yaml contract (allow updating preferred_voice field only)
 
 ### Frontend Implementation for User Story 3
 
-- [ ] T056 [P] [US3] Create VoiceSelector component in frontend/src/components/onboarding/VoiceSelector.tsx with 7 voice cards (each with play button, personality description, name)
-- [ ] T057 [US3] Integrate AudioPlayer component into VoiceSelector for each of the 7 voices (pass audio_sample_url from /voices endpoint)
-- [ ] T058 [US3] Create userService API client in frontend/src/services/userService.ts with getProfile, updateProfile, and getVoices methods
-- [ ] T059 [US3] Fetch voice personalities from GET /voices endpoint and render in VoiceSelector component
-- [ ] T060 [US3] Add voice selection logic to VoiceSelector (clicking "Choose This Voice" button saves preference via PATCH /users/me)
-- [ ] T061 [US3] Integrate VoiceSelector into onboarding page as step 2 (after survey, before language selection)
-- [ ] T062 [US3] Add redirect logic after voice selection (proceed to language selection step)
+- [X] T056 [P] [US3] Create VoiceSelector component in frontend/src/components/onboarding/VoiceSelector.tsx with 7 voice cards (each with play button, personality description, name)
+- [X] T057 [US3] Integrate AudioPlayer component into VoiceSelector for each of the 7 voices (pass audio_sample_url from /voices endpoint)
+- [X] T058 [US3] Create userService API client in frontend/src/services/userService.ts with getProfile, updateProfile, and getVoices methods
+- [X] T059 [US3] Fetch voice personalities from GET /voices endpoint and render in VoiceSelector component
+- [X] T060 [US3] Add voice selection logic to VoiceSelector (clicking "Choose This Voice" button saves preference via PATCH /users/me)
+- [X] T061 [US3] Integrate VoiceSelector into onboarding page as step 2 (after survey, before language selection)
+- [X] T062 [US3] Add redirect logic after voice selection (proceed to language selection step)
 
 **Checkpoint**: At this point, User Stories 1, 2, AND 3 should all work independently
 

@@ -4,6 +4,7 @@ import authService from '../services/authService';
 import surveyService from '../services/surveyService';
 import KitchenSurvey from '../components/onboarding/KitchenSurvey';
 import OnboardingProgress from '../components/onboarding/OnboardingProgress';
+import { VoiceSelector } from '../components/onboarding/VoiceSelector';
 
 const OnboardingPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1); // 1: Survey, 2: Voice Selection, 3: Language Selection, 4: Complete
@@ -77,6 +78,12 @@ const OnboardingPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleVoiceSelect = (voiceId: string) => {
+    // Voice preference is saved by VoiceSelector component
+    // Automatically proceed to language selection after voice is selected
+    setCurrentStep(3);
   };
 
   const handleNavigationAttempt = () => {
@@ -173,18 +180,7 @@ const OnboardingPage: React.FC = () => {
               {currentStep === 2 && (
                 <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                   <div className="px-4 py-5 sm:p-6">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                      AI Voice Companion Selection
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500 mb-6">
-                      Coming soon: Select your preferred voice personality for cooking guidance.
-                    </p>
-                    <button
-                      onClick={() => setCurrentStep(3)}
-                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      Continue to Language Selection
-                    </button>
+                    <VoiceSelector onVoiceSelect={handleVoiceSelect} />
                   </div>
                 </div>
               )}

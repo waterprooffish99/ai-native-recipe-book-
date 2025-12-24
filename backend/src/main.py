@@ -61,8 +61,8 @@ async def root():
     }
 
 
-# Import and include routers (will be added in User Story phases)
-# from src.api import auth, users, survey
-# app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
-# app.include_router(users.router, prefix="/users", tags=["Users"])
-# app.include_router(survey.router, prefix="/survey", tags=["Survey"])
+# Import and include routers
+from src.api import auth, users, survey
+app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
+app.include_router(users.router, prefix="/users", tags=["Users"])
+app.include_router(survey.router, prefix="/survey", tags=["Survey"])
