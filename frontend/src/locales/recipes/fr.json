@@ -1,0 +1,29 @@
+{
+  "recipes": {
+    "pasta": {
+      "name": "Pâtes Simples",
+      "origin": "Italie",
+      "difficulty": "Débutant Absolu"
+    },
+    "sajji": {
+      "name": "Sajji (Poulet Grillé Pakistanais)",
+      "origin": "Pakistan",
+      "difficulty": "Débutant+"
+    },
+    "guacamole": {
+      "name": "Guacamole Frais",
+      "origin": "Mexique",
+      "difficulty": "Débutant Absolu"
+    },
+    "shakshuka": {
+      "name": "Shakshuka (Œufs dans une Sauce Tomate)",
+      "origin": "Moyen-Orient",
+      "difficulty": "Débutant"
+    },
+    "gomen": {
+      "name": "Gomen (Choux Éthiopiens)",
+      "origin": "Éthiopie",
+      "difficulty": "Débutant"
+    }
+  }
+}

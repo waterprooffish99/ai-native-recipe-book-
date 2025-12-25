@@ -1,0 +1,29 @@
+{
+  "recipes": {
+    "pasta": {
+      "name": "سادہ پاستا",
+      "origin": "اٹلی",
+      "difficulty": "بالکل ابتدائی"
+    },
+    "sajji": {
+      "name": "ساجی",
+      "origin": "پاکستان",
+      "difficulty": "ابتدائی+"
+    },
+    "guacamole": {
+      "name": "تازہ گواکامولے",
+      "origin": "میکسیکو",
+      "difficulty": "بالکل ابتدائی"
+    },
+    "shakshuka": {
+      "name": "شکشوکہ (ٹماٹر کی چٹنی میں انڈے)",
+      "origin": "مشرق وسطیٰ",
+      "difficulty": "ابتدائی"
+    },
+    "gomen": {
+      "name": "گومن (ایتھوپیائی ساگ)",
+      "origin": "ایتھوپیا",
+      "difficulty": "ابتدائی"
+    }
+  }
+}
