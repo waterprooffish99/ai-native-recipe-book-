@@ -145,9 +145,9 @@ This is a web application with:
 - [X] T080 [P] [US2] Create Persian metaphor translation file in frontend/src/locales/metaphors/fa.json (with culturally appropriate metaphors, RTL)
 - [X] T081 [US2] Create metaphorMapper utility in frontend/src/utils/metaphorMapper.ts (maps user background to appropriate metaphors)
 - [X] T082 [US2] Create PersonalizedDashboard component in frontend/src/components/dashboard/PersonalizedDashboard.tsx (displays welcome message with metaphors)
-- [ ] T083 [US2] Integrate user background from Better-Auth context in frontend/src/components/dashboard/PersonalizedDashboard.tsx
-- [ ] T084 [US2] Update RecipeDetail component to show personalized cooking tips in frontend/src/components/recipes/RecipeDetail.tsx (based on user background)
-- [ ] T085 [US2] Add logging for metaphor selection in backend/src/services/metaphor_service.py
+- [X] T083 [US2] Integrate user background from Better-Auth context in frontend/src/components/dashboard/PersonalizedDashboard.tsx
+- [X] T084 [US2] Update RecipeDetail component to show personalized cooking tips in frontend/src/components/recipes/RecipeDetail.tsx (based on user background)
+- [X] T085 [US2] Add logging for metaphor selection in backend/src/services/metaphor_service.py
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - recipes can be retrieved (US1) and personalized messages are shown based on user background (US2)
 
@@ -161,15 +161,15 @@ This is a web application with:
 
 ### Implementation for User Story 3
 
-- [ ] T086 [US3] Verify Kitchen Guard safety tips are present in all 5 recipes in database (check seed migration from T027-T029)
-- [ ] T087 [US3] Verify Kitchen Guard translations exist for all 6 languages in database (check seed migration from T028)
-- [ ] T088 [US3] Create KitchenGuard component in frontend/src/components/recipes/KitchenGuard.tsx (displays safety warnings prominently)
-- [ ] T089 [US3] Integrate KitchenGuard component into RecipeDetail page in frontend/src/components/recipes/RecipeDetail.tsx (shown before steps)
-- [ ] T090 [US3] Add Kitchen Guard voice announcement in frontend/src/components/voice/VoiceRecipeNavigator.tsx (read safety tip before starting recipe)
-- [ ] T091 [US3] Add visual styling for Kitchen Guard warnings in frontend/src/components/recipes/KitchenGuard.tsx (use warning colors, icon)
-- [ ] T092 [US3] Ensure Kitchen Guard is included in RAG context in backend/src/services/rag_service.py (so chatbot can reference safety tips)
-- [ ] T093 [US3] Add validation to ensure all new recipes include Kitchen Guard field in backend/src/services/recipe_service.py
-- [ ] T094 [US3] Add logging for Kitchen Guard display in frontend/src/components/recipes/KitchenGuard.tsx
+- [X] T086 [US3] Verify Kitchen Guard safety tips are present in all 5 recipes in database (check seed migration from T027-T029)
+- [X] T087 [US3] Verify Kitchen Guard translations exist for all 6 languages in database (check seed migration from T028)
+- [X] T088 [US3] Create KitchenGuard component in frontend/src/components/recipes/KitchenGuard.tsx (displays safety warnings prominently)
+- [X] T089 [US3] Integrate KitchenGuard component into RecipeDetail page in frontend/src/components/recipes/RecipeDetail.tsx (shown before steps)
+- [X] T090 [US3] Add Kitchen Guard voice announcement in frontend/src/components/voice/VoiceRecipeNavigator.tsx (read safety tip before starting recipe)
+- [X] T091 [US3] Add visual styling for Kitchen Guard warnings in frontend/src/components/recipes/KitchenGuard.tsx (use warning colors, icon)
+- [X] T092 [US3] Ensure Kitchen Guard is included in RAG context in backend/src/services/rag_service.py (so chatbot can reference safety tips)
+- [X] T093 [US3] Add validation to ensure all new recipes include Kitchen Guard field in backend/src/services/recipe_service.py
+- [X] T094 [US3] Add logging for Kitchen Guard display in frontend/src/components/recipes/KitchenGuard.tsx
 
 **Checkpoint**: All user stories should now be independently functional - recipes retrievable (US1), personalized (US2), and safe (US3)
 
@@ -179,22 +179,22 @@ This is a web application with:
 
 **Purpose**: Improvements that affect multiple user stories and final validation
 
-- [ ] T095 [P] Add API documentation to backend/src/api/ docstrings (following OpenAPI spec from contracts/recipes-openapi.yaml)
-- [ ] T096 [P] Update README.md with setup instructions for recipe content schema
-- [ ] T097 [P] Verify all recipe steps follow max 5 steps constraint across all 5 recipes
-- [ ] T098 [P] Verify all recipe steps contain only one action per step across all 5 recipes
-- [ ] T099 [P] Verify all 6 language translations are culturally appropriate and complete
-- [ ] T100 [P] Run quickstart.md validation following steps 1-12 in specs/001-recipe-content-schema/quickstart.md
+- [X] T095 [P] Add API documentation to backend/src/api/ docstrings (following OpenAPI spec from contracts/recipes-openapi.yaml)
+- [X] T096 [P] Update README.md with setup instructions for recipe content schema
+- [X] T097 [P] Verify all recipe steps follow max 5 steps constraint across all 5 recipes
+- [X] T098 [P] Verify all recipe steps contain only one action per step across all 5 recipes
+- [X] T099 [P] Verify all 6 language translations are culturally appropriate and complete
+- [X] T100 [P] Run quickstart.md validation following steps 1-12 in specs/001-recipe-content-schema/quickstart.md
 
 ### Global Plate Specific Testing
 
-- [ ] T101 [P] Voice testing: Verify recipe steps are clearly audible with kitchen background noise
-- [ ] T102 [P] Language testing: Verify language switching works for all 6 languages (EN, UR, AR, ES, FR, FA) with <500ms response time
-- [ ] T103 [P] Accessibility testing: Verify WCAG 2.1 AA compliance for RecipeDetail and KitchenGuard components
-- [ ] T104 [P] Performance testing: Verify RAG search response time <1s p95
-- [ ] T105 [P] Performance testing: Verify voice response time <2s p95
-- [ ] T106 [P] Recipe compliance: Verify all recipes have Kitchen Guard safety sections
-- [ ] T107 [P] RTL testing: Verify Arabic and Persian languages display correctly with RTL layout
+- [X] T101 [P] Voice testing: Verify recipe steps are clearly audible with kitchen background noise
+- [X] T102 [P] Language testing: Verify language switching works for all 6 languages (EN, UR, AR, ES, FR, FA) with <500ms response time
+- [X] T103 [P] Accessibility testing: Verify WCAG 2.1 AA compliance for RecipeDetail and KitchenGuard components
+- [X] T104 [P] Performance testing: Verify RAG search response time <1s p95
+- [X] T105 [P] Performance testing: Verify voice response time <2s p95
+- [X] T106 [P] Recipe compliance: Verify all recipes have Kitchen Guard safety sections
+- [X] T107 [P] RTL testing: Verify Arabic and Persian languages display correctly with RTL layout
 
 ---
 

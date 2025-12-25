@@ -160,3 +160,60 @@ class RecipeService:
             raise InvalidLanguageError(language.value, SUPPORTED_LANGUAGES)
 
         return await self.get_recipe_by_id(recipe_id, language)
+
+    async def validate_recipe_kitchen_guard(
+        self,
+        recipe_id: UUID,
+        language: LanguageCode = LanguageCode.EN
+    ) -> bool:
+        """
+        T093: Validation to ensure recipe includes Kitchen Guard field
+
+        Args:
+            recipe_id: Recipe UUID to validate
+            language: Language code for validation
+
+        Returns:
+            True if recipe has Kitchen Guard field, False otherwise
+        """
+        async with self.db_pool.acquire() as conn:
+            # Get translation to check for kitchen_guard
+            translation_row = await conn.fetchrow("""
+                SELECT kitchen_guard
+                FROM recipe_translations
+                WHERE recipe_id = $1 AND language_code = $2
+            """, recipe_id, language.value)
+
+            if not translation_row:
+                return False
+
+            kitchen_guard = translation_row["kitchen_guard"]
+            # Check if kitchen_guard exists and is not empty/null
+            return kitchen_guard is not None and len(str(kitchen_guard).strip()) > 0
+
+    async def validate_all_recipes_have_kitchen_guard(self) -> List[UUID]:
+        """
+        Validate all recipes in the database have Kitchen Guard field
+
+        Returns:
+            List of recipe IDs that are missing Kitchen Guard
+        """
+        async with self.db_pool.acquire() as conn:
+            # Get all recipe IDs
+            recipe_ids = await conn.fetch("SELECT DISTINCT recipe_id FROM recipes WHERE is_active = true")
+
+            missing_kitchen_guard = []
+            for row in recipe_ids:
+                recipe_id = row["recipe_id"]
+
+                # Check if this recipe has a kitchen_guard for at least one language
+                has_guard = await conn.fetchval("""
+                    SELECT COUNT(*) > 0
+                    FROM recipe_translations
+                    WHERE recipe_id = $1 AND kitchen_guard IS NOT NULL AND TRIM(kitchen_guard) != ''
+                """, recipe_id)
+
+                if not has_guard:
+                    missing_kitchen_guard.append(recipe_id)
+
+            return missing_kitchen_guard

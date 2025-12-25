@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Recipe, RecipeService } from '../../services/recipeService';
 import RecipeSteps from './RecipeSteps';
+import KitchenGuard from './KitchenGuard';
 import { useTranslation } from 'react-i18next';
 import { isRTL } from '../../i18n/config';
 
@@ -228,36 +229,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
 
       {/* Kitchen Guard - Safety warnings */}
       {recipe.kitchen_guard && (
-        <div
-          className={`
-            kitchen-guard
-            mb-6
-            p-4
-            md:p-6
-            bg-yellow-50
-            dark:bg-yellow-900
-            border-l-4
-            border-yellow-500
-            dark:border-yellow-400
-            rounded
-            ${isRtl ? 'rtl-kitchen-guard' : 'ltr-kitchen-guard'}
-          `}
-        >
-          <div className="flex items-start">
-            <div className="flex-shrink-0">
-              <svg className="h-6 w-6 text-yellow-600 dark:text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <div className={`ml-3 ${isRtl ? 'mr-3 ml-0' : 'ml-3'}`}>
-              <h3 className="text-lg font-medium text-yellow-800 dark:text-yellow-200">
-                {t('recipe.kitchenGuard.title', 'Kitchen Guard')}
-              </h3>
-              <div className={`mt-2 text-yellow-700 dark:text-yellow-300 ${isRtl ? 'text-right' : 'text-left'}`}>
-                <p>{recipe.kitchen_guard}</p>
-              </div>
-            </div>
-          </div>
+        <div className="mb-6">
+          <KitchenGuard safetyTip={recipe.kitchen_guard} />
         </div>
       )}
 
