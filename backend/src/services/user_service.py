@@ -7,7 +7,7 @@ from typing import List, Optional
 from datetime import datetime
 from databases import Database
 
-from ..models.user import User, UserUpdate
+from ..models.user import User, UserUpdate, UserBackground
 from ..models.voice import VoicePersonality
 
 
@@ -153,3 +153,80 @@ class UserService:
         results = await self.db.fetch_all(query=query)
 
         return [VoicePersonality(**dict(row)) for row in results]
+
+    async def get_user_background(self, user_id: str) -> Optional[UserBackground]:
+        """
+        Retrieve user background information for personalization.
+
+        Args:
+            user_id: UUID string of the user
+
+        Returns:
+            UserBackground object if found, None otherwise
+        """
+        query = """
+        SELECT id as user_id, software_background, hardware_background,
+               cooking_level, dietary_restrictions, preferred_language,
+               preferred_voice
+        FROM users
+        WHERE id = :user_id
+        """
+        result = await self.db.fetch_one(query=query, values={"user_id": user_id})
+
+        if result:
+            # Create UserBackground from the user record
+            user_data = dict(result)
+            # Rename id to user_id to match the UserBackground model
+            user_data['user_id'] = user_data.pop('id')
+            return UserBackground(**user_data)
+        return None
+
+    async def update_user_background(self, user_id: str, background_data: dict) -> Optional[UserBackground]:
+        """
+        Update user background information for personalization.
+
+        Args:
+            user_id: UUID string of the user
+            background_data: Dictionary with background fields to update
+
+        Returns:
+            Updated UserBackground object if successful, None if user not found
+        """
+        # Build dynamic update query based on provided fields
+        update_fields = []
+        values = {"user_id": user_id}
+
+        valid_fields = [
+            'software_background', 'hardware_background', 'cooking_level',
+            'dietary_restrictions', 'preferred_language', 'preferred_voice'
+        ]
+
+        for field in valid_fields:
+            if field in background_data and background_data[field] is not None:
+                update_fields.append(f"{field} = :{field}")
+                values[field] = background_data[field]
+
+        if not update_fields:
+            # No fields to update, just return current background
+            return await self.get_user_background(user_id)
+
+        query = f"""
+        UPDATE users
+        SET {', '.join(update_fields)}, updated_at = :updated_at
+        WHERE id = :user_id
+        RETURNING id as user_id, software_background, hardware_background,
+                  cooking_level, dietary_restrictions, preferred_language,
+                  preferred_voice
+        """
+
+        values['updated_at'] = datetime.utcnow()
+
+        result = await self.db.fetch_one(query=query, values=values)
+
+        if result:
+            # Create UserBackground from the updated user record
+            user_data = dict(result)
+            # Rename id to user_id to match the UserBackground model
+            user_data['user_id'] = user_data.pop('user_id')
+            return UserBackground(**user_data)
+        return None

@@ -1,0 +1,35 @@
+{
+  "welcome": {
+    "software_beginner": "¡Bienvenido! Cocinar es como aprender a programar: comienza con 'funciones' simples (recetas) y gradualmente construye tu 'biblioteca' de habilidades. Cada receta es un pequeño programa que, cuando se ejecuta correctamente, produce un resultado delicioso.",
+    "software_intermediate": "¡Bienvenido de nuevo! Piensa en cocinar como depurar: necesitas seguir cuidadosamente cada paso, probar tus resultados e iterar hasta lograr el resultado perfecto. ¡La cocina es tu entorno de desarrollo!",
+    "software_expert": "¡Bienvenido, ingeniero colega! Cocinar es como implementar en producción: cada paso importa, la preparación es clave y el resultado final es un sistema hermoso y funcional. Vamos a construir algo asombroso juntos.",
+    "hardware_beginner": "¡Bienvenido! Cocinar es como ensamblar una computadora: necesitas los componentes correctos (ingredientes), seguir el manual (receta) y asegurarte de que todo se conecte adecuadamente. ¡Cada plato es un ensamblaje exitoso!",
+    "hardware_intermediate": "¡Bienvenido de nuevo! Cocinar es como diseñar circuitos: requiere precisión, comprensión de cómo interactúan los componentes y atención al cronometraje. ¡Las herramientas de cocina son tus instrumentos para medir y controlar el proceso!",
+    "hardware_expert": "¡Bienvenido, experto en hardware! Cocinar es como diseñar un sistema complejo donde la gestión térmica, el cronometraje de señales y la compatibilidad de componentes son críticos. Cada plato es un circuito perfectamente sintonizado.",
+    "cooking_beginner": "¡Bienvenido a tu viaje culinario! Cada chef maestro comenzó con recetas simples. Cada plato que completas construye tu base, como aprender a caminar antes de correr.",
+    "cooking_intermediate": "¡Bienvenido de nuevo! Estás desarrollando tu voz culinaria y técnica. Cada receta es una oportunidad para refinar tus habilidades y explorar nuevas combinaciones de sabores.",
+    "cooking_expert": "¡Bienvenido, artista culinario! Comprendes la ciencia y el arte de cocinar. Vamos a explorar técnicas avanzadas y perfiles de sabor que desafiarán incluso tu paladar experimentado."
+  },
+  "recipe_explanation": {
+    "software_beginner": "Piensa en esta receta como un script simple. Cada ingrediente es una variable, y cada paso es una llamada de función. Al igual que en programación, el orden importa: necesitas preparar ingredientes (inicializar variables) antes de usarlos.",
+    "software_intermediate": "Esta receta es como una función bien estructurada con entradas claras (ingredientes) y salidas (el plato final). El tiempo de cocción es como el tiempo de ejecución, y el control de temperatura es como la gestión de recursos del sistema.",
+    "software_expert": "Esta receta opera como un sistema distribuido donde el cronometraje y la coordinación entre componentes es crítica. Cada paso de cocción es un microservicio que debe completarse antes de que pueda comenzar el siguiente, con manejo adecuado de errores para condiciones inesperadas.",
+    "hardware_beginner": "Piensa en esta receta como una guía de ensamblaje de hardware. Cada ingrediente es un componente que necesitas reunir, y cada paso es una instrucción de ensamblaje. Al igual que construir una PC, el cronometraje y la secuencia son cruciales para el éxito.",
+    "hardware_intermediate": "Esta receta es como configurar un sistema: necesitas establecer los parámetros correctos (temperatura, tiempo), asegurar conexiones adecuadas (mezclar ingredientes) y monitorear para lograr un rendimiento óptimo (textura, color, aroma).",
+    "hardware_expert": "Esta receta opera como un proceso de ingeniería de precisión donde la dinámica térmica, las propiedades de los materiales y el cronometraje deben calibrarse perfectamente. Cada técnica de cocción es como un proceso de fabricación con parámetros específicos.",
+    "cooking_beginner": "Esta receta es como aprender a caminar: comienza con pasos simples y gradualmente construye tu confianza. Cada ingrediente y técnica se basa en lo anterior.",
+    "cooking_intermediate": "Esta receta es como perfeccionar tu técnica: enfócate en los detalles que marcan la diferencia entre bueno y excelente. Presta atención al tiempo y la temperatura.",
+    "cooking_expert": "Esta receta es como dirigir una orquesta: todos los elementos deben unirse en perfecta armonía. Tu experiencia te permite ajustar y adaptarte según sea necesario."
+  },
+  "safety_tips": {
+    "software_beginner": "La seguridad en la cocina es como la seguridad de código: siempre valida tus entradas (ingredientes), maneja excepciones (derrames o quemaduras) con gracia, y nunca ejecutes código (cocina) con privilegios elevados (atención descuidada) sin verificaciones adecuadas.",
+    "software_intermediate": "Al igual que pruebas el código antes de implementarlo, siempre prueba la temperatura con tu mano antes de tocar superficies calientes. Piensa en los protocolos de seguridad de cocina como tu manejo de errores: previenen fallas catastróficas.",
+    "software_expert": "Trata la seguridad en la cocina como monitoreo de sistema: vigila continuamente posibles problemas, ten planes de respaldo y mantén conciencia de todos los procesos ejecutándose simultáneamente para evitar competencia por recursos (quemar múltiples elementos).",
+    "hardware_beginner": "La seguridad en la cocina es como protección ESD: siempre ponte a tierra (mantente enfocado), maneja componentes con cuidado (artículos calientes) y trabaja en un entorno controlado. Un espacio de trabajo limpio previene descargas estáticas (accidentes).",
+    "hardware_intermediate": "Al igual que manejas componentes sensibles con cuidado, trata los cuchillos afilados y superficies calientes con respeto. Piensa en el equipo de seguridad (mitones de horno, portadores de ollas) como tus herramientas seguras de ESD.",
+    "hardware_expert": "Afronta la seguridad en la cocina como seguridad de sistema: implementa múltiples capas de protección, monitorea continuamente posibles peligros y mantén conciencia de todos los parámetros operacionales para prevenir fallas.",
+    "cooking_beginner": "Siempre comienza con manos limpias y espacio de trabajo. Tómate tu tiempo con cuchillos afilados y superficies calientes. Cuando tengas dudas, pide ayuda o busca técnicas adecuadas.",
+    "cooking_intermediate": "Mantén tus cuchillos afilados, tu espacio de trabajo organizado y enfócate en la tarea en cuestión. Anticipa posibles peligros y ten equipo de seguridad al alcance.",
+    "cooking_expert": "Tu experiencia es tu mayor activo de seguridad, pero nunca seas complaciente. Mantén conciencia de todos los elementos, mantén tus herramientas en óptimas condiciones y entrena a otros en prácticas seguras."
+  }
+}

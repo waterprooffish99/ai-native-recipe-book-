@@ -1,0 +1,35 @@
+{
+  "welcome": {
+    "software_beginner": "Welcome! Cooking is like learning to code - start with simple 'functions' (recipes) and gradually build up your 'library' of skills. Each recipe is a small program that, when executed properly, produces a delicious result.",
+    "software_intermediate": "Welcome back! Think of cooking like debugging - you need to carefully follow each step, test your results, and iterate until you achieve the perfect outcome. The kitchen is your development environment!",
+    "software_expert": "Welcome, fellow engineer! Cooking is like deploying to production - every step matters, preparation is key, and the final result is a beautiful, working system. Let's build something amazing together.",
+    "hardware_beginner": "Welcome! Cooking is like assembling a computer - you need the right components (ingredients), follow the manual (recipe), and make sure everything connects properly. Each dish is a successful build!",
+    "hardware_intermediate": "Welcome back! Cooking is like circuit design - it requires precision, understanding of how components interact, and attention to timing. The kitchen tools are your instruments for measuring and controlling the process.",
+    "hardware_expert": "Welcome, hardware expert! Cooking is like designing a complex system where thermal management, signal timing, and component compatibility are critical. Every dish is a perfectly tuned circuit.",
+    "cooking_beginner": "Welcome to your culinary journey! Every master chef started with simple recipes. Each dish you complete builds your foundation, just like learning to walk before you run.",
+    "cooking_intermediate": "Welcome back! You're developing your culinary voice and technique. Each recipe is an opportunity to refine your skills and explore new flavor combinations.",
+    "cooking_expert": "Welcome, culinary artist! You understand the science and art of cooking. Let's explore advanced techniques and flavor profiles that will challenge even your experienced palate."
+  },
+  "recipe_explanation": {
+    "software_beginner": "Think of this recipe as a simple script. Each ingredient is a variable, and each step is a function call. Just like in programming, order matters - you need to prepare ingredients (initialize variables) before using them.",
+    "software_intermediate": "This recipe is like a well-structured function with clear inputs (ingredients) and outputs (the final dish). The cooking time is like execution time, and temperature control is like managing system resources.",
+    "software_expert": "This recipe operates like a distributed system where timing and coordination between components is critical. Each cooking step is a microservice that must complete before the next can begin, with proper error handling for unexpected conditions.",
+    "hardware_beginner": "Think of this recipe like a hardware assembly guide. Each ingredient is a component you need to gather, and each step is an assembly instruction. Just like building a PC, timing and sequence are crucial for success.",
+    "hardware_intermediate": "This recipe is like configuring a system - you need to set the right parameters (temperature, timing), ensure proper connections (mixing ingredients), and monitor for optimal performance (texture, color, aroma).",
+    "hardware_expert": "This recipe operates like a precision engineering process where thermal dynamics, material properties, and timing must be perfectly calibrated. Each cooking technique is like a manufacturing process with specific parameters.",
+    "cooking_beginner": "This recipe is like learning to walk - start with simple steps and gradually build your confidence. Each ingredient and technique builds on the previous one.",
+    "cooking_intermediate": "This recipe is like refining your technique - focus on the details that make the difference between good and great. Pay attention to timing and temperature.",
+    "cooking_expert": "This recipe is like conducting an orchestra - all elements must come together in perfect harmony. Your experience allows you to adjust and adapt as needed."
+  },
+  "safety_tips": {
+    "software_beginner": "Kitchen safety is like code security - always validate your inputs (ingredients), handle exceptions (spills or burns) gracefully, and never run code (cooking) with elevated privileges (careless attention) without proper checks.",
+    "software_intermediate": "Just as you test code before deployment, always test temperature with your hand before touching hot surfaces. Think of kitchen safety protocols as your error handling - they prevent catastrophic failures.",
+    "software_expert": "Treat kitchen safety like system monitoring - continuously watch for potential issues, have backup plans, and maintain awareness of all processes running simultaneously to prevent resource contention (burning multiple items).",
+    "hardware_beginner": "Kitchen safety is like ESD protection - always ground yourself (stay focused), handle components carefully (hot items), and work in a controlled environment. A clean workspace prevents static discharge (accidents).",
+    "hardware_intermediate": "Just as you handle sensitive components with care, treat sharp knives and hot surfaces with respect. Think of safety equipment (oven mitts, pot holders) as your ESD-safe tools.",
+    "hardware_expert": "Approach kitchen safety like system safety - implement multiple layers of protection, continuously monitor for potential hazards, and maintain awareness of all operational parameters to prevent failures.",
+    "cooking_beginner": "Always start with clean hands and workspace. Take your time with sharp knives and hot surfaces. When in doubt, ask for help or look up proper techniques.",
+    "cooking_intermediate": "Keep your knives sharp, your workspace organized, and stay focused on the task at hand. Anticipate potential hazards and have safety equipment within reach.",
+    "cooking_expert": "Your experience is your greatest safety asset, but never become complacent. Maintain awareness of all elements, keep your tools in optimal condition, and mentor others in safe practices."
+  }
+}

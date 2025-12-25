@@ -10,6 +10,20 @@ from pydantic import BaseModel, EmailStr, validator
 import uuid
 
 
+class UserBackground(BaseModel):
+    """
+    Represents a user's background information for personalization.
+    Based on the data model defined in the specification.
+    """
+    user_id: str
+    software_background: Optional[str] = None
+    hardware_background: Optional[str] = None
+    cooking_level: Optional[str] = None
+    dietary_restrictions: Optional[str] = None
+    preferred_language: Optional[str] = None
+    preferred_voice: Optional[str] = None
+
+
 class User(BaseModel):
     """
     Represents a registered user with authentication credentials and profile data.

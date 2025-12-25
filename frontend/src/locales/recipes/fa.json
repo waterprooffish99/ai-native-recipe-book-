@@ -1,0 +1,29 @@
+{
+  "recipes": {
+    "pasta": {
+      "name": "پاستای ساده",
+      "origin": "ایتالیا",
+      "difficulty": "مبتدی مطلق"
+    },
+    "sajji": {
+      "name": "ساجی (مرغ پاکستانی کبابی)",
+      "origin": "پاکستان",
+      "difficulty": "مبتدی+"
+    },
+    "guacamole": {
+      "name": "گواکامولی تازه",
+      "origin": "مکزیک",
+      "difficulty": "مبتدی مطلق"
+    },
+    "shakshuka": {
+      "name": "شکشوکا (تخم مرغ در سس گوجه)",
+      "origin": "خاورمیانه",
+      "difficulty": "مبتدی"
+    },
+    "gomen": {
+      "name": "گومن (کلم اتیوپیایی)",
+      "origin": "اتیوپی",
+      "difficulty": "مبتدی"
+    }
+  }
+}
