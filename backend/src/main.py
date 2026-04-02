@@ -35,17 +35,25 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # CORS configuration
+# Constitution Principle V: Multi-Modal Excellence - supports both text and voice queries
+# Note: Using port 8002 due to port 8000/8001 conflict in WSL/Windows environment
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    os.getenv("FRONTEND_URL", "http://localhost:3000"),  # Support environment variable override
 ]
+
+logger.info(f"CORS enabled for origins: {ALLOWED_ORIGINS}")
+logger.info("Note: Backend running on port 8002 (ports 8000/8001 unavailable in WSL)")
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "Accept"],
+    expose_headers=["X-Request-ID"],
+    max_age=3600,
 )
 
 # Add request logging middleware

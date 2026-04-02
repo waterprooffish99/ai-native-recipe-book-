@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import Dashboard from '../components/dashboard/Dashboard';
 import { ProgressRing } from '../components/dashboard/ProgressRing';
 import { QuickAccessCard } from '../components/dashboard/QuickAccessCard';
+import RecipeList from '../components/recipes/RecipeList';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import authService from '../services/authService';
 import userService from '../services/userService';
@@ -18,9 +19,19 @@ import logger from '../utils/logger';
 
 const DashboardPage: React.FC = () => {
   const [user, setUser] = useState<any>(null);
+  const [selectedRecipeId, setSelectedRecipeId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const history = useHistory();
+
+  const handleRecipeSelect = (recipeId: string) => {
+    setSelectedRecipeId(recipeId);
+    // Navigate to recipe detail page or show recipe detail modal
+    // For now, we'll just log it - in production this would navigate to /recipes/:id
+    logger.info('Recipe selected:', { recipeId });
+    // TODO: Navigate to recipe detail page
+    alert(`Recipe selected: ${recipeId}. Recipe detail page coming soon!`);
+  };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -149,6 +160,14 @@ const DashboardPage: React.FC = () => {
             preferredVoice={user.preferred_voice || 'Kitchen Partner'}
             recipesMastered={user.recipes_mastered}
           />
+
+          {/* Recipe List - Display all available recipes */}
+          <section className="recipe-section">
+            <RecipeList
+              language={user.preferred_language?.toUpperCase() || 'EN'}
+              onRecipeSelect={handleRecipeSelect}
+            />
+          </section>
 
           {/* Progress Ring Visualization */}
           <section className="progress-section">

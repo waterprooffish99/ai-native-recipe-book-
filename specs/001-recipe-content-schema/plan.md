@@ -12,13 +12,13 @@ Implementation of the first 5 global recipes (Pasta, Sajji, Guacamole, Shakshuka
 ## Technical Context
 
 **Language/Version**: Python 3.11 (backend), TypeScript 5.x (frontend)
-**Primary Dependencies**: FastAPI, Qdrant Cloud, Neon Postgres, i18next, OpenAI API
+**Primary Dependencies**: FastAPI, Qdrant Cloud, Neon Postgres, i18next, OpenAI API, Web Speech API (browser)
 **Storage**: Neon Serverless Postgres for recipe data, Qdrant Cloud for vector embeddings
 **Testing**: pytest for backend, Jest for frontend
 **Target Platform**: Web application with Docusaurus frontend and FastAPI backend
 **Project Type**: Web application with frontend/backend separation
-**Performance Goals**: <1s vector search (RAG), <500ms language switching, <2s voice response (p95)
-**Constraints**: <5 steps per recipe, 6 language support, Kitchen Guard safety sections, personalization based on user background
+**Performance Goals**: <1s vector search (RAG), <500ms language switching, <2s voice response (p95), <500ms recipe retrieval (SC-001)
+**Constraints**: <5 steps per recipe, 6 language support, Kitchen Guard safety sections, personalization based on user background, Web Speech API for voice queries (FR-005)
 **Scale/Scope**: 5 initial recipes with 6 language translations, scalable for future recipes
 
 ## Constitution Check
@@ -31,10 +31,18 @@ Review against Global Plate Constitution principles:
 - [X] **Beginner-Centric**: All recipes follow max 5 steps, one action per step requirement
 - [X] **Safety Mandatory**: All recipes include Kitchen Guard safety sections
 - [X] **Tech Stack Discipline**: Uses defined stack (FastAPI, Qdrant Cloud, Neon Postgres, Better-Auth)
-- [X] **Multi-Modal Excellence**: Includes voice + visual components for recipe presentation
+- [X] **Multi-Modal Excellence**: Includes voice + visual components for recipe presentation (Web Speech API for STT per FR-005)
 - [X] **Personalization Required**: Uses Better-Auth context for personalized welcome messages
 
 **Deviations**: None
+
+## Success Criteria Alignment (from spec.md v1.1)
+
+- **SC-001**: Recipe retrieval within 500ms (validated by T111 performance benchmarks)
+- **SC-002**: 9/10 users complete recipes without help button (validated by user testing)
+- **SC-003**: 95% query relevance (validated by T111 RAG benchmarks)
+- **SC-004**: 85% metaphor relevance rating (validated by user feedback)
+- **SC-005**: All 6 languages complete with cultural appropriateness (validated by T099, T110)
 
 ## Project Structure
 

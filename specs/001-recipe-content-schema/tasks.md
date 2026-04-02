@@ -198,6 +198,24 @@ This is a web application with:
 
 ---
 
+## Phase 7: Spec v1.1 Implementation (Voice Query & Performance Benchmarks)
+
+**Purpose**: Implement new requirements from spec v1.1 refinement (FR-005 Voice Query, SC clarifications)
+
+### Voice Query Implementation (FR-005)
+
+- [X] T108 [P] Implement Web Speech API integration for Speech-to-Text (STT) in frontend/src/components/recipes/RecipeSearch.tsx
+- [X] T109 [P] Add microphone UI component with visual feedback in frontend/src/components/recipes/VoiceSearchButton.tsx
+
+### Cultural Review & Performance Benchmarking
+
+- [ ] T110 [P] Add cultural appropriateness review task for each language translation (beyond format validation)
+- [ ] T111 [P] Add RAG performance benchmarking task to validate SC-001 (<500ms retrieval) and SC-003 (95% relevance)
+
+**Checkpoint**: All spec v1.1 requirements implemented and validated
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -328,7 +346,7 @@ With multiple developers:
 
 ---
 
-## Total Task Count: 107 tasks
+## Total Task Count: 111 tasks
 
 - **Phase 1 (Setup)**: 8 tasks
 - **Phase 2 (Foundational)**: 14 tasks (BLOCKS all user stories)
@@ -336,6 +354,7 @@ With multiple developers:
 - **Phase 4 (User Story 2)**: 24 tasks
 - **Phase 5 (User Story 3)**: 9 tasks
 - **Phase 6 (Polish)**: 13 tasks
+- **Phase 7 (Spec v1.1 Implementation)**: 4 tasks
 
 **Parallel opportunities identified**: 42 tasks marked with [P] can run in parallel within their phase
 

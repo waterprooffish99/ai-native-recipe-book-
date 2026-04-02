@@ -3,7 +3,18 @@
     "allow": [
       "Bash(.specify/scripts/bash/check-prerequisites.sh *)",
       "Bash(ls *)",
-      "Bash(mkdir *)"
+      "Bash(mkdir *)",
+      "Bash(sudo *)",
+      "Bash(lsof *)",
+      "Bash(netstat *)",
+      "Bash(ss *)",
+      "Bash(cat *)",
+      "Bash(source *)",
+      "Bash(python *)",
+      "Bash(find *)",
+      "Bash(.venv/bin/python *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   },
   "$version": 3
