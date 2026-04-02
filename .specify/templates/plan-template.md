@@ -31,16 +31,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Review against Global Plate Constitution principles:
-
-- [ ] **Accessibility-First**: Does this feature support voice-first navigation and all 6 languages?
-- [ ] **Beginner-Centric**: Does content follow max 5 steps, one action per step?
-- [ ] **Safety Mandatory**: Does this feature include Kitchen Guard sections where applicable?
-- [ ] **Tech Stack Discipline**: Does this follow the defined stack (Docusaurus, FastAPI, Qdrant, Neon, Better-Auth)?
-- [ ] **Multi-Modal Excellence**: Does this feature include voice + visual components?
-- [ ] **Personalization Required**: Does this use Better-Auth context for personalization?
-
-**Deviations**: [List any principle violations with explicit justification and ADR reference]
+[Gates determined based on constitution file]
 
 ## Project Structure
 

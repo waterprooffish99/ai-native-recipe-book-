@@ -7,6 +7,7 @@ from typing import List, Optional, Dict, Any
 from uuid import UUID
 from datetime import datetime
 from enum import Enum
+import json
 
 
 class DifficultyLevel(str, Enum):
@@ -159,6 +160,36 @@ class RecipeDetail(BaseModel):
     ingredients: Optional[List[Dict[str, Any]]]
     steps: List[Dict[str, Any]]
     language: LanguageCode
+
+    @validator('ingredients', pre=True)
+    def validate_ingredients(cls, v):
+        """Convert ingredients from string/dict to list of strings if needed"""
+        if v is None:
+            return []
+        if isinstance(v, str):
+            # If it's a string, try to parse it as JSON
+            try:
+                parsed = json.loads(v)
+                if isinstance(parsed, list):
+                    return parsed
+                elif isinstance(parsed, dict):
+                    # If it's a dict, convert to a list of single dict
+                    return [parsed]
+                else:
+                    # If it's some other type, wrap in a list
+                    return [parsed]
+            except json.JSONDecodeError:
+                # If it's not valid JSON, treat as a single string ingredient
+                return [{"name": v, "quantity": ""}]
+        elif isinstance(v, dict):
+            # If it's a dict, convert to a list of single dict
+            return [v]
+        elif isinstance(v, list):
+            # If it's already a list, return as is
+            return v
+        else:
+            # For any other type, wrap in a list
+            return [v]
 
     class Config:
         from_attributes = True

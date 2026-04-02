@@ -8,73 +8,72 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 // Import translation files for each supported language
-// These will be populated in Phase 3 (US1 tasks T046-T051)
-import enTranslations from '../locales/en.json';
-import urTranslations from '../locales/ur.json';
-import arTranslations from '../locales/ar.json';
-import esTranslations from '../locales/es.json';
-import frTranslations from '../locales/fr.json';
-import faTranslations from '../locales/fa.json';
+// These will be populated in Phase 3 (US1 tasks T046-T051) for recipes
+import enTranslations from '../locales/recipes/en.json';
+import urTranslations from '../locales/recipes/ur.json';
+import arTranslations from '../locales/recipes/ar.json';
+import esTranslations from '../locales/recipes/es.json';
+import frTranslations from '../locales/recipes/fr.json';
+import faTranslations from '../locales/recipes/fa.json';
+
+// Import metaphor translation files for personalization
+// These will be populated in Phase 4 (US2 tasks T075-T080) for metaphors
+import enMetaphorTranslations from '../locales/metaphors/en.json';
+import urMetaphorTranslations from '../locales/metaphors/ur.json';
+import arMetaphorTranslations from '../locales/metaphors/ar.json';
+import esMetaphorTranslations from '../locales/metaphors/es.json';
+import frMetaphorTranslations from '../locales/metaphors/fr.json';
+import faMetaphorTranslations from '../locales/metaphors/fa.json';
 
 // Configure i18next
 i18n
   // Detect user language
   .use(LanguageDetector)
-  // Pass the i18n instance to react-i18next
+  // Initialize react-i18next
   .use(initReactI18next)
   // Initialize i18next
   .init({
-    // Available languages
     supportedLngs: ['en', 'ur', 'ar', 'es', 'fr', 'fa'],
-
-    // Fallback language if detected language is not available
     fallbackLng: 'en',
-
-    // Debug mode (disable in production)
-    debug: process.env.NODE_ENV === 'development',
-
-    // Allow keys to be phrases having `:`, `.`
+    debug: (typeof process !== 'undefined' && process.env) ? process.env.NODE_ENV === 'development' : false,
     nsSeparator: false,
     keySeparator: false,
-
-    // Language detection options
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage', 'cookie'],
     },
-
-    // Interpolation options
     interpolation: {
-      escapeValue: false, // React already escapes values
+      escapeValue: false,
     },
-
-    // Translation resources
     resources: {
       en: {
-        translation: enTranslations,
+        translation: { ...enTranslations, metaphors: enMetaphorTranslations }
       },
       ur: {
-        translation: urTranslations,
+        translation: { ...urTranslations, metaphors: urMetaphorTranslations }
       },
       ar: {
-        translation: arTranslations,
+        translation: { ...arTranslations, metaphors: arMetaphorTranslations }
       },
       es: {
-        translation: esTranslations,
+        translation: { ...esTranslations, metaphors: esMetaphorTranslations }
       },
       fr: {
-        translation: frTranslations,
+        translation: { ...frTranslations, metaphors: frMetaphorTranslations }
       },
       fa: {
-        translation: faTranslations,
+        translation: { ...faTranslations, metaphors: faMetaphorTranslations }
       },
     },
-
-    // React options
     react: {
-      useSuspense: true,
+      useSuspense: false, // Recommended for some SSR/Static environments like Docusaurus
     },
   });
+
+// Debug: ensure translations are loaded
+if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'development') {
+  console.log('i18n initialized with languages:', i18n.languages);
+}
 
 // RTL (Right-to-Left) language support
 const RTL_LANGUAGES = ['ar', 'fa', 'ur'];

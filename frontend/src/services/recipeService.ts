@@ -35,7 +35,10 @@ export interface RecipeSummary {
   language: string;
 }
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+// Safely check for environment variables in both browser and Node.js environments
+const API_BASE_URL = (typeof process !== 'undefined' && process.env)
+  ? process.env.REACT_APP_API_URL || 'http://localhost:8000'
+  : 'http://localhost:8000';
 
 export class RecipeService {
   /**

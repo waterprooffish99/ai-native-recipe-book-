@@ -15,7 +15,13 @@ class Logger {
   private isDevelopment: boolean;
 
   constructor() {
-    this.isDevelopment = process.env.NODE_ENV !== 'production';
+    // Safely check for environment variables in both browser and Node.js environments
+    if (typeof process !== 'undefined' && process.env) {
+      this.isDevelopment = process.env.NODE_ENV !== 'production';
+    } else {
+      // Default to development mode in browser environments where process is not defined
+      this.isDevelopment = true;
+    }
   }
 
   private formatMessage(message: string, options?: LogOptions): string {

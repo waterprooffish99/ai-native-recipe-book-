@@ -43,7 +43,13 @@ class UserService {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    // Safely check for environment variables in both browser and Node.js environments
+    if (typeof process !== 'undefined' && process.env) {
+      this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    } else {
+      // Fallback for browser environments where process is not defined
+      this.baseUrl = 'http://localhost:8000';
+    }
   }
 
   private getTokenFromStorage(): string | null {

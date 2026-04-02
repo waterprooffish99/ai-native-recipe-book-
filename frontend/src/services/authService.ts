@@ -45,7 +45,14 @@ class AuthService {
   private token: string | null;
 
   constructor() {
-    this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    // Safely access environment variable in browser environment (Docusaurus 3/webpack 5 compatible)
+    // Check if process and process.env exist before accessing environment variables
+    let apiUrl = 'http://localhost:8000'; // default fallback
+    // Browser-safe check: process is not defined in browser, so we check for it first
+    if (typeof process !== 'undefined' && process.env) {
+      apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    }
+    this.baseUrl = apiUrl;
     this.token = this.getTokenFromStorage();
   }
 

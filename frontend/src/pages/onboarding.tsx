@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import authService from '../services/authService';
 import surveyService from '../services/surveyService';
 import KitchenSurvey from '../components/onboarding/KitchenSurvey';
@@ -13,21 +13,21 @@ const OnboardingPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [surveySubmitted, setSurveySubmitted] = useState(false);
   const [showSkipWarning, setShowSkipWarning] = useState(false);
-  const navigate = useNavigate();
+  const history = useHistory();
   const location = useLocation();
 
   // Check if user is authenticated and if onboarding is already completed
   useEffect(() => {
     if (!authService.isAuthenticated()) {
-      navigate('/login');
+      history.push('/login');
       return;
     }
 
     const user = authService.getCurrentUser();
     if (user && user.onboarding_completed) {
-      navigate('/dashboard');
+      history.push('/dashboard');
     }
-  }, [navigate]);
+  }, [history]);
 
   // Check if survey was already submitted
   useEffect(() => {
@@ -92,7 +92,7 @@ const OnboardingPage: React.FC = () => {
     // Complete onboarding and redirect to dashboard
     setCurrentStep(4);
     setTimeout(() => {
-      navigate('/dashboard');
+      history.push('/dashboard');
     }, 1500);
   };
 
@@ -213,7 +213,7 @@ const OnboardingPage: React.FC = () => {
                       Your profile is set up. You're ready to start your personalized cooking journey.
                     </p>
                     <button
-                      onClick={() => navigate('/dashboard')}
+                      onClick={() => history.push('/dashboard')}
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Go to Dashboard

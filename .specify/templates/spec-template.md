@@ -100,14 +100,6 @@
 - **[Entity 1]**: [What it represents, key attributes without implementation]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
-### Accessibility Requirements *(mandatory for Global Plate)*
-
-- **Voice Support**: [Does this feature support voice input/output? Specify interactions]
-- **Language Support**: [Which of the 6 languages does this affect? All or specific?]
-- **Visual Support**: [Does this include HD imagery and icon-based navigation?]
-- **Beginner-Friendly**: [Does this follow max 5 steps and one action per step?]
-- **Safety**: [Does this require Kitchen Guard sections or safety warnings?]
-
 ## Success Criteria *(mandatory)*
 
 <!--

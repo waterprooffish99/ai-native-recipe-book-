@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.specify/scripts/bash/check-prerequisites.sh *)",
+      "Bash(ls *)",
+      "Bash(mkdir *)"
+    ]
+  },
+  "$version": 3
+}

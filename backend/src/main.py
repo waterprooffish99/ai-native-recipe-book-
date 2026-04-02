@@ -35,7 +35,10 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # CORS configuration
-ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 app.add_middleware(
     CORSMiddleware,
@@ -84,7 +87,8 @@ async def root():
 
 
 # Import and include routers
-from src.api import auth, users, survey
+from src.api import auth, users, survey, recipes
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(survey.router, prefix="/survey", tags=["Survey"])
+app.include_router(recipes.router, tags=["Recipes"])

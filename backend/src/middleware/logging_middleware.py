@@ -36,21 +36,29 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
             f"with headers: {dict(request.headers)}"
         )
 
+        response = None
         try:
             # Process the request
             response = await call_next(request)
         except Exception as e:
             # Log the error
-            self.logger.error(f"ERROR processing request: {str(e)}")
+            processing_time = time.time() - start_time
+            self.logger.error(
+                f"ERROR processing request: {str(e)} for {request.method} {request.url.path} "
+                f"processed in {processing_time:.3f}s"
+            )
             raise e
         finally:
             # Calculate processing time
             processing_time = time.time() - start_time
 
-            # Log the response
-            self.logger.info(
-                f"RESPONSE: {response.status_code} for {request.method} {request.url.path} "
-                f"processed in {processing_time:.3f}s for user_id: {getattr(request.state, 'user_id', 'anonymous')}"
-            )
+            # Log the response if it exists
+            if response is not None:
+                self.logger.info(
+                    f"RESPONSE: {response.status_code} for {request.method} {request.url.path} "
+                    f"processed in {processing_time:.3f}s for user_id: {getattr(request.state, 'user_id', 'anonymous')}"
+                )
+            # If response is None, it means an exception occurred during request processing
+            # The error was already logged in the except block
 
         return response

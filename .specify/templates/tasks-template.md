@@ -157,14 +157,6 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
 
-### Global Plate Specific Testing (if applicable)
-
-- [ ] TXXX [P] Voice testing: Verify STT accuracy with kitchen background noise samples
-- [ ] TXXX [P] Language testing: Verify translations for all 6 languages (EN, UR, AR, ES, FR, FA)
-- [ ] TXXX [P] Accessibility testing: Verify WCAG 2.1 AA compliance
-- [ ] TXXX Performance testing: Verify voice response <2s p95, language switch <500ms
-- [ ] TXXX Recipe compliance: Verify max 5 steps, one action per step, Kitchen Guard sections present
-
 ---
 
 ## Dependencies & Execution Order

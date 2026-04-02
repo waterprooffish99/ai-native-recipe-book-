@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import SignupForm from '../components/auth/SignupForm';
 import GoogleOAuthButton from '../components/auth/GoogleOAuthButton';
 import authService from '../services/authService';
@@ -7,7 +7,7 @@ import authService from '../services/authService';
 const SignupPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const handleSignup = async (formData: { email: string; password: string; name: string }) => {
     setLoading(true);
@@ -18,9 +18,9 @@ const SignupPage: React.FC = () => {
       // Redirect to onboarding if not completed, otherwise to dashboard
       const user = authService.getCurrentUser();
       if (user && !user.onboarding_completed) {
-        navigate('/onboarding');
+        history.push('/onboarding');
       } else {
-        navigate('/dashboard');
+        history.push('/dashboard');
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred during signup');
