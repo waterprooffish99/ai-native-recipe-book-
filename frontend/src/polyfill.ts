@@ -6,7 +6,7 @@ if (typeof window !== 'undefined') {
     (window as any).process = {
       env: {
         NODE_ENV: 'development',
-        REACT_APP_API_URL: (window as any).REACT_APP_API_URL || 'http://localhost:8002'
+        REACT_APP_API_URL: (window as any).REACT_APP_API_URL || 'https://waterprooffish99-global-plate-backend.hf.space'
       }
     };
   }

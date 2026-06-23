@@ -61,8 +61,8 @@ export interface FridgeLogicResponse {
 
 // Safely access environment variable or default to port 8002
 const API_BASE_URL = (typeof process !== 'undefined' && process.env)
-  ? process.env.REACT_APP_API_URL || 'http://localhost:8002'
-  : 'http://localhost:8002';
+  ? process.env.REACT_APP_API_URL || 'https://waterprooffish99-global-plate-backend.hf.space'
+  : 'https://waterprooffish99-global-plate-backend.hf.space';
 
 const getAuthHeaders = (): Record<string, string> => {
   const headers: Record<string, string> = {

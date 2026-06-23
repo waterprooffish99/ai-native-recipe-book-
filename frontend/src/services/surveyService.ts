@@ -34,10 +34,10 @@ class SurveyService {
   constructor() {
     // Safely check for environment variables in both browser and Node.js environments
     if (typeof process !== 'undefined' && process.env) {
-      this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8002';
+      this.baseUrl = process.env.REACT_APP_API_URL || 'https://waterprooffish99-global-plate-backend.hf.space';
     } else {
       // Fallback for browser environments where process is not defined
-      this.baseUrl = 'http://localhost:8002';
+      this.baseUrl = 'https://waterprooffish99-global-plate-backend.hf.space';
     }
   }
 

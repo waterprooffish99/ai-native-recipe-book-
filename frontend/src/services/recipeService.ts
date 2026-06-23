@@ -35,11 +35,9 @@ export interface RecipeSummary {
   language: string;
 }
 
-// Safely access environment variable in browser environment (Docusaurus 3/webpack 5 compatible)
-// Updated to port 8002 for WSL native backend (avoids Windows port conflicts)
 const API_BASE_URL = (typeof process !== 'undefined' && process.env)
-  ? process.env.REACT_APP_API_URL || 'http://localhost:8002'  // Port 8002 for WSL
-  : 'http://localhost:8002';
+  ? process.env.REACT_APP_API_URL || 'https://waterprooffish99-global-plate-backend.hf.space'
+  : 'https://waterprooffish99-global-plate-backend.hf.space';
 
 export interface IngredientCheckboxState {
   ingredient_id: string;

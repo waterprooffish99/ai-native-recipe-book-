@@ -45,6 +45,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://ai-native-recipe-book.vercel.app",
     os.getenv("FRONTEND_URL", "http://localhost:3000"),  # Support environment variable override
 ]
 
@@ -53,7 +54,7 @@ logger.info("Note: Backend running on port 8002 (ports 8000/8001 unavailable in 
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['http://localhost:3000', 'http://127.0.0.1:3000'],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*'],
