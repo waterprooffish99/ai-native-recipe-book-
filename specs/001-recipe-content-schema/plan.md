@@ -1,55 +1,52 @@
-# Implementation Plan: Recipe Content Schema Implementation
+# Implementation Plan: Recipe Content Schema for Global Masterpieces - Product-System Transition
 
-**Branch**: `001-recipe-content-schema` | **Date**: 2025-12-24 | **Spec**: [link]
-**Input**: Feature specification from `/specs/001-recipe-content-schema/spec.md`
+**Branch**: `001-recipe-content-schema` | **Date**: 2026-04-02 | **Spec**: [spec.md](spec.md)
+**Input**: Feature specification from `/specs/001-recipe-content-schema/spec.md` v1.2
 
 **Note**: This template is filled in by the `/sp.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-Implementation of the first 5 global recipes (Pasta, Sajji, Guacamole, Shakshuka, Gomen) with a complete technical stack including database population, RAG infrastructure, multilingual support, and personalization logic. This plan covers populating the Neon Postgres database, setting up Qdrant vector store for RAG, implementing 6-language translations, and creating metaphor mapping for personalized dashboard messages.
+Implementation of Product-System Era features for Global Plate recipe platform. This plan covers Phase 8-10 transition: (1) Interactive UX with Cook Mode, ingredient checkboxes, and progress tracking using Tailwind CSS; (2) Conversational Chef AI with substitution logic and fridge inventory matching; (3) Multi-platform delivery with PWA offline support and PDF generation. Builds upon existing FastAPI backend, Neon PostgreSQL, Qdrant RAG, and Docusaurus/React frontend.
 
 ## Technical Context
 
 **Language/Version**: Python 3.11 (backend), TypeScript 5.x (frontend)
-**Primary Dependencies**: FastAPI, Qdrant Cloud, Neon Postgres, i18next, OpenAI API, Web Speech API (browser)
-**Storage**: Neon Serverless Postgres for recipe data, Qdrant Cloud for vector embeddings
-**Testing**: pytest for backend, Jest for frontend
-**Target Platform**: Web application with Docusaurus frontend and FastAPI backend
+**Primary Dependencies**: FastAPI, Qdrant Cloud, Neon Postgres, i18next, React, Tailwind CSS, NoSleep.js
+**Storage**: Neon Serverless PostgreSQL (recipe data, user progress), Qdrant Cloud (vector embeddings)
+**Testing**: pytest (backend), Jest (frontend), Playwright (E2E)
+**Target Platform**: Web application with PWA capabilities for offline use
 **Project Type**: Web application with frontend/backend separation
-**Performance Goals**: <1s vector search (RAG), <500ms language switching, <2s voice response (p95), <500ms recipe retrieval (SC-001)
-**Constraints**: <5 steps per recipe, 6 language support, Kitchen Guard safety sections, personalization based on user background, Web Speech API for voice queries (FR-005)
-**Scale/Scope**: 5 initial recipes with 6 language translations, scalable for future recipes
+**Performance Goals**: Command+K search <300ms, Cook Mode wake lock instant activation, ingredient checkbox sync <100ms
+**Constraints**: Dark-mode first design, 44x44px touch targets, WCAG 2.1 AA compliance, Halal-compliant AI suggestions
+**Scale/Scope**: 5 initial recipes with interactive features, scalable to 100+ recipes, PWA for offline Lyari use
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-Review against Global Plate Constitution principles:
+Review against Global Plate Constitution principles (v1.2.0):
 
-- [X] **Accessibility-First**: Feature supports voice-first navigation and all 6 languages (EN, UR, AR, ES, FR, FA)
-- [X] **Beginner-Centric**: All recipes follow max 5 steps, one action per step requirement
-- [X] **Safety Mandatory**: All recipes include Kitchen Guard safety sections
-- [X] **Tech Stack Discipline**: Uses defined stack (FastAPI, Qdrant Cloud, Neon Postgres, Better-Auth)
-- [X] **Multi-Modal Excellence**: Includes voice + visual components for recipe presentation (Web Speech API for STT per FR-005)
-- [X] **Personalization Required**: Uses Better-Auth context for personalized welcome messages
+- [X] **Accessibility-First**: Feature supports all 6 languages with RTL, 44x44px touch targets for ingredient checkboxes, Cook Mode high-contrast typography
+- [X] **Beginner-Centric**: Cook Mode shows one step at a time, progress bar reduces cognitive load, smart scaling eliminates manual math
+- [X] **Safety Mandatory**: Kitchen Guard warnings remain visible in Cook Mode, ingredient allergies tracked in Chef AI
+- [X] **Tech Stack Discipline**: Uses FastAPI, Neon Postgres, Qdrant, React + Tailwind CSS (approved design system upgrade)
+- [X] **Multi-Modal Excellence**: Voice search integrated with Chef AI, Cook Mode prevents screen sleep, TTS for steps
+- [X] **Personalization Required**: Chef AI adapts suggestions to user's available ingredients and cooking level
+- [X] **Systemic Interactivity (NEW)**: ✅ Ingredient checkboxes, progress sync bar, Cook Mode with wake lock, auto-advance steps
+- [X] **Big-Tech UI/UX (NEW)**: ✅ Dark-mode first, Tailwind CSS custom styling, Command+K search <300ms, Geist/Inter fonts
+- [X] **Conversational Chef AI (NEW)**: ✅ Fridge Logic substitutions, Halal-compliant suggestions, cultural sensitivity
 
-**Deviations**: None
+**Deviations**: None - all 9 principles satisfied
 
-## Success Criteria Alignment (from spec.md v1.1)
-
-- **SC-001**: Recipe retrieval within 500ms (validated by T111 performance benchmarks)
-- **SC-002**: 9/10 users complete recipes without help button (validated by user testing)
-- **SC-003**: 95% query relevance (validated by T111 RAG benchmarks)
-- **SC-004**: 85% metaphor relevance rating (validated by user feedback)
-- **SC-005**: All 6 languages complete with cultural appropriateness (validated by T099, T110)
+**Complexity Justification**: Interactive features (FR-009 to FR-011) required for Product-System Era per Constitution v1.2.0
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/001-recipe-content-schema/
+specs/[###-feature]/
 ├── plan.md              # This file (/sp.plan command output)
 ├── research.md          # Phase 0 output (/sp.plan command)
 ├── data-model.md        # Phase 1 output (/sp.plan command)
@@ -59,40 +56,51 @@ specs/001-recipe-content-schema/
 ```
 
 ### Source Code (repository root)
+<!--
+  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+  for this feature. Delete unused options and expand the chosen structure with
+  real paths (e.g., apps/admin, packages/something). The delivered plan must
+  not include Option labels.
+-->
 
 ```text
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+src/
+├── models/
+├── services/
+├── cli/
+└── lib/
+
+tests/
+├── contract/
+├── integration/
+└── unit/
+
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
 backend/
 ├── src/
 │   ├── models/
-│   │   ├── recipe.py          # Recipe data models
-│   │   └── user.py            # User profile models
 │   ├── services/
-│   │   ├── recipe_service.py  # Recipe management and RAG integration
-│   │   ├── translation_service.py # Multilingual support
-│   │   └── metaphor_service.py # Personalization logic
-│   ├── api/
-│   │   ├── recipes.py         # Recipe endpoints
-│   │   └── rag.py             # RAG endpoints
-│   └── db/
-│       └── migrations/        # Database migration scripts
+│   └── api/
 └── tests/
 
 frontend/
 ├── src/
 │   ├── components/
-│   │   ├── recipes/           # Recipe display components
-│   │   ├── voice/             # Voice interaction components
-│   │   └── dashboard/         # Dashboard components with personalized messages
-│   ├── services/
-│   │   ├── recipeService.ts   # Recipe API client
-│   │   └── ragService.ts      # RAG API client
-│   ├── utils/
-│   │   └── metaphorMapper.ts  # Metaphor mapping logic
-│   └── locales/               # Translation files for 6 languages
+│   ├── pages/
+│   └── services/
 └── tests/
+
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
+
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: Web application with separate backend (FastAPI) and frontend (Docusaurus React) following the existing Global Plate architecture.
+**Structure Decision**: [Document the selected structure and reference the real
+directories captured above]
 
 ## Complexity Tracking
 
@@ -100,4 +108,5 @@ frontend/
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| None | None | None |
+| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |

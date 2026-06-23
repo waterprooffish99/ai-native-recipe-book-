@@ -3,7 +3,7 @@
 **Purpose**: Validate specification completeness and quality before proceeding to planning  
 **Created**: 2026-04-02  
 **Feature**: [spec.md](../spec.md)  
-**Version**: 1.1
+**Version**: 1.2
 
 ## Content Quality
 
@@ -26,22 +26,42 @@
 ## Feature Readiness
 
 - [x] All functional requirements have clear acceptance criteria
-- [x] User scenarios cover primary flows
+- [x] User scenarios cover primary flows (5 user stories)
 - [x] Feature meets measurable outcomes defined in Success Criteria
 - [x] No implementation details leak into specification
 
-## Validation Notes
+## v1.2 Validation Notes
 
-**SC-002 Clarification**: Now measurable - "9 out of 10 test users can reach Recipe Complete without clicking 'I'm Confused'"
+**New Requirements (FR-009 to FR-011):**
+- ✅ FR-009 (Interactivity): Ingredient checkboxes, progress bar - testable
+- ✅ FR-010 (Smart Scaling): Auto-calculate quantities - testable
+- ✅ FR-011 (Chef AI): Conversational substitutions - testable
 
-**SC-004 Clarification**: Now measurable - "85% of users confirm welcome metaphors felt 'highly relevant'"
+**New Success Criteria (SC-006, SC-007):**
+- ✅ SC-006: Command+K search <2 seconds - measurable
+- ✅ SC-007: Touch accuracy 100% on mobile - measurable
 
-**FR-005 Clarification**: Implementation detail added (Web Speech API, POST /recipes/search) - acceptable as it clarifies user-facing voice query behavior without constraining backend implementation
+**New User Stories (US4, US5):**
+- ✅ US4 (Busy Parent): Chef AI fridge logic with acceptance scenarios
+- ✅ US5 (Focused Cook): Cook Mode with wake lock, large text
 
-**User Story Mapping**: Added explicit mapping between user stories and success criteria for traceability
+**User Story Mapping:**
+- ✅ US1 → SC-001, SC-003
+- ✅ US2 → SC-004
+- ✅ US3 → SC-002
+- ✅ US4 → SC-003, SC-006
+- ✅ US5 → SC-007
+
+**Key Entities Added:**
+- ✅ Ingredient Item (checkbox state)
+- ✅ Progress State (sync bar)
+- ✅ Serving Size (auto-calc trigger)
+- ✅ Chef AI Session (conversational context)
 
 ## Notes
 
 - ✅ All items passed validation
-- ✅ Specification ready for `/sp.plan` or `/sp.tasks`
-- ✅ v1.1 refinements address ambiguity in success metrics identified in `/sp.analyze` session
+- ✅ Specification ready for `/sp.plan`
+- ✅ v1.2 adds interactive system requirements per Constitution Principle VII (Systemic Interactivity)
+- ✅ Chef AI aligns with Constitution Principle IX (Conversational Chef AI Intelligence)
+- ✅ Cook Mode aligns with Constitution Principle VIII (Big-Tech UI/UX Aesthetic)

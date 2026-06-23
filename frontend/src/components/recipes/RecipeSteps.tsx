@@ -4,9 +4,9 @@
  */
 
 import React from 'react';
-import { RecipeStep } from '../services/recipeService';
+import { RecipeStep } from '../../services/recipeService';
 import { useTranslation } from 'react-i18next';
-import { isRTL } from '../i18n/config';
+import { isRTL } from '../../i18n/config';
 
 interface RecipeStepsProps {
   steps: RecipeStep[];

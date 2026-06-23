@@ -34,10 +34,10 @@ class SurveyService {
   constructor() {
     // Safely check for environment variables in both browser and Node.js environments
     if (typeof process !== 'undefined' && process.env) {
-      this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+      this.baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8002';
     } else {
       // Fallback for browser environments where process is not defined
-      this.baseUrl = 'http://localhost:8000';
+      this.baseUrl = 'http://localhost:8002';
     }
   }
 
@@ -124,17 +124,6 @@ class SurveyService {
     }
   }
 
-  private getAuthHeaders(): { [key: string]: string } {
-    const token = this.getToken();
-    if (!token) {
-      throw new Error('No authentication token available');
-    }
-
-    return {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    };
-  }
 
   private isTokenExpired(token: string): boolean {
     try {

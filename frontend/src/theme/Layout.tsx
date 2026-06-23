@@ -6,7 +6,7 @@ import '../polyfill';
 import OriginalLayout from '@theme-original/Layout';
 
 // Create a wrapper component that ensures polyfill is loaded before rendering
-const Layout = (props) => {
+const Layout = (props: any) => {
   return (
     <OriginalLayout {...props}>
       {props.children}

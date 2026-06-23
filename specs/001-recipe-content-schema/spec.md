@@ -3,10 +3,25 @@
 **Feature Branch**: `001-recipe-content-schema`
 **Created**: 2025-12-24
 **Status**: Draft
-**Version**: 1.1
+**Version**: 1.2
 **Input**: User description: "Create a specification for Chapter 1: The First 5 Global Masterpieces. Define a JSON-based Content Schema that includes: Recipe Name, Origin Country, Difficulty, 5-Step Instructions, a 'Kitchen Guard' safety tip, and a 'Metaphor Field' for our Personalization Engine. Ensure the schema supports our 6 target languages and is optimized for RAG (Retrieval-Augmented Generation) so our chatbot can answer questions about these recipes later."
 
 ## Specification Refinement History
+
+### v1.2 Updates (2026-04-02) - Interactive System Requirements
+
+**New Functional Requirements:**
+- **FR-009 (Interactivity)**: Interactive ingredient checklists and a persistent step-progress synchronization bar
+- **FR-010 (Smart Scaling)**: Ingredients MUST auto-calculate quantities based on user-defined serving sizes
+- **FR-011 (Chef AI)**: A conversational RAG layer capable of answering "What can I substitute for X?" or "Is this beginner-friendly?"
+
+**New Success Criteria:**
+- **SC-006 (Frictionless Navigation)**: 100% of master recipes must be accessible via Command+K search in under 2 seconds
+- **SC-007 (Mobile Utility)**: Interactive elements (checkboxes) must have a 100% success rate in touch-accuracy for mobile users
+
+**New User Stories:**
+- **US4 (The Busy Parent)**: As a user with limited items, I want the Chef AI to suggest a recipe based on my fridge contents
+- **US5 (The Focused Cook)**: As a user mid-cooking, I want a "Cook Mode" that stays awake and shows only the current step in large text
 
 ### v1.1 Updates (2026-04-02)
 
@@ -67,6 +82,36 @@ A user begins preparing a recipe and receives important safety information befor
 
 ---
 
+### User Story 4 - Chef AI Fridge Logic (Priority: P2)
+
+A busy parent with limited ingredients wants to know what they can cook right now without going to the store.
+
+**Why this priority**: Reduces food waste and grocery trips by helping users cook with what they have available.
+
+**Independent Test**: Can be tested by providing a list of available ingredients and verifying the system suggests appropriate recipes from the database.
+
+**Acceptance Scenarios**:
+
+1. **Given** a user has chicken, rice, and tomatoes, **When** they ask Chef AI "What can I make?", **Then** the system suggests recipes containing those ingredients
+2. **Given** a user is missing a key ingredient, **When** they ask for substitutions, **Then** Chef AI provides appropriate alternatives (e.g., "No buttermilk? Use milk + lemon juice")
+
+---
+
+### User Story 5 - Cook Mode Focus (Priority: P1)
+
+A user mid-cooking needs a distraction-free view that keeps the screen awake and shows only the current step in large, high-contrast text.
+
+**Why this priority**: Prevents screen timeout during cooking and reduces cognitive load by showing only relevant information.
+
+**Independent Test**: Can be tested by activating Cook Mode and verifying screen stays awake, typography is large/high-contrast, and only current step is shown.
+
+**Acceptance Scenarios**:
+
+1. **Given** a user starts Cook Mode, **When** the recipe begins, **Then** the screen stays awake and shows only the current step in large text
+2. **Given** a user completes a step, **When** they check it off, **Then** the next step automatically displays with ingredient checkboxes
+
+---
+
 ### Edge Cases
 
 - What happens when a recipe query matches multiple similar recipes?
@@ -85,6 +130,9 @@ A user begins preparing a recipe and receives important safety information befor
 - **FR-006**: System MUST store recipe instructions in a maximum 5-step format with one action per step
 - **FR-007**: System MUST include a personalization engine that can utilize metaphor fields for user-specific experience
 - **FR-008**: System MUST provide language-specific content that accounts for cultural and linguistic nuances
+- **FR-009**: System MUST provide interactive ingredient checklists and a persistent step-progress synchronization bar
+- **FR-010**: System MUST auto-calculate ingredient quantities based on user-defined serving sizes
+- **FR-011**: System MUST provide conversational RAG layer capable of answering substitution and recipe suitability questions
 
 ### Key Entities
 
@@ -93,6 +141,10 @@ A user begins preparing a recipe and receives important safety information befor
 - **Safety Tip (Kitchen Guard)**: Specific warnings about potential hazards in the cooking process
 - **Metaphor Field**: Contextual analogies tailored to user's background to enhance understanding
 - **Language Localization**: Translated content adapted for cultural and linguistic appropriateness
+- **Ingredient Item**: Individual ingredient with checkbox state for tracking preparation progress
+- **Progress State**: Persistent synchronization bar showing completed, in-progress, and pending steps
+- **Serving Size**: User-defined quantity that triggers automatic ingredient quantity recalculation
+- **Chef AI Session**: Conversational context for handling substitutions and fridge logic queries
 
 ### Accessibility Requirements *(mandatory for Global Plate)*
 
@@ -111,9 +163,13 @@ A user begins preparing a recipe and receives important safety information befor
 - **SC-003**: 95% of recipe queries return relevant, complete information that enables user understanding
 - **SC-004**: 85% of users in testing confirm that welcome metaphors (e.g., "Compiling your Sajji") felt "highly relevant" to their background
 - **SC-005**: All 6 target languages have complete recipe content with cultural appropriateness maintained
+- **SC-006**: 100% of master recipes must be accessible via Command+K search in under 2 seconds
+- **SC-007**: Interactive elements (checkboxes) must have a 100% success rate in touch-accuracy for mobile users
 
 ### User Story Mapping to Success Criteria
 
 - **US1 (RAG Search)**: Maps to **SC-001** (Speed) and **SC-003** (Relevance)
 - **US2 (Personalization)**: Maps to **SC-004** (Metaphor Relevance)
 - **US3 (Kitchen Guard)**: Maps to **SC-002** (Task Completion Success)
+- **US4 (Chef AI Fridge Logic)**: Maps to **SC-003** (Relevance) and **SC-006** (Frictionless Navigation)
+- **US5 (Cook Mode Focus)**: Maps to **SC-007** (Mobile Utility)

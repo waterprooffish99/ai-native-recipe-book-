@@ -93,7 +93,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
   // Determine button text and functionality based on state
   let buttonText = '';
-  let buttonAction = handlePlay;
+  let buttonAction: () => void | Promise<void> = handlePlay;
   let buttonDisabled = isPlaying || isLoading;
 
   if (isLoading) {

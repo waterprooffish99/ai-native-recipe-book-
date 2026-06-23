@@ -7,6 +7,13 @@ import React, { useState, useEffect } from 'react';
 import { Recipe, RecipeService } from '../../services/recipeService';
 import RecipeSteps from './RecipeSteps';
 import KitchenGuard from './KitchenGuard';
+import { IngredientChecklist, scaleQuantity } from './IngredientChecklist';
+import { CookMode } from './CookMode';
+import { StepProgressBar } from './StepProgressBar';
+import { ServingSizeController } from './ServingSizeController';
+import { PdfDownloadButton } from './PdfDownloadButton';
+import { useRecipeProgress } from '../../hooks/useRecipeProgress';
+import authService from '../../services/authService';
 import { useTranslation } from 'react-i18next';
 import { isRTL } from '../../i18n/config';
 
@@ -16,13 +23,112 @@ interface RecipeDetailProps {
   onBack?: () => void;
 }
 
+// Pure helper function to handle different database seed ingredient formats (dict vs list vs string)
+const parseIngredients = (ingredientsInput: any): { ingredient_id: string; name: string; quantity?: string; unit?: string }[] => {
+  if (!ingredientsInput) return [];
+  
+  let raw: any = ingredientsInput;
+  if (typeof ingredientsInput === 'string') {
+    try {
+      raw = JSON.parse(ingredientsInput);
+    } catch {
+      return [{ ingredient_id: 'ing-0', name: ingredientsInput }];
+    }
+  }
+
+  const isIngredientObj = (obj: any) => obj && typeof obj === 'object' && ('name' in obj);
+
+  const list: any[] = [];
+  
+  const processItem = (item: any) => {
+    if (typeof item === 'string') {
+      list.push({ name: item });
+    } else if (typeof item === 'object' && item !== null) {
+      if (isIngredientObj(item)) {
+        list.push({
+          name: item.name,
+          quantity: item.quantity,
+          unit: item.unit
+        });
+      } else {
+        // It's a key-value dictionary, e.g. {"chicken": "1 whole chicken"}
+        Object.entries(item).forEach(([key, val]) => {
+          list.push({
+            name: key,
+            quantity: typeof val === 'string' || typeof val === 'number' ? String(val) : ''
+          });
+        });
+      }
+    }
+  };
+
+  if (Array.isArray(raw)) {
+    raw.forEach(processItem);
+  } else {
+    processItem(raw);
+  }
+
+  return list.map((item, idx) => ({
+    ingredient_id: `ing-${idx}`,
+    name: item.name || '',
+    quantity: item.quantity,
+    unit: item.unit,
+  }));
+};
+
 const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', onBack }) => {
   const { t, i18n } = useTranslation();
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const [servings, setServings] = useState<number>(4);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(language);
   const isRtl = isRTL(i18n.language);
+
+  // Dynamic steps/instructions normalizer for both English and translated payloads
+  const rawSteps = recipe?.steps || (recipe as any)?.instructions || [];
+  const stepsArray = Array.isArray(rawSteps)
+    ? rawSteps
+    : (rawSteps && typeof rawSteps === 'object' ? Object.values(rawSteps) : []);
+  const parsedSteps = stepsArray.map((step: any, idx: number) => {
+    if (typeof step === 'string') {
+      return {
+        step_number: idx + 1,
+        instruction: step,
+      };
+    }
+    if (step && typeof step === 'object') {
+      const text = step.instruction || step.step_text || step.text || '';
+      return {
+        ...step,
+        step_number: step.step_number || idx + 1,
+        instruction: typeof text === 'string' ? text : String(text || ''),
+      };
+    }
+    return {
+      step_number: idx + 1,
+      instruction: String(step || ''),
+    };
+  });
+
+  const isAuthenticated = authService.isAuthenticated();
+  const {
+    progress,
+    updateProgress,
+    toggleIngredient,
+    toggleCookMode,
+  } = useRecipeProgress(recipeId, isAuthenticated);
+
+  const [cookModeActiveLocal, setCookModeActiveLocal] = useState<boolean>(false);
+  const [currentCookStepLocal, setCurrentCookStepLocal] = useState<number>(1);
+
+  const cookModeActive = isAuthenticated ? (progress?.cook_mode_active ?? false) : cookModeActiveLocal;
+  const currentCookStep = isAuthenticated ? (progress?.current_step ?? 1) : currentCookStepLocal;
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -30,14 +136,18 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
         setLoading(true);
         setError(null);
 
+        let recipeData;
         // Try to get recipe in selected language first, fall back to default
         try {
-          const recipeData = await RecipeService.getRecipeTranslation(recipeId, selectedLanguage);
+          recipeData = await RecipeService.getRecipeTranslation(recipeId, selectedLanguage);
           setRecipe(recipeData);
-        } catch {
+        } catch (err) {
           // If translation not found, get default recipe
-          const recipeData = await RecipeService.getRecipeById(recipeId, selectedLanguage);
+          recipeData = await RecipeService.getRecipeById(recipeId, selectedLanguage);
           setRecipe(recipeData);
+        }
+        if (recipeData && recipeData.servings) {
+          setServings(recipeData.servings);
         }
       } catch (err) {
         console.error('Error fetching recipe:', err);
@@ -53,6 +163,17 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedLanguage(e.target.value);
   };
+
+  if (!isMounted) {
+    return (
+      <div className={`text-center py-12 ${isRtl ? 'rtl-recipe-detail' : 'ltr-recipe-detail'}`} dir={isRtl ? 'rtl' : 'ltr'}>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <p className="mt-4 text-xl text-gray-600 dark:text-gray-400">
+          {t('common.loading', 'Loading...')}
+        </p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
@@ -150,6 +271,81 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
     }
   };
 
+  // Cook Mode handlers
+  const handleStartCookMode = () => {
+    if (isAuthenticated) {
+      updateProgress(1, 'in_progress', true);
+    } else {
+      setCookModeActiveLocal(true);
+      setCurrentCookStepLocal(1);
+    }
+  };
+
+  const handleExitCookMode = () => {
+    if (isAuthenticated) {
+      updateProgress(currentCookStep, 'in_progress', false);
+    } else {
+      setCookModeActiveLocal(false);
+      setCurrentCookStepLocal(1);
+    }
+  };
+
+  const handleCookStepComplete = (stepNumber: number) => {
+    console.log(`Step ${stepNumber} completed`);
+    const totalSteps = parsedSteps.length;
+    const isLast = totalSteps > 0 ? (stepNumber >= totalSteps) : false;
+
+    if (isAuthenticated) {
+      updateProgress(stepNumber, 'completed', true).then(() => {
+        if (!isLast) {
+          updateProgress(stepNumber + 1, 'in_progress', true);
+        }
+      });
+    } else {
+      if (totalSteps > 0 && stepNumber < totalSteps) {
+        setCurrentCookStepLocal(stepNumber + 1);
+      }
+    }
+  };
+
+  const handleNextCookStep = () => {
+    const totalSteps = parsedSteps.length;
+    if (totalSteps > 0 && currentCookStep < totalSteps) {
+      if (isAuthenticated) {
+        const nextStatus = progress?.step_progress[currentCookStep]?.status || 'in_progress';
+        updateProgress(currentCookStep + 1, nextStatus, true);
+      } else {
+        setCurrentCookStepLocal(currentCookStep + 1);
+      }
+    }
+  };
+
+  const handlePreviousCookStep = () => {
+    if (currentCookStep > 1) {
+      if (isAuthenticated) {
+        const prevStatus = progress?.step_progress[currentCookStep - 2]?.status || 'in_progress';
+        updateProgress(currentCookStep - 1, prevStatus, true);
+      } else {
+        setCurrentCookStepLocal(currentCookStep - 1);
+      }
+    }
+  };
+
+  // Render Cook Mode if active
+  if (cookModeActive && recipe) {
+    return (
+      <CookMode
+        recipeName={recipe.name}
+        steps={parsedSteps}
+        currentStep={currentCookStep}
+        onStepComplete={handleCookStepComplete}
+        onNextStep={handleNextCookStep}
+        onPreviousStep={handlePreviousCookStep}
+        onExit={handleExitCookMode}
+      />
+    );
+  }
+
   return (
     <div className={`recipe-detail-container ${isRtl ? 'rtl-recipe-detail' : 'ltr-recipe-detail'}`} dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Header with back button and language selector */}
@@ -234,6 +430,31 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
         </div>
       )}
 
+      {/* T114: Step Progress Bar */}
+      {parsedSteps.length > 0 && (
+        <StepProgressBar
+          totalSteps={parsedSteps.length}
+          currentStep={currentCookStep}
+          stepStatusList={progress?.step_progress.map(s => ({
+            step_number: s.step_number,
+            status: s.status as 'pending' | 'in_progress' | 'completed'
+          })) || []}
+        />
+      )}
+
+      {/* Cook Mode Toggle Button */}
+      <div className="mb-6">
+        <button
+          onClick={handleStartCookMode}
+          className="w-full sm:w-auto px-8 py-4 bg-globalplate-accent text-white text-xl font-bold rounded-lg hover:bg-red-600 transition-colors shadow-lg"
+        >
+          🍳 Start Cook Mode
+        </button>
+        <p className="text-globalplate-text-secondary mt-2 text-sm">
+          Fullscreen mode with large text and screen wake lock
+        </p>
+      </div>
+
       {/* Recipe metadata */}
       <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 ${isRtl ? 'text-right' : 'text-left'}`}>
         <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
@@ -260,23 +481,59 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
         </div>
       </div>
 
-      {/* Ingredients section */}
+      {/* Serving Size Controller & PDF Download Button */}
+      {recipe.servings && (
+        <div className="flex flex-wrap items-center gap-4 mb-6">
+          <ServingSizeController
+            currentServings={servings}
+            onServingsChange={setServings}
+            baseServings={recipe.servings}
+          />
+          <PdfDownloadButton
+            recipe={recipe}
+            scalingFactor={servings / recipe.servings}
+            language={selectedLanguage}
+          />
+        </div>
+      )}
+
+      {/* Ingredients section with Checklist */}
       <div className={`mb-8 ${isRtl ? 'text-right' : 'text-left'}`}>
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {t('recipe.ingredients.title', 'Ingredients')}
         </h2>
         {recipe.ingredients && recipe.ingredients.length > 0 ? (
-          <ul className="space-y-2">
-            {recipe.ingredients.map((ingredient: any, index: number) => (
-              <li key={index} className="flex items-start">
-                <span className="text-green-600 dark:text-green-400 mr-2 mt-1">•</span>
-                <span className="text-gray-800 dark:text-gray-200">
-                  {typeof ingredient === 'string' ? ingredient :
-                   ingredient.quantity ? `${ingredient.quantity} ${ingredient.name || ingredient}` : ingredient.name || ingredient}
-                </span>
-              </li>
-            ))}
-          </ul>
+          (() => {
+            const parsedIngredients = parseIngredients(recipe.ingredients);
+            const scalingFactor = recipe.servings ? servings / recipe.servings : 1;
+            return (
+              <>
+                {/* Interactive Ingredient Checklist */}
+                <IngredientChecklist
+                  ingredients={parsedIngredients}
+                  checkedIngredientIds={progress?.ingredient_checkboxes.filter(cb => cb.is_checked).map(cb => cb.ingredient_id) || []}
+                  onIngredientToggle={(ingredientId, isChecked) => {
+                    if (isAuthenticated) {
+                      toggleIngredient(ingredientId, isChecked);
+                    }
+                  }}
+                  scalingFactor={scalingFactor}
+                />
+                
+                {/* Fallback plain list */}
+                <ul className="space-y-2 mt-4">
+                  {parsedIngredients.map((ingredient) => (
+                    <li key={ingredient.ingredient_id} className="flex items-start">
+                      <span className="text-green-600 dark:text-green-400 mr-2 mt-1">•</span>
+                      <span className="text-gray-800 dark:text-gray-200">
+                        {ingredient.quantity ? `${scaleQuantity(ingredient.quantity, scalingFactor)} ${ingredient.name}` : ingredient.name}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            );
+          })()
         ) : (
           <p className="text-gray-600 dark:text-gray-400 italic">
             {t('recipe.ingredients.none', 'No ingredients specified')}
@@ -285,9 +542,9 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
       </div>
 
       {/* Steps section */}
-      {recipe.steps && recipe.steps.length > 0 && (
+      {parsedSteps.length > 0 && (
         <div className="mb-8">
-          <RecipeSteps steps={recipe.steps} />
+          <RecipeSteps steps={parsedSteps} />
         </div>
       )}
     </div>

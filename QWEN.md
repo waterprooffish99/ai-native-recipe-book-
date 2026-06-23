@@ -208,3 +208,10 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- Python 3.11 (backend), TypeScript 5.x (frontend) + FastAPI, Qdrant Cloud, Neon Postgres, i18next, React, Tailwind CSS, NoSleep.js (001-recipe-content-schema)
+- Neon Serverless PostgreSQL (recipe data, user progress), Qdrant Cloud (vector embeddings) (001-recipe-content-schema)
+
+## Recent Changes
+- 001-recipe-content-schema: Added Python 3.11 (backend), TypeScript 5.x (frontend) + FastAPI, Qdrant Cloud, Neon Postgres, i18next, React, Tailwind CSS, NoSleep.js

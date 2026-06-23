@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /**
  * Custom CSS overrides for Global Plate
  *
@@ -5,8 +9,9 @@
  * and add project-specific styling.
  */
 
-/* Add your custom styles here */
+/* Global Plate Theme Colors - Dark Theme Support */
 :root {
+  /* Primary brand colors */
   --ifm-color-primary: #2563eb;
   --ifm-color-primary-dark: #1d4ed8;
   --ifm-color-primary-darker: #1a47c2;
@@ -14,25 +19,92 @@
   --ifm-color-primary-light: #3b82f6;
   --ifm-color-primary-lighter: #60a5fa;
   --ifm-color-primary-lightest: #93c5fd;
+  
+  /* Dark theme background colors */
+  --ifm-background-color: #1a1a2e !important;
+  --ifm-background-surface-color: #16213e !important;
+  --globalplate-bg-dark: #1a1a2e;
+  --globalplate-bg-surface: #16213e;
+  --globalplate-bg-card: #0f3460;
+  
+  /* Text colors for dark theme */
+  --globalplate-text-primary: #e8e8e8;
+  --globalplate-text-secondary: #b0b0b0;
+  --globalplate-text-muted: #94a3b8;
+  
+  /* Accent colors */
+  --globalplate-accent: #e94560;
+  --globalplate-success: #10b981;
+  --globalplate-warning: #f59e0b;
 }
 
-/* Dashboard specific styles */
+/* Force dark theme for entire application */
+[data-theme='dark'],
+html:not([data-theme='light']) {
+  --ifm-background-color: #1a1a2e !important;
+  --ifm-background-surface-color: #16213e !important;
+  --ifm-navbar-background-color: #0f3460 !important;
+  --ifm-footer-background-color: #0f3460 !important;
+}
+
+/* Dashboard specific styles with dark theme */
 .dashboard-container {
   padding: 2rem 0;
   max-width: 1200px;
   margin: 0 auto;
+  background: var(--globalplate-bg-dark);
+  min-height: 100vh;
 }
 
 .dashboard-header {
   text-align: center;
   margin-bottom: 2rem;
+  color: var(--globalplate-text-primary);
 }
 
 .dashboard-title {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--ifm-heading-color);
+  color: var(--globalplate-text-primary);
   margin-bottom: 0.5rem;
+}
+
+/* Recipe section dark theme */
+.recipe-section {
+  background: var(--globalplate-bg-surface);
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.recipe-section h2 {
+  color: var(--globalplate-text-primary);
+}
+
+/* Quick access cards dark theme */
+.quick-access-section {
+  background: var(--globalplate-bg-surface);
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+}
+
+.quick-access-section h2 {
+  color: var(--globalplate-text-primary);
+}
+
+/* Progress section dark theme */
+.progress-section {
+  background: var(--globalplate-bg-card);
+  padding: 2rem;
+  border-radius: 12px;
+  margin: 2rem 0;
+  color: var(--globalplate-text-primary);
+}
+
+.progress-section h2 {
+  color: var(--globalplate-text-primary);
 }
 
 /* Responsive adjustments */
@@ -40,4 +112,84 @@
   .dashboard-container {
     padding: 1rem;
   }
+}
+
+/* Override any white backgrounds that might appear */
+body,
+#__docusaurus,
+.main-wrapper {
+  background-color: var(--globalplate-bg-dark) !important;
+}
+
+/* Cook Mode Styles */
+.cook-mode-active {
+  @apply fixed inset-0 bg-globalplate-bg-dark z-50 flex flex-col;
+}
+
+.cook-mode-step {
+  @apply text-4xl font-bold text-globalplate-text-primary text-center;
+}
+
+.cook-mode-ingredient {
+  @apply flex items-center space-x-3 p-3;
+}
+
+.cook-mode-checkbox {
+  @apply w-8 h-8 cursor-pointer;
+}
+
+/* Ingredient Checklist Styles */
+.ingredient-checklist {
+  @apply space-y-2;
+}
+
+.ingredient-item {
+  @apply flex items-center space-x-3 p-3 bg-globalplate-bg-card rounded-lg;
+}
+
+.ingredient-checkbox {
+  @apply w-6 h-6 text-globalplate-accent border-globalplate-text-muted cursor-pointer;
+}
+
+.ingredient-checkbox:checked {
+  @apply bg-globalplate-accent border-globalplate-accent;
+}
+
+.ingredient-name {
+  @apply text-lg text-globalplate-text-primary;
+}
+
+.ingredient-name.checked {
+  @apply line-through text-globalplate-text-muted;
+}
+
+/* Step Progress Bar */
+.step-progress-bar {
+  @apply h-2 bg-globalplate-bg-card rounded-full overflow-hidden;
+}
+
+.step-progress-fill {
+  @apply h-full bg-globalplate-accent transition-all duration-300;
+}
+
+/* Touch target minimum (Constitution Principle I) */
+button,
+input[type="checkbox"],
+input[type="button"],
+a {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Global keyboard focus indicators for accessibility */
+:focus-visible {
+  outline: 2px solid var(--ifm-color-primary) !important;
+  outline-offset: 2px;
+}
+
+/* Command Menu & custom accessible item keyboard selection feedback */
+[data-selected="true"],
+[aria-selected="true"] {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
 }

@@ -219,3 +219,62 @@ class RecipeSearchResult(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class IngredientCheckboxState(BaseModel):
+    """Ingredient checkbox state schema"""
+    ingredient_id: str
+    is_checked: bool
+    checked_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class StepProgressState(BaseModel):
+    """Step progress state schema"""
+    step_id: UUID
+    step_number: int
+    status: str  # pending, in_progress, completed
+    completed_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class UserRecipeProgress(BaseModel):
+    """User recipe progress schema"""
+    user_id: UUID
+    recipe_id: UUID
+    current_step: int
+    total_steps: int
+    progress_percentage: float
+    ingredient_checkboxes: List[IngredientCheckboxState] = []
+    step_progress: List[StepProgressState] = []
+    cook_mode_active: bool
+    last_synced_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class ProgressUpdate(BaseModel):
+    """Payload to update recipe step progress"""
+    current_step: int = Field(..., ge=1, le=5)
+    step_status: str  # pending, in_progress, completed
+    cook_mode_active: bool = False
+
+
+class IngredientToggle(BaseModel):
+    """Payload to toggle ingredient checked status"""
+    ingredient_id: str
+    is_checked: bool
+
+
+class CookModeState(BaseModel):
+    """Cook mode state schema"""
+    active: bool
+    current_step: int
+    wake_lock_enabled: bool
+    large_text_mode: bool
+

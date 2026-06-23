@@ -38,6 +38,7 @@ i18n
     debug: (typeof process !== 'undefined' && process.env) ? process.env.NODE_ENV === 'development' : false,
     nsSeparator: false,
     keySeparator: false,
+    returnObjects: false,
     detection: {
       order: ['querystring', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage', 'cookie'],
@@ -89,17 +90,22 @@ export const isRTL = (language: string): boolean => {
  * Set document direction based on current language
  */
 export const setDocumentDirection = (language: string): void => {
+  if (typeof document === 'undefined') return;
   const dir = isRTL(language) ? 'rtl' : 'ltr';
   document.documentElement.dir = dir;
   document.documentElement.lang = language;
 };
 
 // Set initial document direction
-setDocumentDirection(i18n.language);
+if (typeof document !== 'undefined') {
+  setDocumentDirection(i18n.language);
+}
 
 // Update document direction on language change
 i18n.on('languageChanged', (lng) => {
-  setDocumentDirection(lng);
+  if (typeof document !== 'undefined') {
+    setDocumentDirection(lng);
+  }
 });
 
 export default i18n;

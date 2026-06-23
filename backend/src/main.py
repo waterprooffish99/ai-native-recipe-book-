@@ -9,6 +9,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from src.db.connection import connect_db, disconnect_db
+import asyncpg
+
+# Global database connection pool for asyncpg raw queries
+db_pool: asyncpg.Pool = None
+
 
 # Configure logging
 logging.basicConfig(
@@ -48,12 +53,10 @@ logger.info("Note: Backend running on port 8002 (ports 8000/8001 unavailable in 
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
+    allow_origins=['http://localhost:3000', 'http://127.0.0.1:3000'],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type", "Accept"],
-    expose_headers=["X-Request-ID"],
-    max_age=3600,
+    allow_methods=['*'],
+    allow_headers=['*'],
 )
 
 # Add request logging middleware
@@ -65,13 +68,18 @@ app.add_middleware(RequestLoggingMiddleware)
 @app.on_event("startup")
 async def startup():
     """Connect to database on startup."""
+    global db_pool
     await connect_db()
+    db_pool = await asyncpg.create_pool(os.getenv("DATABASE_URL"))
     logger.info("🚀 Global Plate API started")
 
 
 @app.on_event("shutdown")
 async def shutdown():
     """Disconnect from database on shutdown."""
+    global db_pool
+    if db_pool:
+        await db_pool.close()
     await disconnect_db()
     logger.info("👋 Global Plate API shutdown")
 
@@ -95,8 +103,10 @@ async def root():
 
 
 # Import and include routers
-from src.api import auth, users, survey, recipes
+from src.api import auth, users, survey, recipes, chef_ai
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(survey.router, prefix="/survey", tags=["Survey"])
 app.include_router(recipes.router, tags=["Recipes"])
+app.include_router(chef_ai.router)
+

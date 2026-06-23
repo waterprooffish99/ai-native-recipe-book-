@@ -9,8 +9,11 @@ import asyncpg
 
 from src.models.recipe import (
     RecipeDetail, RecipeSummary, RecipeSearchResult,
-    LanguageCode, DifficultyLevel
+    LanguageCode, DifficultyLevel, UserRecipeProgress,
+    ProgressUpdate, IngredientToggle, CookModeState
 )
+from src.models.user import User
+from src.api.users import get_current_user
 from src.services.recipe_service import RecipeService
 from src.services.rag_service import RAGService
 from src.middleware.error_handler import (
@@ -84,22 +87,40 @@ async def list_recipes(
     """
     logger.info(f"GET /recipes - language={language}, difficulty={difficulty}")
 
-    # Validate language
-    lang_code = validate_language(language)
+    # Validate language defensively
+    try:
+        lang_code = validate_language(language)
+    except Exception as e:
+        logger.warning(f"Invalid language '{language}' requested, falling back to 'EN'. Error: {e}")
+        lang_code = LanguageCode("EN")
 
     # Validate difficulty if provided
     diff_level = None
     if difficulty:
         diff_level = validate_difficulty(difficulty)
 
-    # Get recipes
-    recipe_service = RecipeService(db_pool)
-    recipes = await recipe_service.list_recipes(
-        language=lang_code,
-        difficulty=diff_level,
-        limit=limit,
-        offset=offset
-    )
+    # Get recipes with safe EN fallback
+    try:
+        recipe_service = RecipeService(db_pool)
+        recipes = await recipe_service.list_recipes(
+            language=lang_code,
+            difficulty=diff_level,
+            limit=limit,
+            offset=offset
+        )
+    except Exception as db_err:
+        logger.error(f"Database error during list_recipes with language '{lang_code}': {db_err}. Retrying with 'EN' fallback.")
+        try:
+            recipe_service = RecipeService(db_pool)
+            recipes = await recipe_service.list_recipes(
+                language=LanguageCode("EN"),
+                difficulty=diff_level,
+                limit=limit,
+                offset=offset
+            )
+        except Exception as fallback_err:
+            logger.critical(f"Critical fallback database error: {fallback_err}")
+            recipes = []
 
     logger.info(f"✓ Returned {len(recipes)} recipes")
     return recipes
@@ -127,12 +148,25 @@ async def get_recipe(
     """
     logger.info(f"GET /recipes/{recipe_id} - language={language}")
 
-    # Validate language
-    lang_code = validate_language(language)
+    # Validate language defensively
+    try:
+        lang_code = validate_language(language)
+    except Exception as e:
+        logger.warning(f"Invalid language '{language}' requested, falling back to 'EN'. Error: {e}")
+        lang_code = LanguageCode("EN")
 
-    # Get recipe
-    recipe_service = RecipeService(db_pool)
-    recipe = await recipe_service.get_recipe_by_id(recipe_id, lang_code)
+    # Get recipe with safe EN fallback
+    try:
+        recipe_service = RecipeService(db_pool)
+        recipe = await recipe_service.get_recipe_by_id(recipe_id, lang_code)
+    except Exception as db_err:
+        logger.error(f"Database error during get_recipe_by_id with language '{lang_code}': {db_err}. Retrying with 'EN' fallback.")
+        try:
+            recipe_service = RecipeService(db_pool)
+            recipe = await recipe_service.get_recipe_by_id(recipe_id, LanguageCode("EN"))
+        except Exception as fallback_err:
+            logger.critical(f"Critical fallback database error: {fallback_err}")
+            recipe = None
 
     # T045: Error handling for recipe not found
     if not recipe:
@@ -184,8 +218,12 @@ async def search_recipes(
     """
     logger.info(f"POST /recipes/search - query='{query}', language={language}")
 
-    # Validate language
-    lang_code = validate_language(language)
+    # Validate language defensively
+    try:
+        lang_code = validate_language(language)
+    except Exception as e:
+        logger.warning(f"Invalid language '{language}' requested, falling back to 'EN'. Error: {e}")
+        lang_code = LanguageCode("EN")
 
     # Create RAG service
     rag_service = RAGService(db_pool)
@@ -267,4 +305,126 @@ async def translate_recipe(
                 "code": "TranslationNotFound",
                 "details": e.details
             }
+        )
+
+
+@router.get("/{recipeId}/progress", response_model=UserRecipeProgress)
+async def get_recipe_progress(
+    recipeId: UUID,
+    current_user: User = Depends(get_current_user),
+    db_pool: asyncpg.Pool = Depends(get_db_pool)
+):
+    """
+    T120 (Part 1): Get user's progress for a recipe.
+    """
+    recipe_service = RecipeService(db_pool)
+    progress = await recipe_service.get_recipe_progress(UUID(str(current_user.id)), recipeId)
+    if not progress:
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "Progress not found", "code": "ProgressNotFound"}
+        )
+    return progress
+
+
+@router.post("/{recipeId}/progress", response_model=UserRecipeProgress)
+async def update_recipe_progress(
+    recipeId: UUID,
+    update: ProgressUpdate,
+    current_user: User = Depends(get_current_user),
+    db_pool: asyncpg.Pool = Depends(get_db_pool)
+):
+    """
+    T120 (Part 2): Initialize or update recipe progress.
+    """
+    recipe_service = RecipeService(db_pool)
+    try:
+        progress = await recipe_service.update_recipe_progress(
+            user_id=UUID(str(current_user.id)),
+            recipe_id=recipeId,
+            current_step=update.current_step,
+            step_status=update.step_status,
+            cook_mode_active=update.cook_mode_active
+        )
+        return progress
+    except Exception as e:
+        logger.error(f"Failed to update progress: {e}")
+        raise HTTPException(
+            status_code=400,
+            detail={"error": str(e), "code": "INVALID_PROGRESS_UPDATE"}
+        )
+
+
+@router.post("/{recipeId}/ingredients/check")
+async def toggle_ingredient_checkbox(
+    recipeId: UUID,
+    toggle: IngredientToggle,
+    current_user: User = Depends(get_current_user),
+    db_pool: asyncpg.Pool = Depends(get_db_pool)
+):
+    """
+    T121: Toggle checked status of an ingredient checkbox.
+    """
+    recipe_service = RecipeService(db_pool)
+    try:
+        await recipe_service.toggle_ingredient_checkbox(
+            user_id=UUID(str(current_user.id)),
+            recipe_id=recipeId,
+            ingredient_id=toggle.ingredient_id,
+            is_checked=toggle.is_checked
+        )
+        return {"message": "Checkbox toggled successfully"}
+    except Exception as e:
+        logger.error(f"Failed to toggle checkbox: {e}")
+        raise HTTPException(
+            status_code=400,
+            detail={"error": str(e), "code": "INVALID_INGREDIENT_TOGGLE"}
+        )
+
+
+@router.post("/{recipeId}/cook-mode", response_model=CookModeState)
+async def toggle_cook_mode(
+    recipeId: UUID,
+    current_user: User = Depends(get_current_user),
+    db_pool: asyncpg.Pool = Depends(get_db_pool)
+):
+    """
+    POST /{recipeId}/cook-mode: Toggle cook mode active status.
+    """
+    recipe_service = RecipeService(db_pool)
+    try:
+        progress = await recipe_service.get_recipe_progress(UUID(str(current_user.id)), recipeId)
+        new_active = True
+        current_step = 1
+
+        if progress:
+            new_active = not progress.cook_mode_active
+            current_step = progress.current_step
+            await recipe_service.update_recipe_progress(
+                user_id=UUID(str(current_user.id)),
+                recipe_id=recipeId,
+                current_step=current_step,
+                step_status=progress.step_progress[current_step - 1].status if current_step - 1 < len(progress.step_progress) else "pending",
+                cook_mode_active=new_active
+            )
+        else:
+            await recipe_service.update_recipe_progress(
+                user_id=UUID(str(current_user.id)),
+                recipe_id=recipeId,
+                current_step=1,
+                step_status="pending",
+                cook_mode_active=new_active
+            )
+
+        return CookModeState(
+            active=new_active,
+            current_step=current_step,
+            wake_lock_enabled=new_active,
+            large_text_mode=new_active
+        )
+    except Exception as e:
+        logger.error(f"Failed to toggle cook mode: {e}")
+        raise HTTPException(
+            status_code=400,
+            detail={"error": str(e), "code": "COOK_MODE_TOGGLE_ERROR"}
         )

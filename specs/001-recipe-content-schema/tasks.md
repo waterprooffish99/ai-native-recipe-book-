@@ -72,45 +72,45 @@ This is a web application with:
 
 ### Implementation for User Story 1
 
-- [ ] T023 [P] [US1] Create Recipe Pydantic model in backend/src/models/recipe.py (with all fields from data-model.md)
-- [ ] T024 [P] [US1] Create RecipeTranslation Pydantic model in backend/src/models/recipe.py (with language_code, name, kitchen_guard, ingredients)
-- [ ] T025 [P] [US1] Create RecipeStep Pydantic model in backend/src/models/recipe.py (with step_number 1-5, instruction, audio_clip_url, image_url)
-- [ ] T026 [P] [US1] Create RecipeStepTranslation Pydantic model in backend/src/models/recipe.py (with step_id FK, language_code, instruction)
-- [ ] T027 [US1] Create seed migration for 5 global recipes in backend/src/db/migrations/ (Pasta-Italy, Sajji-Pakistan, Guacamole-Mexico, Shakshuka-MiddleEast, Gomen-Ethiopia)
-- [ ] T028 [US1] Add recipe translations for all 6 languages to seed migration (EN, UR, AR, ES, FR, FA with culturally appropriate content)
-- [ ] T029 [US1] Add recipe steps (max 5 steps, one action per step) with translations to seed migration
-- [ ] T030 [US1] Run seed migration to populate database with 5 recipes: alembic upgrade head
-- [ ] T031 [US1] Implement RecipeService.get_recipe_by_id() in backend/src/services/recipe_service.py (fetch recipe with translations)
-- [ ] T032 [US1] Implement RecipeService.list_recipes() in backend/src/services/recipe_service.py (with language and difficulty filters)
-- [ ] T033 [US1] Implement RecipeService.get_recipe_translation() in backend/src/services/recipe_service.py (fetch specific language version)
-- [ ] T034 [US1] Implement recipe embedding generation in backend/src/services/rag_service.py (using OpenAI embeddings API)
-- [ ] T035 [US1] Implement script to generate and store embeddings for all recipes in backend/scripts/generate_embeddings.py
-- [ ] T036 [US1] Run embedding generation script: python backend/scripts/generate_embeddings.py
-- [ ] T037 [US1] Implement RAG search functionality in backend/src/services/rag_service.py (vector search in Qdrant with relevance scoring)
-- [ ] T038 [US1] Implement RAG context retrieval in backend/src/services/rag_service.py (fetch relevant recipe content for LLM)
-- [ ] T039 [US1] Create GET /recipes endpoint in backend/src/api/recipes.py (with language and difficulty query parameters)
-- [ ] T040 [US1] Create GET /recipes/{recipeId} endpoint in backend/src/api/recipes.py (with language query parameter)
-- [ ] T041 [US1] Create POST /recipes/search endpoint in backend/src/api/recipes.py (RAG-based natural language search)
-- [ ] T042 [US1] Create GET /recipes/{recipeId}/translate endpoint in backend/src/api/recipes.py (fetch specific language translation)
-- [ ] T043 [US1] Add validation for language codes in backend/src/api/recipes.py (ensure only EN, UR, AR, ES, FR, FA accepted)
-- [ ] T044 [US1] Add validation for difficulty levels in backend/src/api/recipes.py (ensure only 'Absolute Beginner', 'Beginner', 'Beginner+')
-- [ ] T045 [US1] Add error handling for recipe not found in backend/src/api/recipes.py (return 404 with proper error response)
+- [X] T023 [P] [US1] Create Recipe Pydantic model in backend/src/models/recipe.py (with all fields from data-model.md)
+- [X] T024 [P] [US1] Create RecipeTranslation Pydantic model in backend/src/models/recipe.py (with language_code, name, kitchen_guard, ingredients)
+- [X] T025 [P] [US1] Create RecipeStep Pydantic model in backend/src/models/recipe.py (with step_number 1-5, instruction, audio_clip_url, image_url)
+- [X] T026 [P] [US1] Create RecipeStepTranslation Pydantic model in backend/src/models/recipe.py (with step_id FK, language_code, instruction)
+- [X] T027 [US1] Create seed migration for 5 global recipes in backend/src/db/migrations/ (Pasta-Italy, Sajji-Pakistan, Guacamole-Mexico, Shakshuka-MiddleEast, Gomen-Ethiopia)
+- [X] T028 [US1] Add recipe translations for all 6 languages to seed migration (EN, UR, AR, ES, FR, FA with culturally appropriate content)
+- [X] T029 [US1] Add recipe steps (max 5 steps, one action per step) with translations to seed migration
+- [X] T030 [US1] Run seed migration to populate database with 5 recipes: alembic upgrade head
+- [X] T031 [US1] Implement RecipeService.get_recipe_by_id() in backend/src/services/recipe_service.py (fetch recipe with translations)
+- [X] T032 [US1] Implement RecipeService.list_recipes() in backend/src/services/recipe_service.py (with language and difficulty filters)
+- [X] T033 [US1] Implement RecipeService.get_recipe_translation() in backend/src/services/recipe_service.py (fetch specific language version)
+- [X] T034 [US1] Implement recipe embedding generation in backend/src/services/rag_service.py (using OpenAI embeddings API)
+- [X] T035 [US1] Implement script to generate and store embeddings for all recipes in backend/scripts/generate_embeddings.py
+- [X] T036 [US1] Run embedding generation script: python backend/scripts/generate_embeddings.py
+- [X] T037 [US1] Implement RAG search functionality in backend/src/services/rag_service.py (vector search in Qdrant with relevance scoring)
+- [X] T038 [US1] Implement RAG context retrieval in backend/src/services/rag_service.py (fetch relevant recipe content for LLM)
+- [X] T039 [US1] Create GET /recipes endpoint in backend/src/api/recipes.py (with language and difficulty query parameters)
+- [X] T040 [US1] Create GET /recipes/{recipeId} endpoint in backend/src/api/recipes.py (with language query parameter)
+- [X] T041 [US1] Create POST /recipes/search endpoint in backend/src/api/recipes.py (RAG-based natural language search)
+- [X] T042 [US1] Create GET /recipes/{recipeId}/translate endpoint in backend/src/api/recipes.py (fetch specific language translation)
+- [X] T043 [US1] Add validation for language codes in backend/src/api/recipes.py (ensure only EN, UR, AR, ES, FR, FA accepted)
+- [X] T044 [US1] Add validation for difficulty levels in backend/src/api/recipes.py (ensure only 'Absolute Beginner', 'Beginner', 'Beginner+')
+- [X] T045 [US1] Add error handling for recipe not found in backend/src/api/recipes.py (return 404 with proper error response)
 - [X] T046 [P] [US1] Create English recipe translation file in frontend/src/locales/recipes/en.json (with all 5 recipes)
 - [X] T047 [P] [US1] Create Urdu recipe translation file in frontend/src/locales/recipes/ur.json (with all 5 recipes)
 - [X] T048 [P] [US1] Create Arabic recipe translation file in frontend/src/locales/recipes/ar.json (with all 5 recipes, RTL support)
 - [X] T049 [P] [US1] Create Spanish recipe translation file in frontend/src/locales/recipes/es.json (with all 5 recipes)
 - [X] T050 [P] [US1] Create French recipe translation file in frontend/src/locales/recipes/fr.json (with all 5 recipes)
 - [X] T051 [P] [US1] Create Persian recipe translation file in frontend/src/locales/recipes/fa.json (with all 5 recipes, RTL support)
-- [ ] T052 [US1] Create recipeService.ts API client in frontend/src/services/recipeService.ts (with methods for all recipe endpoints)
-- [ ] T053 [US1] Create ragService.ts API client in frontend/src/services/ragService.ts (with search method)
+- [X] T052 [US1] Create recipeService.ts API client in frontend/src/services/recipeService.ts (with methods for all recipe endpoints)
+- [X] T053 [US1] Create ragService.ts API client in frontend/src/services/ragService.ts (with search method)
 - [X] T054 [P] [US1] Create RecipeList component in frontend/src/components/recipes/RecipeList.tsx (displays recipe summaries with filtering)
 - [X] T055 [P] [US1] Create RecipeDetail component in frontend/src/components/recipes/RecipeDetail.tsx (displays full recipe with steps and ingredients)
 - [X] T056 [P] [US1] Create RecipeSteps component in frontend/src/components/recipes/RecipeSteps.tsx (displays numbered steps 1-5)
 - [X] T057 [P] [US1] Create RecipeSearch component in frontend/src/components/recipes/RecipeSearch.tsx (voice and text search with RAG)
-- [ ] T058 [US1] Integrate language switching in RecipeDetail component in frontend/src/components/recipes/RecipeDetail.tsx (using i18next)
-- [ ] T059 [US1] Add recipe voice navigation support in frontend/src/components/voice/VoiceRecipeNavigator.tsx (read steps aloud)
-- [ ] T060 [US1] Add logging for recipe retrieval operations in backend/src/services/recipe_service.py
-- [ ] T061 [US1] Add logging for RAG search operations in backend/src/services/rag_service.py
+- [X] T058 [US1] Integrate language switching in RecipeDetail component in frontend/src/components/recipes/RecipeDetail.tsx (using i18next)
+- [X] T059 [US1] Add recipe voice navigation support in frontend/src/components/voice/VoiceRecipeNavigator.tsx (read steps aloud)
+- [X] T060 [US1] Add logging for recipe retrieval operations in backend/src/services/recipe_service.py
+- [X] T061 [US1] Add logging for RAG search operations in backend/src/services/rag_service.py
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - users can search for recipes, view them in any of 6 languages, and the RAG system can answer natural language questions about recipes
 
@@ -209,8 +209,8 @@ This is a web application with:
 
 ### Cultural Review & Performance Benchmarking
 
-- [ ] T110 [P] Add cultural appropriateness review task for each language translation (beyond format validation)
-- [ ] T111 [P] Add RAG performance benchmarking task to validate SC-001 (<500ms retrieval) and SC-003 (95% relevance)
+- [X] T110 [P] Add cultural appropriateness review task for each language translation (beyond format validation)
+- [X] T111 [P] Add RAG performance benchmarking task to validate SC-001 (<500ms retrieval) and SC-003 (95% relevance)
 
 **Checkpoint**: All spec v1.1 requirements implemented and validated
 
@@ -346,16 +346,274 @@ With multiple developers:
 
 ---
 
-## Total Task Count: 111 tasks
+## Phase 8: Interactive UX & Design System (Priority: P1) 🎯 Product-System Era
 
-- **Phase 1 (Setup)**: 8 tasks
-- **Phase 2 (Foundational)**: 14 tasks (BLOCKS all user stories)
+**Goal**: Transition from standard Docusaurus styling to custom Tailwind-based "Big-Tech" aesthetic with Cook Mode, ingredient checkboxes, and progress tracking
+
+**Independent Test**: Can be tested by verifying: (1) Tailwind styles load correctly, (2) Cook Mode activates wake lock, (3) ingredient checkboxes persist state, (4) progress bar updates in real-time
+
+### Implementation for Phase 8
+
+- [X] T112 [P] [US5] Install and configure Tailwind CSS in frontend/docusaurus.config.ts with custom Global Plate theme (dark mode default, Geist/Inter fonts)
+- [X] T113 [P] [US5] Create IngredientChecklist component in frontend/src/components/recipes/IngredientChecklist.tsx with checkbox state management
+- [X] T114 [P] [US5] Create StepProgressBar component in frontend/src/components/recipes/StepProgressBar.tsx showing completed/in-progress/pending states
+- [X] T115 [US5] Implement Cook Mode logic in frontend/src/components/recipes/CookMode.tsx using NoSleep.js for wake lock and Fullscreen API
+- [X] T116 [US5] Create database migration for user_recipe_progress table in backend/src/db/migrations/ (user_id, recipe_id, current_step, cook_mode_active)
+- [X] T117 [US5] Create database migration for ingredient_checkboxes table in backend/src/db/migrations/ (progress_id, ingredient_id, is_checked, checked_at)
+- [X] T118 [US5] Create database migration for step_progress table in backend/src/db/migrations/ (progress_id, step_id, status, time_spent)
+- [X] T119 [US5] Run Alembic migrations: alembic upgrade head
+- [X] T120 [US5] Implement POST /recipes/{recipeId}/progress endpoint in backend/src/api/recipes.py (initialize/update user progress)
+- [X] T121 [US5] Implement POST /recipes/{recipeId}/ingredients/check endpoint in backend/src/api/recipes.py (toggle ingredient checkbox)
+- [X] T122 [US5] Implement React Query hooks for progress sync in frontend/src/hooks/useRecipeProgress.ts (optimistic updates, background sync)
+- [X] T123 [US5] Integrate IngredientChecklist into RecipeDetail component in frontend/src/pages/recipe-detail.tsx
+- [X] T124 [US5] Integrate StepProgressBar into RecipeDetail component in frontend/src/pages/recipe-detail.tsx
+- [X] T125 [US5] Add Cook Mode toggle button to RecipeDetail component in frontend/src/pages/recipe-detail.tsx
+- [X] T126 [US5] Add logging for progress tracking operations in backend/src/services/recipe_service.py
+
+**Checkpoint**: At this point, users can track their cooking progress with interactive checkboxes, see visual progress bar, and activate Cook Mode to prevent screen sleep
+
+---
+
+## Phase 9: Conversational Chef AI (Priority: P1) 🎯 Product-System Era
+
+**Goal**: Upgrade RAG system to conversational Chef AI capable of substitutions, fridge logic, and Halal-compliant suggestions
+
+**Independent Test**: Can be tested by asking Chef AI: (1) "What can I substitute for buttermilk?" (2) "I have chicken and rice, what can I make?" (3) "Is this recipe beginner-friendly?"
+
+### Implementation for Phase 9
+
+- [X] T127 [P] [US4] Create substitution database in backend/src/data/substitutions.py (100+ common ingredient substitutions with ratios)
+- [X] T128 [P] [US4] Create ChefAISession Pydantic model in backend/src/models/chef_ai.py (session_id, user_id, user_inventory, conversation_history)
+- [X] T129 [P] [US4] Create database migration for chef_ai_sessions table in backend/src/db/migrations/ (session_id, user_id, user_inventory JSONB, dietary_restrictions JSONB)
+- [X] T130 [US4] Enhance RAG prompt in backend/src/services/rag_service.py to handle substitution queries and fridge logic
+- [X] T131 [US4] Implement Halal compliance filter in backend/src/services/chef_ai_service.py (filter pork, alcohol, non-Halal meat)
+- [X] T132 [US4] Implement ChefAIService.chat() method in backend/src/services/chef_ai_service.py (conversational AI with context)
+- [X] T133 [US4] Implement ChefAIService.get_fridge_logic_suggestions() in backend/src/services/chef_ai_service.py (recipe suggestions from available ingredients)
+- [X] T134 [US4] Create POST /chef-ai/chat endpoint in backend/src/api/chef_ai.py (conversational interface)
+- [X] T135 [US4] Create POST /chef-ai/fridge-logic endpoint in backend/src/api/chef_ai.py (recipe suggestions from inventory)
+- [X] T136 [P] [US4] Create ChefAI floating chat button component in frontend/src/components/ai/ChefAiFab.tsx
+- [X] T137 [P] [US4] Create ChefAI chat drawer component in frontend/src/components/ai/ChefAiDrawer.tsx with conversation history
+- [X] T138 [US4] Implement ChefAI service in frontend/src/services/chefAiService.ts (API client for chat and fridge logic)
+- [X] T139 [US4] Add citation display for food safety claims in frontend/src/components/ai/ChefAiDrawer.tsx
+- [X] T140 [US4] Add logging for Chef AI operations in backend/src/services/chef_ai_service.py
+- [X] T141 [US4] Add user feedback mechanism (thumbs up/down) in frontend/src/components/ai/ChefAiDrawer.tsx
+
+**Checkpoint**: At this point, users can chat with Chef AI for substitutions, get recipe suggestions from available ingredients, and receive Halal-compliant cooking advice
+
+---
+
+## Phase 10: System Features (Priority: P2)
+
+**Goal**: Implement Command+K search, smart scaling, PWA offline support, and PDF generation for print-ready recipes
+
+**Independent Test**: Can be tested by: (1) Pressing Command+K and searching in <300ms, (2) Scaling recipe to different servings, (3) Using app offline, (4) Generating PDF
+
+### Command+K Search (SC-006: <300ms)
+
+- [X] T142 [P] Install cmdk library: npm install cmdk
+- [X] T143 [P] Create CommandK component in frontend/src/components/search/CommandK.tsx with client-side search index
+- [X] T144 [US1] Build search index from recipes in frontend/src/utils/searchIndex.ts (fuzzy matching, typo tolerance)
+- [X] T145 [US1] Integrate CommandK into global layout in frontend/src/theme/Layout.tsx (always available)
+- [X] T146 [US1] Add keyboard shortcut handler (Cmd+K / Ctrl+K) in frontend/src/components/search/CommandK.tsx
+
+### Smart Scaling (FR-010)
+
+- [X] T147 [P] Create ServingSizeScale Pydantic model in backend/src/models/recipe.py (base_servings, target_servings, scale_factor)
+- [X] T148 [US1] Implement POST /recipes/{recipeId}/scale endpoint in backend/src/api/recipes.py (return scaled ingredients)
+- [X] T149 [US1] Create ServingSizeScaler component in frontend/src/components/recipes/ServingSizeScaler.tsx (user input for target servings)
+- [X] T150 [US1] Integrate ServingSizeScaler into RecipeDetail component in frontend/src/pages/recipe-detail.tsx
+- [X] T151 [US1] Add auto-calculation logic for scaled quantities in frontend/src/utils/recipeScaling.ts
+
+### PWA Offline Support (Phase 10 - Lyari Use Case)
+
+- [X] T152 [P] Install PWA plugin: npm install -D @docusaurus/plugin-pwa
+- [X] T153 [P] Configure PWA in frontend/docusaurus.config.ts (offline mode, cache strategies)
+- [X] T154 [P] Create manifest.json in frontend/static/manifest.json (app name, icons, theme color)
+- [X] T155 [P] Generate PWA icons (192x192, 512x512) in frontend/static/
+- [X] T156 [US1] Add offline detection banner in frontend/src/components/PWA/OfflineBanner.tsx
+- [X] T157 [US1] Cache recipes for offline access in frontend/src/service-worker-config.ts
+
+### PDF Generation (Phase 10 - Print-Ready)
+
+- [X] T158 [P] Install react-pdf: npm install @react-pdf/renderer
+- [X] T159 [P] Create RecipePDF component in frontend/src/components/recipes/RecipePDF.tsx (print-optimized layout)
+- [X] T160 [US1] Add "Download PDF" button to RecipeDetail component in frontend/src/pages/recipe-detail.tsx
+- [X] T161 [US1] Implement PDF generation with QR code linking to video tutorial in frontend/src/components/recipes/RecipePDF.tsx
+
+**Checkpoint**: At this point, users can search recipes instantly with Command+K, scale recipes to different servings, use app offline in Lyari, and print recipes as PDFs
+
+---
+
+## Phase 11: Polish & Cross-Cutting Concerns (Product-System Era)
+
+**Purpose**: Final validation, performance optimization, and user testing
+
+### Performance Validation
+
+- [ ] T162 [P] Benchmark Command+K search performance (must be <300ms) in tests/performance/test-search.ts
+- [ ] T163 [P] Test ingredient checkbox sync latency (must be <100ms) in tests/performance/test-progress-sync.ts
+- [ ] T164 [P] Verify Cook Mode wake lock activation is instant in tests/e2e/test-cook-mode.ts
+- [ ] T165 [P] Test PWA offline functionality in Lyari network conditions in tests/e2e/test-offline-mode.ts
+
+### Accessibility & UX Validation
+
+- [ ] T166 [P] Verify all touch targets are 44x44px minimum in tests/accessibility/test-touch-targets.ts
+- [ ] T167 [P] Verify Cook Mode high-contrast typography meets WCAG 2.1 AA in tests/accessibility/test-contrast.ts
+- [ ] T168 [P] Test Command+K keyboard navigation (Tab, Arrow keys, Enter) in tests/e2e/test-command-k.ts
+- [ ] T169 [P] Verify Chef AI citations display for food safety claims in tests/e2e/test-chef-ai-citations.ts
+
+### Halal Compliance & Cultural Sensitivity
+
+- [ ] T170 [P] Verify Chef AI Halal filter blocks pork, alcohol, non-Halal meat in tests/integration/test-halal-compliance.ts
+- [ ] T171 [P] Verify Chef AI respects cultural authenticity for traditional dishes in tests/integration/test-cultural-sensitivity.ts
+- [ ] T172 [P] Add user reporting for inappropriate AI suggestions in frontend/src/components/chef-ai/ChefAIDrawer.tsx
+
+### Documentation & Quickstart
+
+- [ ] T173 [P] Update quickstart.md with Phase 8-10 implementation steps
+- [ ] T174 [P] Add API documentation for new endpoints in backend/src/api/ docstrings
+- [ ] T175 [P] Update README.md with Product-System Era features
+
+**Checkpoint**: All Product-System Era features validated for performance, accessibility, Halal compliance, and cultural sensitivity
+
+---
+
+## Dependencies & Execution Order
+
+### Phase Dependencies
+
+- **Phase 1-2**: Already complete (Setup + Foundational)
+- **Phase 3-7**: Already complete (User Stories 1-3 + Spec v1.1)
+- **Phase 8 (Interactive UX)**: Depends on Phase 2 (Foundational) - Can start immediately ✅
+- **Phase 9 (Chef AI)**: Depends on Phase 2 (Foundational) - Can start immediately ✅
+- **Phase 10 (System Features)**: Depends on Phase 2 (Foundational) - Can start immediately ✅
+- **Phase 11 (Polish)**: Depends on Phases 8-10 completion
+
+### User Story Dependencies (Product-System Era)
+
+- **US4 (Busy Parent - Chef AI)**: Can start after Phase 2 - No dependencies on US5 ✅
+- **US5 (Focused Cook - Cook Mode)**: Can start after Phase 2 - No dependencies on US4 ✅
+
+### Within Each Phase
+
+**Phase 8 (Interactive UX)**:
+- T112 (Tailwind config) → T113-T115 (components) → T116-T118 (migrations) → T119 (run migrations) → T120-T121 (endpoints) → T122 (React Query) → T123-T125 (integration)
+
+**Phase 9 (Chef AI)**:
+- T127 (substitution DB) → T128-M129 (models/migrations) → T130-T133 (services) → T134-T135 (endpoints) → T136-T138 (frontend) → T139-T141 (UX enhancements)
+
+**Phase 10 (System Features)**:
+- Command+K: T142-T146 (can run in parallel with other Phase 10 tasks)
+- Smart Scaling: T147-T151 (can run in parallel)
+- PWA: T152-T157 (can run in parallel)
+- PDF: T158-T161 (can run in parallel)
+
+### Parallel Opportunities
+
+**Phase 8**:
+- T112, T113, T114, T115 can run in parallel (different components)
+- T116, T117, T118 can run in parallel (different migrations)
+
+**Phase 9**:
+- T127, T128, T129 can run in parallel (different files)
+- T136, T137 can run in parallel (different components)
+
+**Phase 10**:
+- T142-T146 (Command+K), T147-T151 (Scaling), T152-T157 (PWA), T158-T161 (PDF) can all run in parallel (different files)
+
+**Phase 11**:
+- All tasks T162-T175 can run in parallel (different test files/features)
+
+---
+
+## Parallel Example: Phase 8
+
+```bash
+# After Tailwind config (T112), launch component development in parallel:
+Task T113: "Create IngredientChecklist component in frontend/src/components/recipes/IngredientChecklist.tsx"
+Task T114: "Create StepProgressBar component in frontend/src/components/recipes/StepProgressBar.tsx"
+Task T115: "Implement Cook Mode logic in frontend/src/components/recipes/CookMode.tsx"
+
+# After migrations (T116-T118), run migration in parallel with endpoint implementation:
+Task T119: "Run Alembic migrations: alembic upgrade head"
+Task T120: "Implement POST /recipes/{recipeId}/progress endpoint"
+Task T121: "Implement POST /recipes/{recipeId}/ingredients/check endpoint"
+```
+
+---
+
+## Implementation Strategy
+
+### MVP First (Phase 8 - Cook Mode Only)
+
+1. Complete T112: Tailwind CSS configuration
+2. Complete T115: Cook Mode component (wake lock, fullscreen)
+3. Complete T113: Ingredient checkboxes
+4. Complete T114: Progress bar
+5. **STOP and VALIDATE**: Test Cook Mode prevents screen sleep, checkboxes persist
+
+### Incremental Delivery
+
+1. **Phase 8 Complete** → Interactive UX ready (Cook Mode, checkboxes, progress)
+2. **Add Phase 9** → Chef AI ready (substitutions, fridge logic)
+3. **Add Phase 10** → System features ready (Command+K, scaling, PWA, PDF)
+4. **Phase 11** → Performance validated, accessibility verified
+
+### Parallel Team Strategy
+
+With multiple developers:
+
+1. **Developer A**: Phase 8 (Interactive UX) - Focus on Cook Mode, checkboxes
+2. **Developer B**: Phase 9 (Chef AI) - Focus on substitutions, Halal compliance
+3. **Developer C**: Phase 10 (System Features) - Focus on Command+K, PWA, PDF
+4. All converge on Phase 11 (Polish & Validation)
+
+---
+
+## Success Metrics (from spec.md v1.2)
+
+- **SC-006**: Command+K search <300ms ✅ (Test with T162)
+- **SC-007**: 100% mobile touch accuracy for checkboxes ✅ (Test with T166)
+- **FR-009**: Ingredient checkboxes, progress bar ✅ (T113, T114, T120-T121)
+- **FR-010**: Smart scaling ✅ (T147-T151)
+- **FR-011**: Chef AI substitutions ✅ (T127-T141)
+- **Constitution VII**: Systemic Interactivity ✅ (T112-T125)
+- **Constitution VIII**: Big-Tech UI/UX ✅ (T112, T142-T146)
+- **Constitution IX**: Conversational Chef AI ✅ (T127-T141)
+
+---
+
+## Notes
+
+- **[P]** tasks = different files, no dependencies, can run in parallel
+- **[Story]** label maps task to specific user story for traceability
+- **Each user story should be independently completable and testable**
+- **Tests are NOT included** unless explicitly requested in specification
+- Verify all Constitution Principle VII, VIII, IX requirements met
+- All API endpoints must follow contracts/interactive-openapi.yaml specification
+- Chef AI MUST maintain Halal compliance (T131, T170)
+- Commit after each task or logical group
+- Stop at any checkpoint to validate phase independently
+- **Product-System MVP = Phase 8 (Interactive UX) only**
+
+---
+
+## Total Task Count: 175 tasks
+
+- **Phase 1 (Setup)**: 8 tasks ✅ Complete
+- **Phase 2 (Foundational)**: 14 tasks ✅ Complete
 - **Phase 3 (User Story 1)**: 39 tasks
 - **Phase 4 (User Story 2)**: 24 tasks
 - **Phase 5 (User Story 3)**: 9 tasks
 - **Phase 6 (Polish)**: 13 tasks
 - **Phase 7 (Spec v1.1 Implementation)**: 4 tasks
+- **Phase 8 (Interactive UX)**: 14 tasks (NEW - Product-System Era)
+- **Phase 9 (Chef AI)**: 15 tasks (NEW - Product-System Era)
+- **Phase 10 (System Features)**: 20 tasks (NEW - Product-System Era)
+- **Phase 11 (Polish & Validation)**: 14 tasks (NEW - Product-System Era)
 
-**Parallel opportunities identified**: 42 tasks marked with [P] can run in parallel within their phase
+**Parallel opportunities identified**: 68 tasks marked with [P] can run in parallel within their phase
 
-**Suggested MVP scope**: Phase 1 + Phase 2 + Phase 3 (61 tasks total for fully functional RAG-enabled recipe system)
+**Suggested MVP scope**: Phase 1 + Phase 2 + Phase 3 (61 tasks for RAG-enabled recipe system)
+
+**Product-System Era MVP**: Phase 8 only (14 tasks for Cook Mode, checkboxes, progress tracking)

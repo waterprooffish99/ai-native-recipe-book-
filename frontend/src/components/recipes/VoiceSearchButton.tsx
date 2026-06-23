@@ -104,7 +104,7 @@ const VoiceSearchButton: React.FC<VoiceSearchButtonProps> = ({
 
   // Size classes
   const sizeClasses = {
-    sm: 'min-w-[36px] min-h-[36px] p-2',
+    sm: 'min-w-[44px] min-h-[44px] p-2.5',
     md: 'min-w-[44px] min-h-[44px] p-3',
     lg: 'min-w-[56px] min-h-[56px] p-4'
   };

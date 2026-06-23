@@ -24,8 +24,8 @@ export interface RecipeSearchResult {
 
 // Safely check for environment variables in both browser and Node.js environments
 const API_BASE_URL = (typeof process !== 'undefined' && process.env)
-  ? process.env.REACT_APP_API_URL || 'http://localhost:8000'
-  : 'http://localhost:8000';
+  ? process.env.REACT_APP_API_URL || 'http://localhost:8002'
+  : 'http://localhost:8002';
 
 export class RAGService {
   /**

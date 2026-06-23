@@ -5,13 +5,14 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Global Plate',
   tagline: 'Personalized Recipe Assistant for Global Cuisines',
-  favicon: 'img/favicon.ico',
+  favicon: '/img/favicon.ico',
 
   // Set the production url of your site here
   url: 'https://global-plate.org',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
+
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -77,14 +78,74 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    async function recipesRoutePlugin(context, options) {
+      const { baseUrl } = context;
+      return {
+        name: 'recipes-route-plugin',
+        contentLoaded({ actions }) {
+          const { addRoute } = actions;
+          addRoute({
+            path: `${baseUrl}recipes/:id`,
+            component: '@site/src/pages/recipes/index.tsx',
+            exact: false,
+          });
+        },
+      };
+    },
+    [
+      '@docusaurus/plugin-pwa',
+      {
+        pwaHead: [
+          {
+            tagName: 'link',
+            rel: 'icon',
+            href: '/img/logo.svg',
+          },
+          {
+            tagName: 'link',
+            rel: 'manifest',
+            href: '/manifest.json',
+          },
+          {
+            tagName: 'meta',
+            name: 'theme-color',
+            content: '#4f46e5',
+          },
+          {
+            tagName: 'meta',
+            name: 'apple-mobile-web-app-capable',
+            content: 'yes',
+          },
+          {
+            tagName: 'meta',
+            name: 'apple-mobile-web-app-status-bar-style',
+            content: '#0f172a',
+          },
+          {
+            tagName: 'link',
+            rel: 'apple-touch-icon',
+            href: '/img/logo.svg',
+          },
+        ],
+      },
+    ],
+  ],
+
   themeConfig: {
+    // FORCE DARK MODE - Big Tech aesthetic
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'Global Plate',
       logo: {
         alt: 'Global Plate Logo',
-        src: 'img/logo.svg',
+        src: '/img/logo.svg',
       },
       items: [
         {

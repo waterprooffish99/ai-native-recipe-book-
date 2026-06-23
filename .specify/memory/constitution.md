@@ -1,24 +1,31 @@
 <!--
   SYNC IMPACT REPORT
   ===================
-  Version change: 0.0.0 (template) → 1.0.0 (initial ratification)
-  
+  Version change: 1.0.0 → 1.2.0 (Product-System Era additions)
+
   Modified principles:
-    - All 6 principles replaced template placeholders with Global Plate principles
-  
+    - None (existing 6 principles preserved)
+
+  Added principles:
+    - VII. Systemic Interactivity (The Living Book)
+    - VIII. Big-Tech UI/UX Aesthetic
+    - IX. Conversational "Chef AI" Intelligence
+
   Added sections:
-    - None (structure preserved from template)
-  
+    - UI/UX Standards (under Additional Constraints)
+    - AI Ethics Guidelines (under Additional Constraints)
+
   Removed sections:
-    - None (all template sections filled with concrete content)
-  
+    - None
+
   Templates requiring updates:
-    ✅ .specify/templates/plan-template.md - Constitution Check section aligns with 6 principles
-    ⚠ .specify/templates/spec-template.md - Should reference Accessibility-First and Safety Mandatory
-    ⚠ .specify/templates/tasks-template.md - Should include Kitchen Guard validation tasks
-  
+    ✅ .specify/templates/plan-template.md - Constitution Check section needs 3 new principle validations
+    ⚠ .specify/templates/spec-template.md - Should reference Systemic Interactivity and Chef AI
+    ⚠ .specify/templates/tasks-template.md - Should include Cook Mode and Command+K tasks
+
   Follow-up TODOs:
     - TODO(CONSTITUTION_RATIFICATION_DATE): Confirm original ratification date from project history
+    - TODO(UI_FONT_SELECTION): Confirm Geist/Inter font licensing and CDN strategy
 -->
 
 # Global Plate Constitution
@@ -112,6 +119,55 @@ The platform MUST adapt content presentation based on user background (software/
 
 ---
 
+### VII. Systemic Interactivity (The Living Book)
+
+Global Plate MUST implement state-aware interactivity that transforms recipes from static documents into interactive cooking companions with real-time progress tracking.
+
+**Non-Negotiable Rules:**
+- MUST implement ingredient checkboxes for tracking preparation progress
+- MUST provide step-progress tracking with visual indicators (completed, in-progress, pending)
+- MUST implement "Cook Mode" that optimizes for high-contrast, large-scale typography
+- MUST prevent screen sleep during active cooking sessions via wake lock API
+- SHOULD auto-advance to next step when current step is marked complete
+- SHOULD provide estimated time remaining based on user's pace
+
+**Rationale**: Modern recipe apps must be interactive cooking partners, not passive recipe cards. Ingredient checkboxes and progress tracking reduce cognitive load by showing users exactly where they are in the cooking process. Cook Mode ensures usability in kitchen environments where hands are busy and screens timeout.
+
+---
+
+### VIII. Big-Tech UI/UX Aesthetic
+
+Global Plate MUST deliver a polished, professional aesthetic matching the quality standards of leading tech products (Vercel, Linear, Raycast) with dark-mode-first design and instant accessibility.
+
+**Non-Negotiable Rules:**
+- MUST follow "Dark-Mode First" design philosophy with minimal, high-contrast typography
+- MUST implement "Command + K" global instant search for recipes, ingredients, and actions
+- MUST utilize Tailwind CSS for custom "Product" look rather than generic documentation template
+- SHOULD use Geist, Inter, or similar modern sans-serif fonts for optimal readability
+- SHOULD implement smooth animations and transitions (subtle, not distracting)
+- SHOULD achieve Lighthouse accessibility score of 95+ across all pages
+
+**Rationale**: Users expect modern web applications to feel polished and responsive. A dark-mode-first approach reduces eye strain during evening cooking sessions. Command+K search provides power-user efficiency for experienced cooks. Professional aesthetics build trust in the platform's culinary guidance.
+
+---
+
+### IX. Conversational "Chef AI" Intelligence
+
+Global Plate MUST evolve the RAG system from simple recipe retrieval to an active "Chef AI" assistant that provides intelligent cooking guidance, substitutions, and creative problem-solving.
+
+**Non-Negotiable Rules:**
+- MUST implement "Fridge Logic" - suggest recipes based on available ingredients user has
+- MUST provide intelligent ingredient substitutions (e.g., "No buttermilk? Use milk + lemon juice")
+- MUST answer cooking questions conversationally ("Can I freeze this?", "What wine pairs well?")
+- MUST ensure all AI suggestions remain Halal-compliant (no pork, no alcohol, proper slaughter)
+- MUST maintain cultural sensitivity (authentic techniques, respect for traditional dishes)
+- MUST cite sources for AI suggestions when providing cooking tips or food safety information
+- SHOULD proactively warn about common mistakes for each recipe
+
+**Rationale**: Home cooks need more than recipe instructions—they need a knowledgeable chef who can adapt to their situation. Fridge Logic reduces food waste and grocery trips. Intelligent substitutions empower users to cook even when missing ingredients. Halal compliance and cultural sensitivity are essential for our global, diverse user base.
+
+---
+
 ## Additional Constraints
 
 ### Performance Standards
@@ -120,6 +176,7 @@ The platform MUST adapt content presentation based on user background (software/
 - Language switching MUST complete within 500ms
 - Vector search (RAG) MUST complete within 1s (p95 latency)
 - Voice response MUST complete within 2s (p95 latency)
+- Command+K search results MUST appear within 300ms of typing
 
 ### Security Requirements
 
@@ -134,6 +191,23 @@ The platform MUST adapt content presentation based on user background (software/
 - MUST use Qdrant Cloud for vector embeddings (no local vector storage)
 - MUST implement data retention policies for user preferences
 - MUST support data export for user portability
+
+### UI/UX Standards
+
+- MUST implement dark theme as default (light theme optional)
+- MUST maintain minimum contrast ratio of 4.5:1 for all text (WCAG AA)
+- MUST support keyboard navigation for all interactive elements
+- MUST provide visual feedback for all user actions (hover, focus, active states)
+- MUST load initial content within 2 seconds on 3G networks
+
+### AI Ethics Guidelines
+
+- MUST ensure all AI-generated content is Halal-compliant (no pork, alcohol, improper slaughter)
+- MUST maintain cultural authenticity and respect for traditional dishes
+- MUST provide citations for food safety information
+- MUST clearly distinguish between AI suggestions and established culinary facts
+- MUST allow users to report inappropriate or inaccurate AI suggestions
+- MUST NOT provide medical or dietary advice without disclaimers
 
 ---
 
@@ -189,4 +263,4 @@ This constitution supersedes all other project practices and guidelines. Amendme
 
 ---
 
-**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE): Confirm from project history | **Last Amended**: 2026-04-02
+**Version**: 1.2.0 | **Ratified**: TODO(RATIFICATION_DATE): Confirm from project history | **Last Amended**: 2026-04-02

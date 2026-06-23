@@ -1,0 +1,454 @@
+openapi: 3.0.3
+info:
+  title: Global Plate API - Interactive Features
+  description: API contracts for Product-System Era features (Cook Mode, Chef AI, Smart Scaling)
+  version: 1.2.0
+  contact:
+    name: Global Plate Team
+
+servers:
+  - url: http://localhost:8002
+    description: Development server (WSL native)
+  - url: https://api.globalplate.com
+    description: Production server
+
+tags:
+  - name: Interactive
+    description: Ingredient checkboxes, progress tracking, Cook Mode
+  - name: Chef AI
+    description: Conversational AI for substitutions and fridge logic
+  - name: Search
+    description: Command+K instant search
+
+paths:
+  /recipes/{recipeId}/progress:
+    get:
+      tags: [Interactive]
+      summary: Get user's progress for a recipe
+      operationId: getRecipeProgress
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: User's recipe progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRecipeProgress'
+        '404':
+          description: No progress found (user hasn't started recipe)
+    
+    post:
+      tags: [Interactive]
+      summary: Initialize or update recipe progress
+      operationId: updateRecipeProgress
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressUpdate'
+      responses:
+        '200':
+          description: Progress updated successfully
+        '400':
+          description: Invalid progress update
+
+  /recipes/{recipeId}/ingredients/check:
+    post:
+      tags: [Interactive]
+      summary: Toggle ingredient checkbox
+      operationId: toggleIngredientCheckbox
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientToggle'
+      responses:
+        '200':
+          description: Checkbox toggled successfully
+        '400':
+          description: Invalid ingredient ID
+
+  /recipes/{recipeId}/cook-mode:
+    post:
+      tags: [Interactive]
+      summary: Activate Cook Mode (wake lock, large text)
+      operationId: activateCookMode
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Cook Mode activated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CookModeState'
+
+  /recipes/{recipeId}/scale:
+    post:
+      tags: [Interactive]
+      summary: Scale recipe to different serving size
+      operationId: scaleRecipe
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServingScaleRequest'
+      responses:
+        '200':
+          description: Scaled recipe with adjusted quantities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScaledRecipe'
+
+  /chef-ai/chat:
+    post:
+      tags: [Chef AI]
+      summary: Chat with Chef AI (substitutions, fridge logic)
+      operationId: chatWithChefAI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChefAIRequest'
+      responses:
+        '200':
+          description: Chef AI response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChefAIResponse'
+        '400':
+          description: Invalid request (e.g., non-Halal suggestion requested)
+
+  /chef-ai/fridge-logic:
+    post:
+      tags: [Chef AI]
+      summary: Get recipe suggestions from available ingredients
+      operationId: getFridgeLogicSuggestions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FridgeLogicRequest'
+      responses:
+        '200':
+          description: Recipe suggestions based on available ingredients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RecipeSuggestion'
+
+  /search/recipes:
+    get:
+      tags: [Search]
+      summary: Command+K instant search (client-side, <300ms)
+      operationId: searchRecipes
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query (recipe name, ingredient, country)
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 20
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+
+components:
+  schemas:
+    UserRecipeProgress:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        recipe_id:
+          type: string
+          format: uuid
+        current_step:
+          type: integer
+          minimum: 1
+          maximum: 5
+        total_steps:
+          type: integer
+          minimum: 1
+          maximum: 5
+        progress_percentage:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+        ingredient_checkboxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientCheckboxState'
+        step_progress:
+          type: array
+          items:
+            $ref: '#/components/schemas/StepProgressState'
+        cook_mode_active:
+          type: boolean
+        last_synced_at:
+          type: string
+          format: date-time
+
+    IngredientCheckboxState:
+      type: object
+      properties:
+        ingredient_id:
+          type: string
+          format: uuid
+        is_checked:
+          type: boolean
+        checked_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    StepProgressState:
+      type: object
+      properties:
+        step_id:
+          type: string
+          format: uuid
+        step_number:
+          type: integer
+        status:
+          type: string
+          enum: [pending, in_progress, completed]
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    ProgressUpdate:
+      type: object
+      required:
+        - current_step
+        - step_status
+      properties:
+        current_step:
+          type: integer
+          minimum: 1
+          maximum: 5
+        step_status:
+          type: string
+          enum: [pending, in_progress, completed]
+        cook_mode_active:
+          type: boolean
+          default: false
+
+    IngredientToggle:
+      type: object
+      required:
+        - ingredient_id
+        - is_checked
+      properties:
+        ingredient_id:
+          type: string
+          format: uuid
+        is_checked:
+          type: boolean
+
+    CookModeState:
+      type: object
+      properties:
+        active:
+          type: boolean
+        current_step:
+          type: integer
+        wake_lock_enabled:
+          type: boolean
+        large_text_mode:
+          type: boolean
+
+    ServingScaleRequest:
+      type: object
+      required:
+        - target_servings
+      properties:
+        target_servings:
+          type: integer
+          minimum: 1
+          maximum: 100
+
+    ScaledRecipe:
+      type: object
+      properties:
+        recipe_id:
+          type: string
+          format: uuid
+        original_servings:
+          type: integer
+        target_servings:
+          type: integer
+        scale_factor:
+          type: number
+          format: float
+        scaled_ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScaledIngredient'
+
+    ScaledIngredient:
+      type: object
+      properties:
+        ingredient_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        original_quantity:
+          type: number
+          format: float
+        scaled_quantity:
+          type: number
+          format: float
+        unit:
+          type: string
+        display_text:
+          type: string
+
+    ChefAIRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+        recipe_id:
+          type: string
+          format: uuid
+          nullable: true
+        user_inventory:
+          type: array
+          items:
+            type: string
+          nullable: true
+        dietary_restrictions:
+          type: array
+          items:
+            type: string
+          default: ["Halal"]
+
+    ChefAIResponse:
+      type: object
+      properties:
+        response:
+          type: string
+        response_type:
+          type: string
+          enum: [substitution, fridge_logic, suitability, safety, general]
+        sources:
+          type: array
+          items:
+            type: string
+          description: Citations for food safety claims
+        is_halal_compliant:
+          type: boolean
+
+    FridgeLogicRequest:
+      type: object
+      required:
+        - available_ingredients
+      properties:
+        available_ingredients:
+          type: array
+          items:
+            type: string
+        max_results:
+          type: integer
+          default: 5
+          maximum: 10
+
+    RecipeSuggestion:
+      type: object
+      properties:
+        recipe_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        match_percentage:
+          type: number
+          format: float
+          description: How well user's ingredients match recipe
+        missing_ingredients:
+          type: array
+          items:
+            type: string
+        substitutions:
+          type: array
+          items:
+            type: string
+
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        category:
+          type: string
+          enum: [recipe, ingredient, chef_ai_tip]
+        relevance_score:
+          type: number
+          format: float
+        keywords:
+          type: array
+          items:
+            type: string
