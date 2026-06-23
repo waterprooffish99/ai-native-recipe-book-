@@ -1,3 +1,12 @@
+---
+title: Global Plate Backend
+emoji: 🔥
+colorFrom: green
+colorTo: gray
+sdk: docker
+pinned: false
+---
+
 # Global Plate Backend (FastAPI)
 
 ## Setup
