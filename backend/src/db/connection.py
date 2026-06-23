@@ -16,8 +16,12 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
+if DATABASE_URL:
+    # Strip any leading/trailing whitespace and quote characters
+    DATABASE_URL = DATABASE_URL.strip().strip("'").strip('"')
+
 if not DATABASE_URL:
-    raise ValueError("DATABASE_URL environment variable is not set")
+    raise ValueError("DATABASE_URL environment variable is not set or is empty")
 
 # Create database instance
 database = Database(DATABASE_URL)
