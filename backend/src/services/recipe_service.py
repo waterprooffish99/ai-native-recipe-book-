@@ -41,25 +41,21 @@ class RecipeService:
             RecipeDetail with translated content or None if not found
         """
         async with self.db_pool.acquire() as conn:
-            # Get base recipe
+            # Get recipe joined with translations
             recipe_row = await conn.fetchrow("""
-                SELECT recipe_id, name, origin_country, difficulty,
-                       prep_time, cook_time, total_time, servings
-                FROM recipes
-                WHERE recipe_id = $1 AND is_active = true
-            """, recipe_id)
+                SELECT r.recipe_id, r.origin_country, r.difficulty,
+                       r.prep_time, r.cook_time, r.total_time, r.servings,
+                       rt.name, rt.kitchen_guard, rt.ingredients
+                FROM recipes r
+                LEFT JOIN recipe_translations rt ON r.recipe_id = rt.recipe_id AND rt.language_code = $2
+                WHERE r.recipe_id = $1 AND r.is_active = true
+            """, recipe_id, language.value)
 
             if not recipe_row:
                 return None
 
-            # Get translation
-            translation_row = await conn.fetchrow("""
-                SELECT name, kitchen_guard, ingredients
-                FROM recipe_translations
-                WHERE recipe_id = $1 AND language_code = $2
-            """, recipe_id, language.value)
-
-            if not translation_row:
+            # Raise TranslationNotFoundError if the recipe exists but no translation exists
+            if recipe_row["name"] is None:
                 raise TranslationNotFoundError(str(recipe_id), language.value)
 
             # Get steps with translations, falling back to base instruction if translation missing
@@ -82,15 +78,15 @@ class RecipeService:
             # Build RecipeDetail
             return RecipeDetail(
                 recipe_id=recipe_row["recipe_id"],
-                name=translation_row["name"],
+                name=recipe_row["name"],
                 origin_country=recipe_row["origin_country"],
                 difficulty=DifficultyLevel(recipe_row["difficulty"]),
                 prep_time=recipe_row["prep_time"],
                 cook_time=recipe_row["cook_time"],
                 total_time=recipe_row["total_time"],
                 servings=recipe_row["servings"],
-                kitchen_guard=translation_row["kitchen_guard"],
-                ingredients=translation_row["ingredients"] if translation_row["ingredients"] else [],
+                kitchen_guard=recipe_row["kitchen_guard"],
+                ingredients=recipe_row["ingredients"] if recipe_row["ingredients"] else [],
                 steps=steps,
                 language=language
             )

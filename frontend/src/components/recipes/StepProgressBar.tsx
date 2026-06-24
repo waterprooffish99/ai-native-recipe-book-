@@ -33,6 +33,14 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
     return { stepNumber, status };
   });
 
+  const lastCompletedStepIndex = steps.reduce((maxIdx, step, idx) => {
+    return step.status === 'completed' ? idx : maxIdx;
+  }, -1);
+
+  const activeLineWidth = lastCompletedStepIndex >= 0 && totalSteps > 1
+    ? `${(lastCompletedStepIndex / (totalSteps - 1)) * 100}%`
+    : '0%';
+
   return (
     <div className="w-full bg-globalplate-bg-surface rounded-lg p-6 my-4">
       <div className="flex justify-between items-center mb-6">
@@ -53,7 +61,7 @@ export const StepProgressBar: React.FC<StepProgressBarProps> = ({
         <div
           className="absolute left-6 top-1/2 transform -translate-y-1/2 h-1 bg-globalplate-accent transition-all duration-500 z-0"
           style={{
-            width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%`,
+            width: activeLineWidth,
             maxWidth: '100%'
           }}
         />

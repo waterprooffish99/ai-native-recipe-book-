@@ -5,6 +5,7 @@ import { ChefAiFab } from '../components/ai/ChefAiFab';
 import { ChefAiDrawer } from '../components/ai/ChefAiDrawer';
 import { CommandMenu } from '../components/search/CommandMenu';
 import { OfflineBanner } from '../components/system/OfflineBanner';
+import { LanguageSelector } from '../components/shared/LanguageSelector';
 
 // The Root component wraps the entire Docusaurus site.
 // This is where we should put global providers like I18nextProvider.
@@ -19,6 +20,11 @@ export default function Root({ children }: { children: React.ReactNode }) {
   return (
     <I18nextProvider i18n={i18n}>
       {isMounted && <OfflineBanner />}
+      {isMounted && (
+        <div className="fixed top-2 right-16 md:right-32 z-[100]">
+          <LanguageSelector />
+        </div>
+      )}
       {children}
       {isMounted && (
         <>

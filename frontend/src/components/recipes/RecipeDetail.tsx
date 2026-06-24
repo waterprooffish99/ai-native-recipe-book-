@@ -87,7 +87,7 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
   const [servings, setServings] = useState<number>(4);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(language);
+  const selectedLanguage = (i18n.language || 'en').toUpperCase();
   const isRtl = isRTL(i18n.language);
 
   // Dynamic steps/instructions normalizer for both English and translated payloads
@@ -160,9 +160,6 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
     fetchRecipe();
   }, [recipeId, selectedLanguage, t]);
 
-  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedLanguage(e.target.value);
-  };
 
   if (!isMounted) {
     return (
@@ -177,11 +174,51 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
 
   if (loading) {
     return (
-      <div className={`text-center py-12 ${isRtl ? 'rtl-recipe-detail' : 'ltr-recipe-detail'}`} dir={isRtl ? 'rtl' : 'ltr'}>
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-        <p className="mt-4 text-xl text-gray-600 dark:text-gray-400">
-          {t('common.loading', 'Loading...')}
-        </p>
+      <div className={`recipe-detail-container ${isRtl ? 'rtl-recipe-detail' : 'ltr-recipe-detail'}`} dir={isRtl ? 'rtl' : 'ltr'}>
+        {/* Cold Start Backend Wake Up Warning */}
+        <div className="mb-8 p-4 bg-blue-50/50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 rounded-xl flex items-center gap-3 shadow-sm backdrop-blur-sm">
+          <div className="inline-block animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500 flex-shrink-0"></div>
+          <span className="text-sm text-blue-700 dark:text-blue-200">
+            Fetching recipe translation and details. Waking up the Hugging Face AI kitchen backend...
+          </span>
+        </div>
+
+        {/* Back Button Skeleton */}
+        {onBack && (
+          <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-lg w-24 mb-6 animate-pulse"></div>
+        )}
+
+        {/* Title and Origin Skeleton */}
+        <div className="mb-6 animate-pulse">
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+        </div>
+
+        {/* Metadata Grid Skeleton */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 animate-pulse">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="bg-gray-100 dark:bg-gray-800/50 p-4 rounded-lg h-20 border border-gray-200/50 dark:border-gray-700/50"></div>
+          ))}
+        </div>
+
+        {/* Ingredients & Steps Columns Skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Ingredients Column */}
+          <div className="lg:col-span-1 space-y-4 animate-pulse">
+            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-12 bg-gray-200 dark:bg-gray-700/50 rounded-lg border border-gray-200/50 dark:border-gray-700/50"></div>
+            ))}
+          </div>
+
+          {/* Steps Column */}
+          <div className="lg:col-span-2 space-y-4 animate-pulse">
+            <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700/50 rounded-lg border border-gray-200/50 dark:border-gray-700/50"></div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
@@ -348,79 +385,41 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
 
   return (
     <div className={`recipe-detail-container ${isRtl ? 'rtl-recipe-detail' : 'ltr-recipe-detail'}`} dir={isRtl ? 'rtl' : 'ltr'}>
-      {/* Header with back button and language selector */}
-      <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 ${isRtl ? 'rtl-header' : 'ltr-header'}`}>
-        <div className={`flex-1 ${isRtl ? 'text-right' : 'text-left'}`}>
-          {onBack && (
-            <button
-              onClick={onBack}
-              className={`
-                mb-2
-                px-4
-                py-2
-                bg-gray-200
-                dark:bg-gray-700
-                text-gray-800
-                dark:text-gray-200
-                rounded-lg
-                hover:bg-gray-300
-                dark:hover:bg-gray-600
-                focus:ring-2
-                focus:ring-gray-500
-                focus:ring-offset-2
-                transition-colors
-                min-w-[44px]
-                min-h-[44px]
-                ${isRtl ? 'rtl-back-button' : 'ltr-back-button'}
-              `}
-              aria-label={t('common.back', 'Back')}
-            >
-              ← {t('common.back', 'Back')}
-            </button>
-          )}
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-2">
-            {recipe.name}
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            {recipe.origin_country}
-          </p>
-        </div>
-
-        {/* Language selector */}
-        <div className={`w-full sm:w-auto ${isRtl ? 'text-right' : 'text-left'}`}>
-          <label htmlFor="language-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            {t('common.language', 'Language')}
-          </label>
-          <select
-            id="language-select"
-            value={selectedLanguage}
-            onChange={handleLanguageChange}
+      {/* Header with back button */}
+      <div className={`mb-6 ${isRtl ? 'text-right' : 'text-left'}`}>
+        {onBack && (
+          <button
+            onClick={onBack}
             className={`
-              w-full
-              sm:w-auto
-              px-3
+              mb-2
+              px-4
               py-2
-              border
-              border-gray-300
-              dark:border-gray-600
-              rounded-lg
-              focus:ring-2
-              focus:ring-blue-500
-              focus:border-blue-500
+              bg-gray-200
               dark:bg-gray-700
-              dark:text-white
-              ${isRtl ? 'rtl-language-select' : 'ltr-language-select'}
+              text-gray-800
+              dark:text-gray-200
+              rounded-lg
+              hover:bg-gray-300
+              dark:hover:bg-gray-600
+              focus:ring-2
+              focus:ring-gray-500
+              focus:ring-offset-2
+              transition-colors
+              min-w-[44px]
+              min-h-[44px]
+              ${isRtl ? 'rtl-back-button' : 'ltr-back-button'}
             `}
-            dir="ltr" // Always LTR for language codes
+            aria-label={t('common.back', 'Back')}
           >
-            <option value="EN">{t('languages.english', 'English')}</option>
-            <option value="UR">{t('languages.urdu', 'Urdu')}</option>
-            <option value="AR">{t('languages.arabic', 'Arabic')}</option>
-            <option value="ES">{t('languages.spanish', 'Spanish')}</option>
-            <option value="FR">{t('languages.french', 'French')}</option>
-            <option value="FA">{t('languages.persian', 'Persian')}</option>
-          </select>
-        </div>
+            ← {t('common.back', 'Back')}
+          </button>
+        )}
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-2">
+          {recipe.name}
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          {recipe.origin_country}
+        </p>
       </div>
 
       {/* Kitchen Guard - Safety warnings */}

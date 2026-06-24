@@ -567,6 +567,7 @@ export const ChefAiDrawer: React.FC<ChefAiDrawerProps> = ({ isOpen, onClose }) =
                     onChange={(e) => setInputMessage(e.target.value)}
                     placeholder={t('chefai.input_placeholder', 'Ask about substitutions...')}
                     disabled={isLoading}
+                    dir="auto"
                     className="flex-1 bg-slate-900 text-slate-200 placeholder-slate-500 text-sm border border-slate-800 focus:border-indigo-500/80 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-indigo-500/30 transition-all disabled:opacity-50"
                   />
 
@@ -640,6 +641,7 @@ export const ChefAiDrawer: React.FC<ChefAiDrawerProps> = ({ isOpen, onClose }) =
                 value={newIngredient}
                 onChange={(e) => setNewIngredient(e.target.value)}
                 placeholder={t('chefai.add_ingredient_placeholder', 'e.g. chicken, onion')}
+                dir="auto"
                 className="flex-1 bg-slate-900 text-slate-200 placeholder-slate-500 text-sm border border-slate-800 focus:border-indigo-500/80 rounded-xl px-4 py-2.5 focus:outline-none transition-all"
               />
               <button

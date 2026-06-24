@@ -22,7 +22,7 @@ const DashboardPage: React.FC = () => {
         </header>
 
         <main>
-          <RecipeList language="EN" onRecipeSelect={handleRecipeSelect} />
+          <RecipeList onRecipeSelect={handleRecipeSelect} />
         </main>
       </div>
     </div>
