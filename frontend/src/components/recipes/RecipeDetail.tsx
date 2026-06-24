@@ -130,6 +130,32 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
   const cookModeActive = isAuthenticated ? (progress?.cook_mode_active ?? false) : cookModeActiveLocal;
   const currentCookStep = isAuthenticated ? (progress?.current_step ?? 1) : currentCookStepLocal;
 
+  const [guestStepProgress, setGuestStepProgress] = useState<Record<number, 'pending' | 'completed'>>({});
+
+  const stepStatusList = isAuthenticated
+    ? (progress?.step_progress.map(s => ({
+        step_number: s.step_number,
+        status: s.status as 'pending' | 'in_progress' | 'completed'
+      })) || [])
+    : parsedSteps.map(s => ({
+        step_number: s.step_number,
+        status: (guestStepProgress[s.step_number] || (s.step_number === currentCookStepLocal ? 'in_progress' : 'pending')) as 'pending' | 'in_progress' | 'completed'
+      }));
+
+  const completedStepsCount = stepStatusList.filter(s => s.status === 'completed').length;
+
+  const handleStepToggle = (stepNumber: number, isCompleted: boolean) => {
+    const nextStatus = isCompleted ? 'completed' : 'pending';
+    if (isAuthenticated) {
+      updateProgress(stepNumber, nextStatus, cookModeActive);
+    } else {
+      setGuestStepProgress(prev => ({
+        ...prev,
+        [stepNumber]: nextStatus
+      }));
+    }
+  };
+
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
@@ -433,11 +459,8 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
       {parsedSteps.length > 0 && (
         <StepProgressBar
           totalSteps={parsedSteps.length}
-          currentStep={currentCookStep}
-          stepStatusList={progress?.step_progress.map(s => ({
-            step_number: s.step_number,
-            status: s.status as 'pending' | 'in_progress' | 'completed'
-          })) || []}
+          currentStep={completedStepsCount}
+          stepStatusList={stepStatusList}
         />
       )}
 
@@ -501,9 +524,10 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
           {t('recipe.ingredients.title', 'Ingredients')}
         </h2>
-        {recipe.ingredients && recipe.ingredients.length > 0 ? (
+        {(recipe.translated_ingredients || recipe.ingredients) && (recipe.translated_ingredients || recipe.ingredients)!.length > 0 ? (
           (() => {
-            const parsedIngredients = parseIngredients(recipe.ingredients);
+            const rawIngredients = recipe.translated_ingredients || recipe.ingredients;
+            const parsedIngredients = parseIngredients(rawIngredients);
             const scalingFactor = recipe.servings ? servings / recipe.servings : 1;
             return (
               <>
@@ -543,7 +567,11 @@ const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipeId, language = 'EN', 
       {/* Steps section */}
       {parsedSteps.length > 0 && (
         <div className="mb-8">
-          <RecipeSteps steps={parsedSteps} />
+          <RecipeSteps
+            steps={parsedSteps}
+            stepProgressList={stepStatusList}
+            onStepToggle={handleStepToggle}
+          />
         </div>
       )}
     </div>

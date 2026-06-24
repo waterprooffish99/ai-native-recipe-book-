@@ -14,6 +14,7 @@ export interface Recipe {
   servings?: number;
   kitchen_guard?: string;
   ingredients?: any[];
+  translated_ingredients?: any[];
   steps?: RecipeStep[];
   language: string;
 }
