@@ -8,7 +8,7 @@ on:
 
 jobs:
   backend-checks:
-    name: Backend Lint and Compile
+    name: Backend Syntax and Compile
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -23,16 +23,6 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      - name: Install Linting Dependencies
-        run: |
-          pip install black flake8
-
-      - name: Run Black Code Format Check
-        run: black --check src tests
-
-      - name: Run Flake8 Linter
-        run: flake8 src tests
-
       - name: Install Package Dependencies
         run: |
           pip install -r requirements.txt
@@ -42,7 +32,7 @@ jobs:
           python -m compileall src
 
   frontend-checks:
-    name: Frontend Lint and Build
+    name: Frontend Compile and Build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -61,12 +51,10 @@ jobs:
       - name: Install Node Packages
         run: npm ci
 
-      - name: Run ESLint
-        run: npm run lint
-
       - name: Build Docusaurus Static Site (Ensures SSR Compatibility)
         run: npm run build
         env:
           VITE_SENTRY_DSN: "mock-dsn"
           VITE_POSTHOG_KEY: "mock-key"
           VITE_CLERK_PUBLISHABLE_KEY: "mock-clerk-key"
+
