@@ -46,10 +46,11 @@ class ChefAIChatRequest(BaseModel):
         default_factory=uuid4,
         description="Session UUID for conversation continuity. Auto-generated if not provided."
     )
-    user_id: Optional[UUID] = Field(
+    user_id: Optional[str] = Field(
         None,
-        description="Optional user UUID for authenticated session linking."
+        description="Optional user ID for authenticated session linking."
     )
+
     message: str = Field(
         ...,
         min_length=1,
@@ -172,7 +173,7 @@ class ChefAISession(BaseModel):
     Stores conversation history and user inventory for cross-request continuity.
     """
     session_id: UUID = Field(default_factory=uuid4)
-    user_id: Optional[UUID] = None
+    user_id: Optional[str] = None
     conversation_history: List[ChefAIMessage] = Field(default_factory=list)
     user_inventory: List[FridgeIngredient] = Field(default_factory=list)
     dietary_restrictions: List[DietaryRestriction] = Field(default_factory=list)

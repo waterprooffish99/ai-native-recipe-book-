@@ -47,3 +47,12 @@ DIFFICULTY_LEVELS = ["Absolute Beginner", "Beginner", "Beginner+"]
 # Performance Settings
 RAG_SEARCH_LIMIT = 5  # Number of results to return from vector search
 RAG_SCORE_THRESHOLD = 0.7  # Minimum relevance score for results
+
+# T185: Clerk Auth Configuration
+CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY")
+CLERK_JWKS_URL = os.getenv("CLERK_JWKS_URL")
+
+# T189: Redis Configuration
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+
+

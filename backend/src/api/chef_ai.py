@@ -4,7 +4,9 @@ Phase 9: Conversational Chef AI — API endpoints for Chat & Fridge Logic.
 Defines endpoints for querying the Conversational Chef and matching inventory.
 """
 from fastapi import APIRouter, Depends
+from fastapi.responses import StreamingResponse, JSONResponse
 import asyncpg
+from typing import Union
 
 from src.models.chef_ai import (
     ChefAIChatRequest,
@@ -13,6 +15,8 @@ from src.models.chef_ai import (
     FridgeLogicResponse,
 )
 from src.services.chef_ai_service import ChefAIService
+from src.middleware.auth import verify_clerk_token
+
 
 router = APIRouter(prefix="/chef-ai", tags=["Chef AI"])
 
@@ -83,3 +87,39 @@ async def fridge_logic(
             which ingredients are owned and which are missing.
     """
     return await chef_ai_service.get_fridge_logic_suggestions(request)
+
+
+router_v2 = APIRouter(prefix="/api/v2/chat", tags=["Chef AI V2"])
+
+
+@router_v2.post("/stream", response_model=None)
+async def chat_stream(
+    request: ChefAIChatRequest,
+    chef_ai_service: ChefAIService = Depends(get_chef_ai_service),
+    current_user: dict = Depends(verify_clerk_token),
+) -> Union[StreamingResponse, JSONResponse]:
+    """Conversational chat endpoint with Server-Sent Events (SSE) streaming (T176, T177).
+
+    Executes pre-flight Halal compliance filtering before initiating the stream.
+    If violating ingredients are found, immediately returns HTTP 400.
+    """
+    # Set the user ID from the verified token payload context
+    request.user_id = current_user.get("sub")
+
+    # T177: Pre-flight check utilizing the existing deterministic blocklist filter
+    violations = chef_ai_service._check_halal_compliance(request.message)
+    if violations:
+        return JSONResponse(
+            status_code=400,
+            content={
+                "error": "Non-halal ingredient detected",
+                "violations": violations
+            }
+        )
+
+    # T176: Start FastAPI StreamingResponse using the async generator
+    return StreamingResponse(
+        chef_ai_service.chat_stream(request),
+        media_type="text/event-stream"
+    )
+

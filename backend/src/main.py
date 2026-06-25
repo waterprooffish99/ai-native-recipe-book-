@@ -10,6 +10,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from src.db.connection import connect_db, disconnect_db
 import asyncpg
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.backends.inmemory import InMemoryBackend
+import redis.asyncio as aioredis
+
 
 # Global database connection pool for asyncpg raw queries
 db_pool: asyncpg.Pool = None
@@ -74,6 +79,21 @@ async def startup():
     db_pool = await asyncpg.create_pool(os.getenv("DATABASE_URL"))
     logger.info("🚀 Global Plate API started")
 
+    # T190: Initialize Redis Edge Caching or InMemory fallback Cache
+    from src.config import REDIS_URL
+    try:
+        redis_client = aioredis.from_url(REDIS_URL, encoding="utf8", decode_responses=True)
+        # Test connection with a fast ping (TTL check)
+        await redis_client.ping()
+        FastAPICache.init(RedisBackend(redis_client), prefix="fastapi-cache")
+        logger.info("📡 Redis Edge Cache connection initialized successfully")
+    except Exception as e:
+        logger.warning(
+            f"⚠️ Redis Edge Caching server is offline ({e}). Falling back to InMemoryBackend."
+        )
+        FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
+
+
 
 @app.on_event("shutdown")
 async def shutdown():
@@ -110,4 +130,6 @@ app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(survey.router, prefix="/survey", tags=["Survey"])
 app.include_router(recipes.router, tags=["Recipes"])
 app.include_router(chef_ai.router)
+app.include_router(chef_ai.router_v2)
+
 

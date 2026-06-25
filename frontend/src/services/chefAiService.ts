@@ -95,6 +95,20 @@ export const chefAiService = {
   },
 
   /**
+   * T176: POST /api/v2/chat/stream
+   * Initiates a streaming chat request to Chef AI.
+   */
+  async sendMessageStream(request: ChefAIChatRequest): Promise<Response> {
+    const response = await fetch(`${API_BASE_URL}/api/v2/chat/stream`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(request),
+    });
+    return response;
+  },
+
+
+  /**
    * T135: POST /chef-ai/fridge-logic
    * Retrieves recipe suggestions based on a list of ingredients in the user's inventory.
    */

@@ -6,6 +6,8 @@ from fastapi import APIRouter, HTTPException, Query, Depends
 from typing import List, Optional
 from uuid import UUID
 import asyncpg
+from fastapi_cache.decorator import cache
+
 
 from src.models.recipe import (
     RecipeDetail, RecipeSummary, RecipeSearchResult,
@@ -127,6 +129,7 @@ async def list_recipes(
 
 
 @router.get("/{recipe_id}", response_model=RecipeDetail)
+@cache(expire=3600)
 async def get_recipe(
     recipe_id: UUID,
     language: str = Query("EN", description="Language code (EN, UR, AR, ES, FR, FA)"),

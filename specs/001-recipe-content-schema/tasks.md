@@ -583,6 +583,48 @@ With multiple developers:
 
 ---
 
+## Phase 12: Version 2.0 (World-Class Scale)
+
+**Goal**: Upgrade system to production-grade streaming, telemetry, passwordless auth, automated checks, and edge caching
+
+**Independent Test**: Verify: (1) Chef AI response streaming token-by-token, (2) errors logged in Sentry, events tracked in PostHog, (3) auth protected endpoints with Clerk, (4) CI/CD checks pass, (5) Redis/in-memory cache retrieval latency <500ms.
+
+### Real-Time Streaming
+- [X] T176 [P] Implement backend Chef AI streaming in `backend/src/api/chef_ai.py` with FastAPI StreamingResponse and async generators
+- [X] T177 Implement pre-flight Halal compliance filters for streaming in `backend/src/services/chef_ai_service.py`
+- [X] T178 [P] Integrate EventSource/stream reader in `frontend/src/components/ai/ChefAiDrawer.tsx` to handle chunked SSE data
+- [X] T179 [P] Implement progressive markdown rendering and dynamic chat auto-scroll in `frontend/src/components/ai/ChefAiDrawer.tsx`
+
+
+### Telemetry & Observability
+- [X] T180 Configure backend `sentry-sdk` in `backend/src/main.py` and `config.py` with FastAPI middleware and performance transaction tracing
+- [X] T181 Configure frontend `@sentry/react` in `frontend/src/theme/Layout.tsx` for tracking runtime errors and routing performance
+- [X] T182 Integrate PostHog JavaScript SDK in `frontend/src/theme/Layout.tsx` to track events (`cook_mode_toggled`, `recipe_scaled`, `command_k_search`)
+
+
+### Passwordless Auth (Clerk)
+- [X] T183 Integrate Clerk frontend SDK and customize auth modals to match default dark-mode design system in `frontend/src/pages/`
+- [X] T184 Refactor user context hooks and dashboards in `frontend/src/components/dashboard/` to retrieve metadata from Clerk sessions
+- [X] T185 Implement FastAPI JWKS verification middleware in `backend/src/middleware/auth.py` to authenticate routes using Clerk session tokens
+
+
+
+### CI/CD Pipelines
+- [X] T186 Create GitHub Actions build/test pipeline `.github/workflows/ci.yml` running tests, ESLint, and Black/Ruff formatting checks
+- [X] T187 Create custom test script for Constitution Check (`backend/scripts/check_constitution.py`) and write `.github/workflows/constitution-check.yml`
+- [X] T188 Create deployment workflow `.github/workflows/cd.yml` with pre-deploy Alembic migration hooks and production deployment triggers
+
+
+### Edge Caching
+- [X] T189 Install and configure Redis client (`redis-py` / `aioredis`) connecting to Upstash Redis in `backend/src/config.py`
+- [X] T190 Implement thread-safe local in-memory fallback cache (using cachetools) in `backend/src/services/cache_service.py`
+- [X] T191 Integrate caching logic into recipe retrieval routes with automatic invalidation on updates in `backend/src/api/recipes.py`
+
+
+**Checkpoint**: Phase 12 infrastructure complete - system achieves world-class scale with streaming, telemetry, Clerk auth, caching, and CI/CD gates.
+
+---
+
 ## Notes
 
 - **[P]** tasks = different files, no dependencies, can run in parallel
@@ -598,7 +640,7 @@ With multiple developers:
 
 ---
 
-## Total Task Count: 175 tasks
+## Total Task Count: 191 tasks
 
 - **Phase 1 (Setup)**: 8 tasks ✅ Complete
 - **Phase 2 (Foundational)**: 14 tasks ✅ Complete
@@ -611,8 +653,9 @@ With multiple developers:
 - **Phase 9 (Chef AI)**: 15 tasks (NEW - Product-System Era)
 - **Phase 10 (System Features)**: 20 tasks (NEW - Product-System Era)
 - **Phase 11 (Polish & Validation)**: 14 tasks (NEW - Product-System Era)
+- **Phase 12 (Version 2.0 World-Class Scale)**: 16 tasks (NEW - Version 2.0.0 Expansion)
 
-**Parallel opportunities identified**: 68 tasks marked with [P] can run in parallel within their phase
+**Parallel opportunities identified**: 78 tasks marked with [P] can run in parallel within their phase
 
 **Suggested MVP scope**: Phase 1 + Phase 2 + Phase 3 (61 tasks for RAG-enabled recipe system)
 

@@ -147,5 +147,6 @@ echo "   Look for the Chicken Sajji card! 🇵🇰"
 echo ""
 
 # Keep script running to show logs (optional - comment out if you want to detach)
-echo "Press Ctrl+C to stop both servers..."
-wait $BACKEND_PID $FRONTEND_PID
+# echo "Press Ctrl+C to stop both servers..."
+# wait $BACKEND_PID $FRONTEND_PID
+

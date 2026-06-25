@@ -10,7 +10,31 @@ import {
 } from '../../services/chefAiService';
 import { useVoiceRecognition } from '../../hooks/useVoiceRecognition';
 
+interface Citation {
+  text: string;
+  url?: string;
+}
+
+const extractCitations = (text: string): Citation[] => {
+  const citations: Citation[] = [];
+  const textLower = text.toLowerCase();
+  const citationMap = [
+    { key: 'usda', text: 'USDA Food Safety and Inspection Service', url: 'https://www.fsis.usda.gov/food-safety' },
+    { key: 'fda', text: 'U.S. Food and Drug Administration', url: 'https://www.fda.gov/food' },
+    { key: 'who', text: 'World Health Organization — Food Safety', url: 'https://www.who.int/health-topics/food-safety' },
+    { key: 'halal', text: 'Islamic Food and Nutrition Council of America (IFANCA)', url: 'https://www.ifanca.org' },
+  ];
+
+  for (const item of citationMap) {
+    if (textLower.includes(item.key)) {
+      citations.push({ text: item.text, url: item.url });
+    }
+  }
+  return citations;
+};
+
 interface ChefAiDrawerProps {
+
   isOpen: boolean;
   onClose: () => void;
 }
@@ -156,7 +180,7 @@ export const ChefAiDrawer: React.FC<ChefAiDrawerProps> = ({ isOpen, onClose }) =
     }
   }, [fridgeIngredients, activeTab]);
 
-  // Send message API Call
+  // Send message API Call (T178 & T179 Streaming implementation)
   const handleSendMessage = async (textToSend?: string) => {
     const messageText = textToSend || inputMessage;
     if (!messageText.trim() || isLoading) return;
@@ -174,36 +198,127 @@ export const ChefAiDrawer: React.FC<ChefAiDrawerProps> = ({ isOpen, onClose }) =
     setIsLoading(true);
 
     try {
-      const response = await chefAiService.sendMessage({
+      // Call the new streaming API client helper
+      const response = await chefAiService.sendMessageStream({
         session_id: sessionId,
         message: messageText,
         dietary_restrictions: ['halal'],
         conversation_history: messages.slice(1), // Exclude welcome message
       });
 
-      if (response.session_id) {
-        setSessionId(response.session_id);
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('chef_ai_session_id', response.session_id);
+      // T179: Catch pre-flight Halal block error (status 400 / 403)
+      if (!response.ok) {
+        setIsLoading(false);
+        try {
+          const errorData = await response.json();
+          const displayError = errorData.error || t('chefai.error', 'Sorry, I am having trouble processing your query right now.');
+          const violationsText = errorData.violations ? `\nDetected violating terms: **${errorData.violations.join(', ')}**` : '';
+          
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: 'assistant',
+              content: `${displayError}${violationsText}`,
+            },
+          ]);
+          if (isReadAloud) {
+            speakText(displayError);
+          }
+        } catch (e) {
+          const errMsg = t('chefai.error', 'Sorry, I am having trouble processing your query right now.');
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: 'assistant',
+              content: errMsg,
+            },
+          ]);
+          if (isReadAloud) {
+            speakText(errMsg);
+          }
         }
+        return;
       }
 
+      // Initialize empty assistant bubble in state for streaming
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          content: response.reply,
+          content: '',
           timestamp: new Date().toISOString(),
-          // Embed citation information directly inside the message object for rendering
-          citations: response.citations,
         } as any,
       ]);
 
-      if (isReadAloud) {
-        speakText(response.reply);
+      // T178: Read stream response body
+      if (!response.body) throw new Error('ReadableStream not supported.');
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let accumulatedText = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunkText = decoder.decode(value, { stream: true });
+        
+        // SSE streams yield lines prefixed with "data: "
+        const lines = chunkText.split('\n');
+        let newTokens = '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const content = line.slice(6);
+            if (content) {
+              // Graceful handling of inline backend connection errors
+              if (content.startsWith('{') && content.includes('"error"')) {
+                try {
+                  const errObj = JSON.parse(content);
+                  newTokens += `\n[Error: ${errObj.error}]`;
+                } catch (e) {
+                  newTokens += content;
+                }
+              } else {
+                newTokens += content;
+              }
+            }
+          }
+        }
+
+        if (newTokens) {
+          accumulatedText += newTokens;
+          // Clear typing animation state once stream content starts flowing
+          setIsLoading(false);
+          
+          // Append streamed tokens to the active assistant chat bubble
+          setMessages((prev) => {
+            const updated = [...prev];
+            const last = updated[updated.length - 1];
+            if (last && last.role === 'assistant') {
+              last.content = accumulatedText;
+            }
+            return updated;
+          });
+        }
       }
+
+      // Final wrap up: Extract citations and trigger Read Aloud if enabled
+      const finalCitations = extractCitations(accumulatedText);
+      setMessages((prev) => {
+        const updated = [...prev];
+        const last = updated[updated.length - 1];
+        if (last && last.role === 'assistant') {
+          (last as any).citations = finalCitations;
+        }
+        return updated;
+      });
+
+      if (isReadAloud) {
+        speakText(accumulatedText);
+      }
+
     } catch (error) {
-      console.error('Chef AI Chat Error:', error);
+      console.error('Chef AI Chat Stream Error:', error);
       const errorMessage = t('chefai.error', 'Sorry, I am having trouble processing your query right now. Please try again!');
       setMessages((prev) => [
         ...prev,
@@ -219,6 +334,7 @@ export const ChefAiDrawer: React.FC<ChefAiDrawerProps> = ({ isOpen, onClose }) =
       setIsLoading(false);
     }
   };
+
 
   // Add ingredient to fridge inventory
   const handleAddIngredient = (e: React.FormEvent) => {

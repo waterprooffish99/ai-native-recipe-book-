@@ -374,6 +374,93 @@ class ChefAIService:
             tokens_used=tokens_used,
         )
 
+    async def chat_stream(self, request: ChefAIChatRequest):
+        """Asynchronous generator for streaming Chef AI responses via SSE (T176).
+
+        Flow:
+          1. Loads or creates conversation session.
+          2. Fetches RAG context from Qdrant vector database.
+          3. Generates system prompt enforcing dietary restrictions.
+          4. Submits prompt + chat history context to OpenAI chat completions with stream=True.
+          5. Yields chunks as Server-Sent Events (SSE) in standard 'data: ...' format.
+          6. Post-flight validation checks the complete generated text and persists history.
+        """
+        session_id = request.session_id or uuid4()
+        logger.info(f"Chef AI chat stream — session={session_id}, user={request.user_id}")
+
+        # Load or create session
+        session = await self._load_session(session_id)
+        if not session:
+            session = ChefAISession(
+                session_id=session_id,
+                user_id=request.user_id,
+                dietary_restrictions=request.dietary_restrictions,
+                user_inventory=[],
+            )
+
+        # Merge incoming history
+        if request.conversation_history:
+            session.conversation_history = request.conversation_history[-10:]
+
+        # Fetch RAG context from Qdrant vector DB
+        rag_context = await self.rag_service.get_chef_ai_rag_context(
+            query=request.message,
+            language=LanguageCode.EN,
+            recipe_context_id=request.recipe_context_id,
+        )
+
+        # Build system prompt enforcing dietary restrictions (always includes Halal blocklist)
+        restrictions = request.dietary_restrictions or session.dietary_restrictions
+        if DietaryRestriction.HALAL not in restrictions:
+            restrictions = [DietaryRestriction.HALAL] + list(restrictions)
+
+        system_prompt = self.rag_service.build_chef_ai_system_prompt(
+            user_inventory=session.user_inventory or None,
+            dietary_restrictions=restrictions,
+            recipe_context=rag_context or None,
+        )
+
+        # Build message list for OpenAI
+        messages: List[Dict[str, str]] = [{"role": "system", "content": system_prompt}]
+        for turn in session.conversation_history[-8:]:
+            messages.append({"role": turn.role, "content": turn.content})
+        messages.append({"role": "user", "content": request.message})
+
+        full_reply_chunks = []
+        try:
+            stream = await self.openai_client.chat.completions.create(
+                model=CHEF_AI_MODEL,
+                messages=messages,
+                max_tokens=CHEF_AI_MAX_TOKENS,
+                temperature=CHEF_AI_TEMPERATURE,
+                stream=True,
+            )
+            async for chunk in stream:
+                content = chunk.choices[0].delta.content or ""
+                if content:
+                    full_reply_chunks.append(content)
+                    # Yield formatted as Server-Sent Event (SSE)
+                    yield f"data: {content}\n\n"
+                    
+            # Complete raw output post-flight validation
+            full_reply = "".join(full_reply_chunks)
+            final_reply, was_response_safe = self._validate_ai_response(full_reply)
+            
+            # Persist safety-sanitized turn in conversation history
+            session.conversation_history.append(
+                ChefAIMessage(role="user", content=request.message)
+            )
+            session.conversation_history.append(
+                ChefAIMessage(role="assistant", content=final_reply)
+            )
+            session.conversation_history = session.conversation_history[-10:]
+            await self._save_session(session)
+            
+        except Exception as e:
+            logger.error(f"OpenAI API connection error in Chef AI stream: {e}")
+            # Gracefully notify client of stream failure via standard SSE error structure
+            yield f"data: {json.dumps({'error': 'Stream connection error', 'detail': str(e)})}\n\n"
+
     def _try_substitution_shortcut(self, message: str) -> Optional[str]:
         """Tries to intercept query with direct offline substitutions before calling LLM.
 
