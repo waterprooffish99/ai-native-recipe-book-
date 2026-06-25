@@ -26,11 +26,11 @@ const FallbackComponent = ({ error, resetError }: { error: Error; resetError: ()
         <div>
           <h1 className="text-lg font-semibold text-slate-200 leading-none">Something went wrong</h1>
           <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-            An unexpected application error occurred. Sentry telemetry has been notified.
+            An unexpected application error occurred. Telemetry has been notified.
           </p>
         </div>
         <div className="bg-slate-950/60 p-3 rounded-lg border border-slate-950 text-[11px] font-mono text-rose-300 max-h-40 overflow-y-auto whitespace-pre-wrap">
-          {error.message}
+          {error?.message || String(error)}
         </div>
         <button
           onClick={resetError}
@@ -55,6 +55,51 @@ const ClerkAuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class SafeErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('SafeErrorBoundary caught an error:', error, errorInfo);
+    try {
+      Sentry.captureException(error, { extra: { errorInfo } });
+    } catch (e) {
+      console.warn('Failed to capture exception in Sentry:', e);
+    }
+  }
+
+  resetError = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <FallbackComponent
+          error={this.state.error || new Error('Unknown rendering error')}
+          resetError={this.resetError}
+        />
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function Root({ children }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -66,9 +111,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <Sentry.ErrorBoundary
-      fallback={({ error, resetError }) => <FallbackComponent error={error} resetError={resetError} />}
-    >
+    <SafeErrorBoundary>
       <ClerkAuthProvider>
         <I18nextProvider i18n={i18n}>
           {isMounted && <OfflineBanner />}
@@ -87,7 +130,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
           )}
         </I18nextProvider>
       </ClerkAuthProvider>
-    </Sentry.ErrorBoundary>
+    </SafeErrorBoundary>
   );
 }
 
